@@ -1,0 +1,149 @@
+Starting a new Gradle Daemon for this build (subsequent builds will be faster).
+:dependencies
+
+------------------------------------------------------------
+Root project
+------------------------------------------------------------
+
+archives - Configuration for archive artifacts.
+No dependencies
+
+compile - Dependencies for source set 'main'.
++--- com.google.code.findbugs:annotations:3.0.0
++--- org.codehaus.groovy:groovy-all:2.4.4
++--- com.google.guava:guava:19.0
+\--- org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0
+
+compileClasspath - Compile classpath for source set 'main'.
++--- com.google.code.findbugs:annotations:3.0.0
++--- org.codehaus.groovy:groovy-all:2.4.4
++--- com.google.guava:guava:19.0
+\--- org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0
+
+compileOnly - Compile dependencies for source set 'main'.
++--- com.google.code.findbugs:annotations:3.0.0
++--- org.codehaus.groovy:groovy-all:2.4.4
++--- com.google.guava:guava:19.0
+\--- org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0
+
+default - Configuration for default artifacts.
++--- com.google.code.findbugs:annotations:3.0.0
++--- org.codehaus.groovy:groovy-all:2.4.4
++--- com.google.guava:guava:19.0
+\--- org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0
+
+runtime - Runtime dependencies for source set 'main'.
++--- com.google.code.findbugs:annotations:3.0.0
++--- org.codehaus.groovy:groovy-all:2.4.4
++--- com.google.guava:guava:19.0
+\--- org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0
+
+testCompile - Dependencies for source set 'test'.
++--- com.google.code.findbugs:annotations:3.0.0
++--- org.codehaus.groovy:groovy-all:2.4.4
++--- com.google.guava:guava:19.0
++--- org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0
++--- org.spockframework:spock-core:1.0-groovy-2.4
+|    +--- junit:junit:4.12
+|    |    \--- org.hamcrest:hamcrest-core:1.3
+|    \--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
++--- cglib:cglib-nodep:3.2.0
++--- org.objenesis:objenesis:2.2
++--- org.spockframework:spock-guice:1.0-groovy-2.4
+|    +--- org.spockframework:spock-core:1.0-groovy-2.4 (*)
+|    \--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
+\--- uk.q3c:q3c-testUtil:0.8.2
+     +--- org.slf4j:slf4j-api:1.7.6
+     +--- ch.qos.logback:logback-classic:1.1.2
+     |    +--- ch.qos.logback:logback-core:1.1.2
+     |    \--- org.slf4j:slf4j-api:1.7.6
+     +--- ch.qos.logback:logback-core:1.1.2
+     +--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
+     +--- com.google.guava:guava:19.0
+     +--- org.apache.commons:commons-lang3:3.3.2
+     +--- commons-io:commons-io:2.4
+     \--- com.google.code.findbugs:annotations:3.0.0
+
+testCompileClasspath - Compile classpath for source set 'test'.
++--- com.google.code.findbugs:annotations:3.0.0
++--- org.codehaus.groovy:groovy-all:2.4.4
++--- com.google.guava:guava:19.0
++--- org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0
++--- org.spockframework:spock-core:1.0-groovy-2.4
+|    +--- junit:junit:4.12
+|    |    \--- org.hamcrest:hamcrest-core:1.3
+|    \--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
++--- cglib:cglib-nodep:3.2.0
++--- org.objenesis:objenesis:2.2
++--- org.spockframework:spock-guice:1.0-groovy-2.4
+|    +--- org.spockframework:spock-core:1.0-groovy-2.4 (*)
+|    \--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
+\--- uk.q3c:q3c-testUtil:0.8.2
+     +--- org.slf4j:slf4j-api:1.7.6
+     +--- ch.qos.logback:logback-classic:1.1.2
+     |    +--- ch.qos.logback:logback-core:1.1.2
+     |    \--- org.slf4j:slf4j-api:1.7.6
+     +--- ch.qos.logback:logback-core:1.1.2
+     +--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
+     +--- com.google.guava:guava:19.0
+     +--- org.apache.commons:commons-lang3:3.3.2
+     +--- commons-io:commons-io:2.4
+     \--- com.google.code.findbugs:annotations:3.0.0
+
+testCompileOnly - Compile dependencies for source set 'test'.
++--- com.google.code.findbugs:annotations:3.0.0
++--- org.codehaus.groovy:groovy-all:2.4.4
++--- com.google.guava:guava:19.0
++--- org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0
++--- org.spockframework:spock-core:1.0-groovy-2.4
+|    +--- junit:junit:4.12
+|    |    \--- org.hamcrest:hamcrest-core:1.3
+|    \--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
++--- cglib:cglib-nodep:3.2.0
++--- org.objenesis:objenesis:2.2
++--- org.spockframework:spock-guice:1.0-groovy-2.4
+|    +--- org.spockframework:spock-core:1.0-groovy-2.4 (*)
+|    \--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
+\--- uk.q3c:q3c-testUtil:0.8.2
+     +--- org.slf4j:slf4j-api:1.7.6
+     +--- ch.qos.logback:logback-classic:1.1.2
+     |    +--- ch.qos.logback:logback-core:1.1.2
+     |    \--- org.slf4j:slf4j-api:1.7.6
+     +--- ch.qos.logback:logback-core:1.1.2
+     +--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
+     +--- com.google.guava:guava:19.0
+     +--- org.apache.commons:commons-lang3:3.3.2
+     +--- commons-io:commons-io:2.4
+     \--- com.google.code.findbugs:annotations:3.0.0
+
+testRuntime - Runtime dependencies for source set 'test'.
++--- com.google.code.findbugs:annotations:3.0.0
++--- org.codehaus.groovy:groovy-all:2.4.4
++--- com.google.guava:guava:19.0
++--- org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0
++--- org.spockframework:spock-core:1.0-groovy-2.4
+|    +--- junit:junit:4.12
+|    |    \--- org.hamcrest:hamcrest-core:1.3
+|    \--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
++--- cglib:cglib-nodep:3.2.0
++--- org.objenesis:objenesis:2.2
++--- org.spockframework:spock-guice:1.0-groovy-2.4
+|    +--- org.spockframework:spock-core:1.0-groovy-2.4 (*)
+|    \--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
+\--- uk.q3c:q3c-testUtil:0.8.2
+     +--- org.slf4j:slf4j-api:1.7.6
+     +--- ch.qos.logback:logback-classic:1.1.2
+     |    +--- ch.qos.logback:logback-core:1.1.2
+     |    \--- org.slf4j:slf4j-api:1.7.6
+     +--- ch.qos.logback:logback-core:1.1.2
+     +--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
+     +--- com.google.guava:guava:19.0
+     +--- org.apache.commons:commons-lang3:3.3.2
+     +--- commons-io:commons-io:2.4
+     \--- com.google.code.findbugs:annotations:3.0.0
+
+(*) - dependencies omitted (listed previously)
+
+BUILD SUCCESSFUL
+
+Total time: 5.068 secs
