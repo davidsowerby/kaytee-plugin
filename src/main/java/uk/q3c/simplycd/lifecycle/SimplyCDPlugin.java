@@ -16,78 +16,59 @@ import java.util.Set;
 /**
  * Created by David Sowerby on 08 Aug 2016
  */
-@SuppressWarnings("MethodReturnOfConcreteClass")
+@SuppressWarnings({"MethodReturnOfConcreteClass", "ClassWithoutConstructor", "ClassHasNoToStringMethod", "ClassWithoutLogger"})
 
 public class SimplyCDPlugin implements Plugin<Project> {
 
     private static final String TEST_SETS_PLUGIN_NAME = "org.unbroken-dome.test-sets";
     private static final String SIMPLY_CD_PLUGIN_NAME = "uk.q3c.simplycd";
-    private File reportsOutputDir;
+    private Project project;
 
     @Override
+    @SuppressWarnings({"ParameterNameDiffersFromOverriddenParameter", "PublicMethodWithoutLogging"})
     public void apply(Project project) {
-        if (reportsOutputDir == null) {
-            reportsOutputDir = new File(project.getBuildDir(), "reports/jacoco");
-        }
-        Plugin testSetsPlugin = project.getPlugins()
-                                       .findPlugin(TEST_SETS_PLUGIN_NAME);
+        this.project = project;
+
+        //noinspection rawtypes type not needed
+        final Plugin testSetsPlugin = project.getPlugins()
+                                             .findPlugin(TEST_SETS_PLUGIN_NAME);
         if (testSetsPlugin == null) {
             throw new GradleException("apply plugin '" + TEST_SETS_PLUGIN_NAME + "' before this plugin ('" + SIMPLY_CD_PLUGIN_NAME + "')");
         }
+
+        //noinspection TypeMayBeWeakened
         final DefaultTestSetContainer testSetsConfig = (DefaultTestSetContainer) project.getExtensions()
                                                                                         .findByName("testSets");
-        if (testSetsConfig == null) {
-            throw new GradleException("Unable to locate test sets configuration");
-        }
-        System.out.println("checking groups");
-        Set<TestSet> testGroups = ImmutableSet.copyOf(testSetsConfig);
-        testGroups.forEach(tg -> {
-            addTaskSet(project, tg.getTestTaskName());
-        });
+        final Set<TestSet> testGroups = ImmutableSet.copyOf(testSetsConfig);
+        testGroups.forEach(tg -> addTaskSet(tg.getTestTaskName()));
 
     }
 
     /**
      * Adds tasks for jacoco quality gate, and the jacoco test report needed to provide the input to it.
      *
-     * @param project
-     * @param testGroupName
+     * @param testGroupName for example, 'integrationTest
      */
-    @SuppressWarnings("StringConcatenationMissingWhitespace")
-
-    private void addTaskSet(Project project, String testGroupName) {
-        File reportOutputDir = new File(reportsOutputDir, testGroupName);
-
-        Test testTask = (Test) project.getTasks()
-                                      .findByName(testGroupName);
-
-        if (testTask == null) {
-            throw new GradleException("Unable to locate test task");
-        }
-
-        System.out.println("Located test task");
-        System.out.println("bin results: " + testTask.getBinResultsDir());
+    @SuppressWarnings({"StringConcatenationMissingWhitespace", "HardcodedFileSeparator", "DuplicateStringLiteralInspection"})
+    private void addTaskSet(String testGroupName) {
+        final Test testTask = (Test) project.getTasks()
+                                            .findByName(testGroupName);
         final QualityGateTask qualityGateTask = project.getTasks()
                                                        .create(testGroupName + "QualityGate", QualityGateTask.class);
-        System.out.println("created task: " + qualityGateTask.getName());
         qualityGateTask.setTestGroup(testGroupName);
         final String reportName = testGroupName + "Report";
-        File reportOutputFile = new File(reportOutputDir, reportName + ".xml");
         final JacocoReport testReportTask = project.getTasks()
                                                    .create(reportName, JacocoReport.class);
         testReportTask.executionData(testTask);
-        testReportTask.setSourceDirectories(project.files(new File(project.getProjectDir(), "src/main/java")));
-        testReportTask.setClassDirectories(project.files(new File(project.getBuildDir(), "classes/main")));
+
+        final String javaSourcePath = "src/main/java";
+        testReportTask.setSourceDirectories(project.files(new File(project.getProjectDir(), javaSourcePath)));
+
+        final String classesPath = "classes/main";
+        testReportTask.setClassDirectories(project.files(new File(project.getBuildDir(), classesPath)));
         testReportTask.getReports()
                       .getXml()
                       .setEnabled(true);
-//        System.out.println("get destination before: "+testReportTask.getReports().getXml().getDestination().getAbsolutePath());
-//        testReportTask.getReports()
-//                      .getXml()
-//                      .setDestination(reportOutputFile);
-//        System.out.println("get destination after: "+testReportTask.getReports().getXml().getDestination().getAbsolutePath());
-        System.out.println("created task: " + testReportTask.getName());
-        System.out.println("report output file: " + reportOutputFile.getAbsolutePath());
 
         testReportTask.dependsOn(testTask);
         qualityGateTask.dependsOn(testReportTask);

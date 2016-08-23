@@ -15,7 +15,8 @@ import java.util.Map.Entry;
 /**
  * Created by David Sowerby on 08 Aug 2016
  */
-@SuppressWarnings({"MagicNumber", "PublicMethodNotExposedInInterface"})
+@SuppressWarnings({"MagicNumber", "PublicMethodNotExposedInInterface", "ReturnOfCollectionOrArrayField", "AssignmentToCollectionOrArrayFieldFromParameter",
+        "DuplicateStringLiteralInspection"})
 public class QualityGateTask extends DefaultTask {
     private static final Map<String, Integer> defaultThresholds;
 
@@ -49,8 +50,12 @@ public class QualityGateTask extends DefaultTask {
         this.testGroup = testGroup;
     }
 
-    @SuppressWarnings({"CallToStringEquals", "StringConcatenationMissingWhitespace", "HardcodedFileSeparator", "PublicMethodWithoutLogging", "MagicCharacter"})
+    @SuppressWarnings({"CallToStringEquals", "StringConcatenationMissingWhitespace", "HardcodedFileSeparator", "PublicMethodWithoutLogging",
+            "MagicCharacter"})
     @TaskAction
+    /**
+     * Evaluates the code coverage results against the {@link #thresholds}
+     */
     public void evaluate() {
         getLogger().lifecycle("evaluating test results against thresholds");
         final File baseReportsDir = new File(getProject().getBuildDir(), "reports/jacoco");
@@ -60,32 +65,19 @@ public class QualityGateTask extends DefaultTask {
         final File reportDir = new File(baseReportsDir, reportFolderName);
         final File reportFile = new File(reportDir, reportFileName);
         getLogger().lifecycle("Reading coverage results from: " + reportFile.getAbsolutePath());
-        final Node results;
 
-        // parse the file
-        try {
-            final XmlParser parser = new XmlParser();
-            parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-            parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false);
-            results = parser.parse(reportFile);
+        final Node results = parseFile(reportFile);
 
-        } catch (Exception e) {
-            throw new GradleException(e.getClass()
-                                       .getSimpleName() + " occurred in QualityGateTask for " + testGroup, e);
-        }
-
-        // extract the results
-
-        final Map<String, Node> resultsMap = new HashMap<>(10);
-        for (final Object child : results.children()) {
-            final Node childNode = (Node) child;
-            if ("counter".equals(childNode.name())) {
-                resultsMap.put((String) childNode.get("@type"), childNode);
-            }
-        }
+        final Map<String, Node> resultsMap = extractResults(results);
 
         // check for failures
         final Map<String, Double> failures = identifyFailures(resultsMap);
+
+        presentFailures(failures);
+
+    }
+
+    private void presentFailures(Map<String, Double> failures) {
         if (failures.isEmpty()) {
             getLogger().quiet("Passed Code Coverage Checks");
         } else {
@@ -101,6 +93,31 @@ public class QualityGateTask extends DefaultTask {
             getLogger().quiet("---------------------------------------------------------------");
             throw new GradleException("Code coverage failed");
         }
+    }
+
+    @SuppressWarnings("OverlyBroadCatchBlock")
+    private Node parseFile(File reportFile) {
+        try {
+            final XmlParser parser = new XmlParser();
+            parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false);
+            return parser.parse(reportFile);
+
+        } catch (Exception e) {
+            throw new GradleException(e.getClass()
+                                       .getSimpleName() + " occurred in QualityGateTask for " + testGroup, e);
+        }
+    }
+
+    private Map<String, Node> extractResults(Node results) {
+        final Map<String, Node> resultsMap = new HashMap<>(10);
+        for (final Object child : results.children()) {
+            final Node childNode = (Node) child;
+            if ("counter".equals(childNode.name())) {
+                resultsMap.put((String) childNode.get("@type"), childNode);
+            }
+        }
+        return resultsMap;
     }
 
     private Map<String, Double> identifyFailures(Map<String, Node> resultsMap) {
