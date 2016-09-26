@@ -33,10 +33,13 @@ dependencies {
     testCompile('org.spockframework:spock-core:1.0-groovy-2.4') {
         exclude module: "groovy-all"
     }
+    testCompile 'cglib:cglib-nodep:3.2.0' // needed for Spock mocking
 
     testCompile('uk.q3c:q3c-testUtil:0.8.2') {
         exclude module: "logback-classic"
     }
+    testCompile 'uk.q3c.build:gitplus:0.14.1.42'
+    testCompile gradleTestKit()
 
 
 }

@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import org.gradle.api.GradleException;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
+import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.tasks.testing.Test;
 import org.gradle.testing.jacoco.tasks.JacocoReport;
 import org.unbrokendome.gradle.plugins.testsets.dsl.TestSet;
@@ -20,25 +21,26 @@ import java.util.Set;
 
 public class SimplyCDPlugin implements Plugin<Project> {
 
-    private static final String TEST_SETS_PLUGIN_NAME = "org.unbroken-dome.test-sets";
-    private static final String SIMPLY_CD_PLUGIN_NAME = "uk.q3c.simplycd";
+    public static final String TEST_SETS_PLUGIN_NAME = "org.unbroken-dome.test-sets";
+    public static final String SIMPLY_CD_PLUGIN_NAME = "uk.q3c.simplycd";
+    @SuppressWarnings("InstanceVariableMayNotBeInitialized")
     private Project project;
 
+    @SuppressWarnings("PublicMethodWithoutLogging")
     @Override
-    @SuppressWarnings({"ParameterNameDiffersFromOverriddenParameter", "PublicMethodWithoutLogging"})
-    public void apply(Project project) {
-        this.project = project;
+    public void apply(Project target) {
+        project = target;
 
         //noinspection rawtypes type not needed
-        final Plugin testSetsPlugin = project.getPlugins()
-                                             .findPlugin(TEST_SETS_PLUGIN_NAME);
+        final Plugin testSetsPlugin = target.getPlugins()
+                .findPlugin(TEST_SETS_PLUGIN_NAME);
         if (testSetsPlugin == null) {
             throw new GradleException("apply plugin '" + TEST_SETS_PLUGIN_NAME + "' before this plugin ('" + SIMPLY_CD_PLUGIN_NAME + "')");
         }
 
         //noinspection TypeMayBeWeakened
-        final DefaultTestSetContainer testSetsConfig = (DefaultTestSetContainer) project.getExtensions()
-                                                                                        .findByName("testSets");
+        final DefaultTestSetContainer testSetsConfig = (DefaultTestSetContainer) target.getExtensions()
+                .findByName("testSets");
         final Set<TestSet> testGroups = ImmutableSet.copyOf(testSetsConfig);
         testGroups.forEach(tg -> addTaskSet(tg.getTestTaskName()));
 
@@ -47,28 +49,30 @@ public class SimplyCDPlugin implements Plugin<Project> {
     /**
      * Adds tasks for jacoco quality gate, and the jacoco test report needed to provide the input to it.
      *
-     * @param testGroupName for example, 'integrationTest
+     * @param testGroupName for example, 'integrationTest'
      */
     @SuppressWarnings({"StringConcatenationMissingWhitespace", "HardcodedFileSeparator", "DuplicateStringLiteralInspection"})
     private void addTaskSet(String testGroupName) {
         final Test testTask = (Test) project.getTasks()
-                                            .findByName(testGroupName);
+                .findByName(testGroupName);
         final QualityGateTask qualityGateTask = project.getTasks()
-                                                       .create(testGroupName + "QualityGate", QualityGateTask.class);
+                .create(testGroupName + "QualityGate", QualityGateTask.class);
         qualityGateTask.setTestGroup(testGroupName);
         final String reportName = testGroupName + "Report";
         final JacocoReport testReportTask = project.getTasks()
-                                                   .create(reportName, JacocoReport.class);
+                .create(reportName, JacocoReport.class);
         testReportTask.executionData(testTask);
 
         final String javaSourcePath = "src/main/java";
-        testReportTask.setSourceDirectories(project.files(new File(project.getProjectDir(), javaSourcePath)));
+        final ConfigurableFileCollection sourceFiles = project.files(new File(project.getProjectDir(), javaSourcePath));
+        testReportTask.setSourceDirectories(sourceFiles);
 
         final String classesPath = "classes/main";
-        testReportTask.setClassDirectories(project.files(new File(project.getBuildDir(), classesPath)));
+        final ConfigurableFileCollection classFiles = project.files(new File(project.getBuildDir(), classesPath));
+        testReportTask.setClassDirectories(classFiles);
         testReportTask.getReports()
-                      .getXml()
-                      .setEnabled(true);
+                .getXml()
+                .setEnabled(true);
 
         testReportTask.dependsOn(testTask);
         qualityGateTask.dependsOn(testReportTask);
