@@ -2,5 +2,5 @@
 .classpath
 .idea
 .project
-build
+build/*
 out

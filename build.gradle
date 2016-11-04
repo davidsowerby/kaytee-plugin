@@ -8,7 +8,7 @@ plugins {
 
 
 group 'uk.q3c.simplycd'
-version '0.1.2'
+version '0.1.2.2'
 
 sourceCompatibility = 1.8
 
@@ -25,7 +25,7 @@ dependencies {
     compile gradleApi()
 
     compile 'com.google.code.findbugs:annotations:3.0.0'
-    compile 'org.codehaus.groovy:groovy-all:2.4.4'
+//    compile 'org.codehaus.groovy:groovy-all:2.4.4'
     compile 'com.google.guava:guava:19.0'
     compile 'org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0'
 
@@ -34,9 +34,11 @@ dependencies {
         exclude module: "groovy-all"
     }
     testCompile 'cglib:cglib-nodep:3.2.0' // needed for Spock mocking
+    testCompile 'org.objenesis:objenesis:2.2' // needed for Spock mocking
 
     testCompile('uk.q3c:q3c-testUtil:0.8.2') {
         exclude module: "logback-classic"
+        exclude module: "groovy-all"
     }
     testCompile 'uk.q3c.build:gitplus:0.14.1.42'
     testCompile gradleTestKit()

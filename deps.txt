@@ -1,4 +1,3 @@
-Starting a new Gradle Daemon for this build (subsequent builds will be faster).
 :dependencies
 
 ------------------------------------------------------------
@@ -10,140 +9,455 @@ No dependencies
 
 compile - Dependencies for source set 'main'.
 +--- com.google.code.findbugs:annotations:3.0.0
-+--- org.codehaus.groovy:groovy-all:2.4.4
 +--- com.google.guava:guava:19.0
 \--- org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0
 
 compileClasspath - Compile classpath for source set 'main'.
 +--- com.google.code.findbugs:annotations:3.0.0
-+--- org.codehaus.groovy:groovy-all:2.4.4
 +--- com.google.guava:guava:19.0
 \--- org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0
 
 compileOnly - Compile dependencies for source set 'main'.
 +--- com.google.code.findbugs:annotations:3.0.0
-+--- org.codehaus.groovy:groovy-all:2.4.4
 +--- com.google.guava:guava:19.0
 \--- org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0
 
 default - Configuration for default artifacts.
 +--- com.google.code.findbugs:annotations:3.0.0
-+--- org.codehaus.groovy:groovy-all:2.4.4
 +--- com.google.guava:guava:19.0
 \--- org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0
 
 runtime - Runtime dependencies for source set 'main'.
 +--- com.google.code.findbugs:annotations:3.0.0
-+--- org.codehaus.groovy:groovy-all:2.4.4
 +--- com.google.guava:guava:19.0
 \--- org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0
 
 testCompile - Dependencies for source set 'test'.
 +--- com.google.code.findbugs:annotations:3.0.0
-+--- org.codehaus.groovy:groovy-all:2.4.4
 +--- com.google.guava:guava:19.0
 +--- org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0
 +--- org.spockframework:spock-core:1.0-groovy-2.4
-|    +--- junit:junit:4.12
-|    |    \--- org.hamcrest:hamcrest-core:1.3
-|    \--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
+|    \--- junit:junit:4.12
+|         \--- org.hamcrest:hamcrest-core:1.3
 +--- cglib:cglib-nodep:3.2.0
-+--- org.objenesis:objenesis:2.2
-+--- org.spockframework:spock-guice:1.0-groovy-2.4
-|    +--- org.spockframework:spock-core:1.0-groovy-2.4 (*)
-|    \--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
-\--- uk.q3c:q3c-testUtil:0.8.2
-     +--- org.slf4j:slf4j-api:1.7.6
-     +--- ch.qos.logback:logback-classic:1.1.2
-     |    +--- ch.qos.logback:logback-core:1.1.2
-     |    \--- org.slf4j:slf4j-api:1.7.6
-     +--- ch.qos.logback:logback-core:1.1.2
-     +--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
++--- uk.q3c:q3c-testUtil:0.8.2
+|    +--- org.slf4j:slf4j-api:1.7.6
+|    +--- ch.qos.logback:logback-core:1.1.2
+|    +--- org.codehaus.groovy:groovy-all:2.4.1
+|    +--- com.google.guava:guava:19.0
+|    +--- org.apache.commons:commons-lang3:3.3.2 -> 3.4
+|    +--- commons-io:commons-io:2.4
+|    \--- com.google.code.findbugs:annotations:3.0.0
+\--- uk.q3c.build:gitplus:0.14.1.42
+     +--- org.eclipse.jgit:org.eclipse.jgit:3.6.0.201412230720-r
+     |    +--- com.jcraft:jsch:0.1.50
+     |    +--- com.googlecode.javaewah:JavaEWAH:0.7.9
+     |    \--- org.apache.httpcomponents:httpclient:4.1.3 -> 4.5.1
+     |         +--- org.apache.httpcomponents:httpcore:4.4.3 -> 4.4.4
+     |         +--- commons-logging:commons-logging:1.2
+     |         \--- commons-codec:commons-codec:1.9
+     +--- com.jcabi:jcabi-github:0.27
+     |    +--- com.jcabi:jcabi-aspects:0.22 -> 0.22.2
+     |    |    +--- com.jcabi:jcabi-log:0.15 -> 0.17
+     |    |    |    +--- org.slf4j:slf4j-api:1.7.5 -> 1.7.6
+     |    |    |    \--- com.jcabi:jcabi-aspects:0.22 -> 0.22.2 (*)
+     |    |    +--- org.aspectj:aspectjrt:1.8.4 -> 1.8.7
+     |    |    \--- javax.validation:validation-api:1.1.0.Final
+     |    +--- com.jcabi:jcabi-immutable:1.4
+     |    |    \--- com.jcabi:jcabi-aspects:0.20.1 -> 0.22.2 (*)
+     |    +--- com.jcabi:jcabi-xml:0.17.2
+     |    |    +--- com.jcabi:jcabi-log:0.17 (*)
+     |    |    +--- com.jcabi:jcabi-immutable:1.4 (*)
+     |    |    \--- commons-io:commons-io:2.4
+     |    +--- com.jcabi:jcabi-http:1.14.2
+     |    |    +--- com.jcabi:jcabi-immutable:1.4 (*)
+     |    |    +--- com.jcabi:jcabi-aspects:0.22.2 (*)
+     |    |    +--- com.jcabi:jcabi-log:0.17 (*)
+     |    |    \--- com.jcabi:jcabi-manifests:1.1
+     |    |         \--- com.jcabi:jcabi-log:0.14 -> 0.17 (*)
+     |    +--- com.jcabi.incubator:xembly:0.22
+     |    |    \--- org.antlr:antlr-runtime:3.5.2
+     |    +--- com.jcabi:jcabi-manifests:1.1 (*)
+     |    +--- com.jcabi:jcabi-log:0.17 (*)
+     |    +--- commons-io:commons-io:2.4
+     |    +--- org.apache.commons:commons-lang3:3.4
+     |    +--- org.hamcrest:hamcrest-library:1.3
+     |    |    \--- org.hamcrest:hamcrest-core:1.3
+     |    +--- org.hamcrest:hamcrest-core:1.3
+     |    +--- com.google.guava:guava:19.0-rc2 -> 19.0
+     |    +--- org.aspectj:aspectjrt:1.8.7
+     |    +--- org.glassfish:javax.json:1.0.4
+     |    +--- com.sun.jersey:jersey-client:1.18.1
+     |    |    \--- com.sun.jersey:jersey-core:1.18.1
+     |    +--- com.sun.jersey:jersey-core:1.18.1
+     |    +--- org.apache.httpcomponents:httpcore:4.4.4
+     |    \--- org.apache.httpcomponents:httpclient:4.5.1 (*)
+     +--- com.github.salomonbrys.kodein:kodein:3.0.0
+     |    \--- org.jetbrains.kotlin:kotlin-stdlib:1.0.3 -> 1.0.4
+     |         \--- org.jetbrains.kotlin:kotlin-runtime:1.0.4
+     +--- org.jetbrains.kotlin:kotlin-stdlib:1.0.4 (*)
+     +--- org.jetbrains.kotlin:kotlin-reflect:1.0.4
+     |    \--- org.jetbrains.kotlin:kotlin-stdlib:1.0.4 (*)
+     +--- org.slf4j:slf4j-api:1.7.5 -> 1.7.6
+     +--- org.apache.velocity:velocity:1.7
+     |    +--- commons-collections:commons-collections:3.2.1
+     |    \--- commons-lang:commons-lang:2.4
+     +--- org.apache.velocity:velocity-tools:2.0
+     |    +--- commons-beanutils:commons-beanutils:1.7.0
+     |    |    \--- commons-logging:commons-logging:1.0.3 -> 1.2
+     |    +--- commons-digester:commons-digester:1.8
+     |    |    +--- commons-beanutils:commons-beanutils:1.7.0 (*)
+     |    |    \--- commons-logging:commons-logging:1.1 -> 1.2
+     |    +--- commons-chain:commons-chain:1.1
+     |    |    +--- commons-beanutils:commons-beanutils:1.7.0 (*)
+     |    |    +--- commons-digester:commons-digester:1.6 -> 1.8 (*)
+     |    |    \--- commons-logging:commons-logging:1.0.3 -> 1.2
+     |    +--- commons-collections:commons-collections:3.2 -> 3.2.1
+     |    +--- commons-logging:commons-logging:1.1 -> 1.2
+     |    +--- commons-validator:commons-validator:1.3.1
+     |    |    +--- commons-beanutils:commons-beanutils:1.7.0 (*)
+     |    |    +--- commons-digester:commons-digester:1.6 -> 1.8 (*)
+     |    |    \--- commons-logging:commons-logging:1.0.4 -> 1.2
+     |    +--- dom4j:dom4j:1.1
+     |    +--- oro:oro:2.0.8
+     |    +--- sslext:sslext:1.2-0
+     |    +--- org.apache.struts:struts-core:1.3.8
+     |    |    +--- antlr:antlr:2.7.2
+     |    |    +--- commons-beanutils:commons-beanutils:1.7.0 (*)
+     |    |    +--- commons-chain:commons-chain:1.1 (*)
+     |    |    +--- commons-digester:commons-digester:1.8 (*)
+     |    |    +--- commons-logging:commons-logging:1.0.4 -> 1.2
+     |    |    +--- commons-validator:commons-validator:1.3.1 (*)
+     |    |    \--- oro:oro:2.0.8
+     |    +--- org.apache.struts:struts-taglib:1.3.8
+     |    |    \--- org.apache.struts:struts-core:1.3.8 (*)
+     |    +--- org.apache.struts:struts-tiles:1.3.8
+     |    |    \--- org.apache.struts:struts-core:1.3.8 (*)
+     |    \--- org.apache.velocity:velocity:1.6.2 -> 1.7 (*)
      +--- com.google.guava:guava:19.0
-     +--- org.apache.commons:commons-lang3:3.3.2
-     +--- commons-io:commons-io:2.4
+     +--- org.apache.commons:commons-lang3:3.3.2 -> 3.4
      \--- com.google.code.findbugs:annotations:3.0.0
 
 testCompileClasspath - Compile classpath for source set 'test'.
 +--- com.google.code.findbugs:annotations:3.0.0
-+--- org.codehaus.groovy:groovy-all:2.4.4
 +--- com.google.guava:guava:19.0
 +--- org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0
 +--- org.spockframework:spock-core:1.0-groovy-2.4
-|    +--- junit:junit:4.12
-|    |    \--- org.hamcrest:hamcrest-core:1.3
-|    \--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
+|    \--- junit:junit:4.12
+|         \--- org.hamcrest:hamcrest-core:1.3
 +--- cglib:cglib-nodep:3.2.0
-+--- org.objenesis:objenesis:2.2
-+--- org.spockframework:spock-guice:1.0-groovy-2.4
-|    +--- org.spockframework:spock-core:1.0-groovy-2.4 (*)
-|    \--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
-\--- uk.q3c:q3c-testUtil:0.8.2
-     +--- org.slf4j:slf4j-api:1.7.6
-     +--- ch.qos.logback:logback-classic:1.1.2
-     |    +--- ch.qos.logback:logback-core:1.1.2
-     |    \--- org.slf4j:slf4j-api:1.7.6
-     +--- ch.qos.logback:logback-core:1.1.2
-     +--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
++--- uk.q3c:q3c-testUtil:0.8.2
+|    +--- org.slf4j:slf4j-api:1.7.6
+|    +--- ch.qos.logback:logback-core:1.1.2
+|    +--- org.codehaus.groovy:groovy-all:2.4.1
+|    +--- com.google.guava:guava:19.0
+|    +--- org.apache.commons:commons-lang3:3.3.2 -> 3.4
+|    +--- commons-io:commons-io:2.4
+|    \--- com.google.code.findbugs:annotations:3.0.0
+\--- uk.q3c.build:gitplus:0.14.1.42
+     +--- org.eclipse.jgit:org.eclipse.jgit:3.6.0.201412230720-r
+     |    +--- com.jcraft:jsch:0.1.50
+     |    +--- com.googlecode.javaewah:JavaEWAH:0.7.9
+     |    \--- org.apache.httpcomponents:httpclient:4.1.3 -> 4.5.1
+     |         +--- org.apache.httpcomponents:httpcore:4.4.3 -> 4.4.4
+     |         +--- commons-logging:commons-logging:1.2
+     |         \--- commons-codec:commons-codec:1.9
+     +--- com.jcabi:jcabi-github:0.27
+     |    +--- com.jcabi:jcabi-aspects:0.22 -> 0.22.2
+     |    |    +--- com.jcabi:jcabi-log:0.15 -> 0.17
+     |    |    |    +--- org.slf4j:slf4j-api:1.7.5 -> 1.7.6
+     |    |    |    \--- com.jcabi:jcabi-aspects:0.22 -> 0.22.2 (*)
+     |    |    +--- org.aspectj:aspectjrt:1.8.4 -> 1.8.7
+     |    |    \--- javax.validation:validation-api:1.1.0.Final
+     |    +--- com.jcabi:jcabi-immutable:1.4
+     |    |    \--- com.jcabi:jcabi-aspects:0.20.1 -> 0.22.2 (*)
+     |    +--- com.jcabi:jcabi-xml:0.17.2
+     |    |    +--- com.jcabi:jcabi-log:0.17 (*)
+     |    |    +--- com.jcabi:jcabi-immutable:1.4 (*)
+     |    |    \--- commons-io:commons-io:2.4
+     |    +--- com.jcabi:jcabi-http:1.14.2
+     |    |    +--- com.jcabi:jcabi-immutable:1.4 (*)
+     |    |    +--- com.jcabi:jcabi-aspects:0.22.2 (*)
+     |    |    +--- com.jcabi:jcabi-log:0.17 (*)
+     |    |    \--- com.jcabi:jcabi-manifests:1.1
+     |    |         \--- com.jcabi:jcabi-log:0.14 -> 0.17 (*)
+     |    +--- com.jcabi.incubator:xembly:0.22
+     |    |    \--- org.antlr:antlr-runtime:3.5.2
+     |    +--- com.jcabi:jcabi-manifests:1.1 (*)
+     |    +--- com.jcabi:jcabi-log:0.17 (*)
+     |    +--- commons-io:commons-io:2.4
+     |    +--- org.apache.commons:commons-lang3:3.4
+     |    +--- org.hamcrest:hamcrest-library:1.3
+     |    |    \--- org.hamcrest:hamcrest-core:1.3
+     |    +--- org.hamcrest:hamcrest-core:1.3
+     |    +--- com.google.guava:guava:19.0-rc2 -> 19.0
+     |    +--- org.aspectj:aspectjrt:1.8.7
+     |    +--- org.glassfish:javax.json:1.0.4
+     |    +--- com.sun.jersey:jersey-client:1.18.1
+     |    |    \--- com.sun.jersey:jersey-core:1.18.1
+     |    +--- com.sun.jersey:jersey-core:1.18.1
+     |    +--- org.apache.httpcomponents:httpcore:4.4.4
+     |    \--- org.apache.httpcomponents:httpclient:4.5.1 (*)
+     +--- com.github.salomonbrys.kodein:kodein:3.0.0
+     |    \--- org.jetbrains.kotlin:kotlin-stdlib:1.0.3 -> 1.0.4
+     |         \--- org.jetbrains.kotlin:kotlin-runtime:1.0.4
+     +--- org.jetbrains.kotlin:kotlin-stdlib:1.0.4 (*)
+     +--- org.jetbrains.kotlin:kotlin-reflect:1.0.4
+     |    \--- org.jetbrains.kotlin:kotlin-stdlib:1.0.4 (*)
+     +--- org.slf4j:slf4j-api:1.7.5 -> 1.7.6
+     +--- org.apache.velocity:velocity:1.7
+     |    +--- commons-collections:commons-collections:3.2.1
+     |    \--- commons-lang:commons-lang:2.4
+     +--- org.apache.velocity:velocity-tools:2.0
+     |    +--- commons-beanutils:commons-beanutils:1.7.0
+     |    |    \--- commons-logging:commons-logging:1.0.3 -> 1.2
+     |    +--- commons-digester:commons-digester:1.8
+     |    |    +--- commons-beanutils:commons-beanutils:1.7.0 (*)
+     |    |    \--- commons-logging:commons-logging:1.1 -> 1.2
+     |    +--- commons-chain:commons-chain:1.1
+     |    |    +--- commons-beanutils:commons-beanutils:1.7.0 (*)
+     |    |    +--- commons-digester:commons-digester:1.6 -> 1.8 (*)
+     |    |    \--- commons-logging:commons-logging:1.0.3 -> 1.2
+     |    +--- commons-collections:commons-collections:3.2 -> 3.2.1
+     |    +--- commons-logging:commons-logging:1.1 -> 1.2
+     |    +--- commons-validator:commons-validator:1.3.1
+     |    |    +--- commons-beanutils:commons-beanutils:1.7.0 (*)
+     |    |    +--- commons-digester:commons-digester:1.6 -> 1.8 (*)
+     |    |    \--- commons-logging:commons-logging:1.0.4 -> 1.2
+     |    +--- dom4j:dom4j:1.1
+     |    +--- oro:oro:2.0.8
+     |    +--- sslext:sslext:1.2-0
+     |    +--- org.apache.struts:struts-core:1.3.8
+     |    |    +--- antlr:antlr:2.7.2
+     |    |    +--- commons-beanutils:commons-beanutils:1.7.0 (*)
+     |    |    +--- commons-chain:commons-chain:1.1 (*)
+     |    |    +--- commons-digester:commons-digester:1.8 (*)
+     |    |    +--- commons-logging:commons-logging:1.0.4 -> 1.2
+     |    |    +--- commons-validator:commons-validator:1.3.1 (*)
+     |    |    \--- oro:oro:2.0.8
+     |    +--- org.apache.struts:struts-taglib:1.3.8
+     |    |    \--- org.apache.struts:struts-core:1.3.8 (*)
+     |    +--- org.apache.struts:struts-tiles:1.3.8
+     |    |    \--- org.apache.struts:struts-core:1.3.8 (*)
+     |    \--- org.apache.velocity:velocity:1.6.2 -> 1.7 (*)
      +--- com.google.guava:guava:19.0
-     +--- org.apache.commons:commons-lang3:3.3.2
-     +--- commons-io:commons-io:2.4
+     +--- org.apache.commons:commons-lang3:3.3.2 -> 3.4
      \--- com.google.code.findbugs:annotations:3.0.0
 
 testCompileOnly - Compile dependencies for source set 'test'.
 +--- com.google.code.findbugs:annotations:3.0.0
-+--- org.codehaus.groovy:groovy-all:2.4.4
 +--- com.google.guava:guava:19.0
 +--- org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0
 +--- org.spockframework:spock-core:1.0-groovy-2.4
-|    +--- junit:junit:4.12
-|    |    \--- org.hamcrest:hamcrest-core:1.3
-|    \--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
+|    \--- junit:junit:4.12
+|         \--- org.hamcrest:hamcrest-core:1.3
 +--- cglib:cglib-nodep:3.2.0
-+--- org.objenesis:objenesis:2.2
-+--- org.spockframework:spock-guice:1.0-groovy-2.4
-|    +--- org.spockframework:spock-core:1.0-groovy-2.4 (*)
-|    \--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
-\--- uk.q3c:q3c-testUtil:0.8.2
-     +--- org.slf4j:slf4j-api:1.7.6
-     +--- ch.qos.logback:logback-classic:1.1.2
-     |    +--- ch.qos.logback:logback-core:1.1.2
-     |    \--- org.slf4j:slf4j-api:1.7.6
-     +--- ch.qos.logback:logback-core:1.1.2
-     +--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
++--- uk.q3c:q3c-testUtil:0.8.2
+|    +--- org.slf4j:slf4j-api:1.7.6
+|    +--- ch.qos.logback:logback-core:1.1.2
+|    +--- org.codehaus.groovy:groovy-all:2.4.1
+|    +--- com.google.guava:guava:19.0
+|    +--- org.apache.commons:commons-lang3:3.3.2 -> 3.4
+|    +--- commons-io:commons-io:2.4
+|    \--- com.google.code.findbugs:annotations:3.0.0
+\--- uk.q3c.build:gitplus:0.14.1.42
+     +--- org.eclipse.jgit:org.eclipse.jgit:3.6.0.201412230720-r
+     |    +--- com.jcraft:jsch:0.1.50
+     |    +--- com.googlecode.javaewah:JavaEWAH:0.7.9
+     |    \--- org.apache.httpcomponents:httpclient:4.1.3 -> 4.5.1
+     |         +--- org.apache.httpcomponents:httpcore:4.4.3 -> 4.4.4
+     |         +--- commons-logging:commons-logging:1.2
+     |         \--- commons-codec:commons-codec:1.9
+     +--- com.jcabi:jcabi-github:0.27
+     |    +--- com.jcabi:jcabi-aspects:0.22 -> 0.22.2
+     |    |    +--- com.jcabi:jcabi-log:0.15 -> 0.17
+     |    |    |    +--- org.slf4j:slf4j-api:1.7.5 -> 1.7.6
+     |    |    |    \--- com.jcabi:jcabi-aspects:0.22 -> 0.22.2 (*)
+     |    |    +--- org.aspectj:aspectjrt:1.8.4 -> 1.8.7
+     |    |    \--- javax.validation:validation-api:1.1.0.Final
+     |    +--- com.jcabi:jcabi-immutable:1.4
+     |    |    \--- com.jcabi:jcabi-aspects:0.20.1 -> 0.22.2 (*)
+     |    +--- com.jcabi:jcabi-xml:0.17.2
+     |    |    +--- com.jcabi:jcabi-log:0.17 (*)
+     |    |    +--- com.jcabi:jcabi-immutable:1.4 (*)
+     |    |    \--- commons-io:commons-io:2.4
+     |    +--- com.jcabi:jcabi-http:1.14.2
+     |    |    +--- com.jcabi:jcabi-immutable:1.4 (*)
+     |    |    +--- com.jcabi:jcabi-aspects:0.22.2 (*)
+     |    |    +--- com.jcabi:jcabi-log:0.17 (*)
+     |    |    \--- com.jcabi:jcabi-manifests:1.1
+     |    |         \--- com.jcabi:jcabi-log:0.14 -> 0.17 (*)
+     |    +--- com.jcabi.incubator:xembly:0.22
+     |    |    \--- org.antlr:antlr-runtime:3.5.2
+     |    +--- com.jcabi:jcabi-manifests:1.1 (*)
+     |    +--- com.jcabi:jcabi-log:0.17 (*)
+     |    +--- commons-io:commons-io:2.4
+     |    +--- org.apache.commons:commons-lang3:3.4
+     |    +--- org.hamcrest:hamcrest-library:1.3
+     |    |    \--- org.hamcrest:hamcrest-core:1.3
+     |    +--- org.hamcrest:hamcrest-core:1.3
+     |    +--- com.google.guava:guava:19.0-rc2 -> 19.0
+     |    +--- org.aspectj:aspectjrt:1.8.7
+     |    +--- org.glassfish:javax.json:1.0.4
+     |    +--- com.sun.jersey:jersey-client:1.18.1
+     |    |    \--- com.sun.jersey:jersey-core:1.18.1
+     |    +--- com.sun.jersey:jersey-core:1.18.1
+     |    +--- org.apache.httpcomponents:httpcore:4.4.4
+     |    \--- org.apache.httpcomponents:httpclient:4.5.1 (*)
+     +--- com.github.salomonbrys.kodein:kodein:3.0.0
+     |    \--- org.jetbrains.kotlin:kotlin-stdlib:1.0.3 -> 1.0.4
+     |         \--- org.jetbrains.kotlin:kotlin-runtime:1.0.4
+     +--- org.jetbrains.kotlin:kotlin-stdlib:1.0.4 (*)
+     +--- org.jetbrains.kotlin:kotlin-reflect:1.0.4
+     |    \--- org.jetbrains.kotlin:kotlin-stdlib:1.0.4 (*)
+     +--- org.slf4j:slf4j-api:1.7.5 -> 1.7.6
+     +--- org.apache.velocity:velocity:1.7
+     |    +--- commons-collections:commons-collections:3.2.1
+     |    \--- commons-lang:commons-lang:2.4
+     +--- org.apache.velocity:velocity-tools:2.0
+     |    +--- commons-beanutils:commons-beanutils:1.7.0
+     |    |    \--- commons-logging:commons-logging:1.0.3 -> 1.2
+     |    +--- commons-digester:commons-digester:1.8
+     |    |    +--- commons-beanutils:commons-beanutils:1.7.0 (*)
+     |    |    \--- commons-logging:commons-logging:1.1 -> 1.2
+     |    +--- commons-chain:commons-chain:1.1
+     |    |    +--- commons-beanutils:commons-beanutils:1.7.0 (*)
+     |    |    +--- commons-digester:commons-digester:1.6 -> 1.8 (*)
+     |    |    \--- commons-logging:commons-logging:1.0.3 -> 1.2
+     |    +--- commons-collections:commons-collections:3.2 -> 3.2.1
+     |    +--- commons-logging:commons-logging:1.1 -> 1.2
+     |    +--- commons-validator:commons-validator:1.3.1
+     |    |    +--- commons-beanutils:commons-beanutils:1.7.0 (*)
+     |    |    +--- commons-digester:commons-digester:1.6 -> 1.8 (*)
+     |    |    \--- commons-logging:commons-logging:1.0.4 -> 1.2
+     |    +--- dom4j:dom4j:1.1
+     |    +--- oro:oro:2.0.8
+     |    +--- sslext:sslext:1.2-0
+     |    +--- org.apache.struts:struts-core:1.3.8
+     |    |    +--- antlr:antlr:2.7.2
+     |    |    +--- commons-beanutils:commons-beanutils:1.7.0 (*)
+     |    |    +--- commons-chain:commons-chain:1.1 (*)
+     |    |    +--- commons-digester:commons-digester:1.8 (*)
+     |    |    +--- commons-logging:commons-logging:1.0.4 -> 1.2
+     |    |    +--- commons-validator:commons-validator:1.3.1 (*)
+     |    |    \--- oro:oro:2.0.8
+     |    +--- org.apache.struts:struts-taglib:1.3.8
+     |    |    \--- org.apache.struts:struts-core:1.3.8 (*)
+     |    +--- org.apache.struts:struts-tiles:1.3.8
+     |    |    \--- org.apache.struts:struts-core:1.3.8 (*)
+     |    \--- org.apache.velocity:velocity:1.6.2 -> 1.7 (*)
      +--- com.google.guava:guava:19.0
-     +--- org.apache.commons:commons-lang3:3.3.2
-     +--- commons-io:commons-io:2.4
+     +--- org.apache.commons:commons-lang3:3.3.2 -> 3.4
      \--- com.google.code.findbugs:annotations:3.0.0
 
 testRuntime - Runtime dependencies for source set 'test'.
 +--- com.google.code.findbugs:annotations:3.0.0
-+--- org.codehaus.groovy:groovy-all:2.4.4
 +--- com.google.guava:guava:19.0
 +--- org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0
 +--- org.spockframework:spock-core:1.0-groovy-2.4
-|    +--- junit:junit:4.12
-|    |    \--- org.hamcrest:hamcrest-core:1.3
-|    \--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
+|    \--- junit:junit:4.12
+|         \--- org.hamcrest:hamcrest-core:1.3
 +--- cglib:cglib-nodep:3.2.0
-+--- org.objenesis:objenesis:2.2
-+--- org.spockframework:spock-guice:1.0-groovy-2.4
-|    +--- org.spockframework:spock-core:1.0-groovy-2.4 (*)
-|    \--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
-\--- uk.q3c:q3c-testUtil:0.8.2
-     +--- org.slf4j:slf4j-api:1.7.6
-     +--- ch.qos.logback:logback-classic:1.1.2
-     |    +--- ch.qos.logback:logback-core:1.1.2
-     |    \--- org.slf4j:slf4j-api:1.7.6
-     +--- ch.qos.logback:logback-core:1.1.2
-     +--- org.codehaus.groovy:groovy-all:2.4.1 -> 2.4.4
++--- uk.q3c:q3c-testUtil:0.8.2
+|    +--- org.slf4j:slf4j-api:1.7.6
+|    +--- ch.qos.logback:logback-core:1.1.2
+|    +--- org.codehaus.groovy:groovy-all:2.4.1
+|    +--- com.google.guava:guava:19.0
+|    +--- org.apache.commons:commons-lang3:3.3.2 -> 3.4
+|    +--- commons-io:commons-io:2.4
+|    \--- com.google.code.findbugs:annotations:3.0.0
+\--- uk.q3c.build:gitplus:0.14.1.42
+     +--- org.eclipse.jgit:org.eclipse.jgit:3.6.0.201412230720-r
+     |    +--- com.jcraft:jsch:0.1.50
+     |    +--- com.googlecode.javaewah:JavaEWAH:0.7.9
+     |    \--- org.apache.httpcomponents:httpclient:4.1.3 -> 4.5.1
+     |         +--- org.apache.httpcomponents:httpcore:4.4.3 -> 4.4.4
+     |         +--- commons-logging:commons-logging:1.2
+     |         \--- commons-codec:commons-codec:1.9
+     +--- com.jcabi:jcabi-github:0.27
+     |    +--- com.jcabi:jcabi-aspects:0.22 -> 0.22.2
+     |    |    +--- com.jcabi:jcabi-log:0.15 -> 0.17
+     |    |    |    +--- org.slf4j:slf4j-api:1.7.5 -> 1.7.6
+     |    |    |    \--- com.jcabi:jcabi-aspects:0.22 -> 0.22.2 (*)
+     |    |    +--- org.aspectj:aspectjrt:1.8.4 -> 1.8.7
+     |    |    \--- javax.validation:validation-api:1.1.0.Final
+     |    +--- com.jcabi:jcabi-immutable:1.4
+     |    |    \--- com.jcabi:jcabi-aspects:0.20.1 -> 0.22.2 (*)
+     |    +--- com.jcabi:jcabi-xml:0.17.2
+     |    |    +--- com.jcabi:jcabi-log:0.17 (*)
+     |    |    +--- com.jcabi:jcabi-immutable:1.4 (*)
+     |    |    \--- commons-io:commons-io:2.4
+     |    +--- com.jcabi:jcabi-http:1.14.2
+     |    |    +--- com.jcabi:jcabi-immutable:1.4 (*)
+     |    |    +--- com.jcabi:jcabi-aspects:0.22.2 (*)
+     |    |    +--- com.jcabi:jcabi-log:0.17 (*)
+     |    |    \--- com.jcabi:jcabi-manifests:1.1
+     |    |         \--- com.jcabi:jcabi-log:0.14 -> 0.17 (*)
+     |    +--- com.jcabi.incubator:xembly:0.22
+     |    |    \--- org.antlr:antlr-runtime:3.5.2
+     |    +--- com.jcabi:jcabi-manifests:1.1 (*)
+     |    +--- com.jcabi:jcabi-log:0.17 (*)
+     |    +--- commons-io:commons-io:2.4
+     |    +--- org.apache.commons:commons-lang3:3.4
+     |    +--- org.hamcrest:hamcrest-library:1.3
+     |    |    \--- org.hamcrest:hamcrest-core:1.3
+     |    +--- org.hamcrest:hamcrest-core:1.3
+     |    +--- com.google.guava:guava:19.0-rc2 -> 19.0
+     |    +--- org.aspectj:aspectjrt:1.8.7
+     |    +--- org.glassfish:javax.json:1.0.4
+     |    +--- com.sun.jersey:jersey-client:1.18.1
+     |    |    \--- com.sun.jersey:jersey-core:1.18.1
+     |    +--- com.sun.jersey:jersey-core:1.18.1
+     |    +--- org.apache.httpcomponents:httpcore:4.4.4
+     |    \--- org.apache.httpcomponents:httpclient:4.5.1 (*)
+     +--- com.github.salomonbrys.kodein:kodein:3.0.0
+     |    \--- org.jetbrains.kotlin:kotlin-stdlib:1.0.3 -> 1.0.4
+     |         \--- org.jetbrains.kotlin:kotlin-runtime:1.0.4
+     +--- org.jetbrains.kotlin:kotlin-stdlib:1.0.4 (*)
+     +--- org.jetbrains.kotlin:kotlin-reflect:1.0.4
+     |    \--- org.jetbrains.kotlin:kotlin-stdlib:1.0.4 (*)
+     +--- org.slf4j:slf4j-api:1.7.5 -> 1.7.6
+     +--- org.apache.velocity:velocity:1.7
+     |    +--- commons-collections:commons-collections:3.2.1
+     |    \--- commons-lang:commons-lang:2.4
+     +--- org.apache.velocity:velocity-tools:2.0
+     |    +--- commons-beanutils:commons-beanutils:1.7.0
+     |    |    \--- commons-logging:commons-logging:1.0.3 -> 1.2
+     |    +--- commons-digester:commons-digester:1.8
+     |    |    +--- commons-beanutils:commons-beanutils:1.7.0 (*)
+     |    |    \--- commons-logging:commons-logging:1.1 -> 1.2
+     |    +--- commons-chain:commons-chain:1.1
+     |    |    +--- commons-beanutils:commons-beanutils:1.7.0 (*)
+     |    |    +--- commons-digester:commons-digester:1.6 -> 1.8 (*)
+     |    |    \--- commons-logging:commons-logging:1.0.3 -> 1.2
+     |    +--- commons-collections:commons-collections:3.2 -> 3.2.1
+     |    +--- commons-logging:commons-logging:1.1 -> 1.2
+     |    +--- commons-validator:commons-validator:1.3.1
+     |    |    +--- commons-beanutils:commons-beanutils:1.7.0 (*)
+     |    |    +--- commons-digester:commons-digester:1.6 -> 1.8 (*)
+     |    |    \--- commons-logging:commons-logging:1.0.4 -> 1.2
+     |    +--- dom4j:dom4j:1.1
+     |    +--- oro:oro:2.0.8
+     |    +--- sslext:sslext:1.2-0
+     |    +--- org.apache.struts:struts-core:1.3.8
+     |    |    +--- antlr:antlr:2.7.2
+     |    |    +--- commons-beanutils:commons-beanutils:1.7.0 (*)
+     |    |    +--- commons-chain:commons-chain:1.1 (*)
+     |    |    +--- commons-digester:commons-digester:1.8 (*)
+     |    |    +--- commons-logging:commons-logging:1.0.4 -> 1.2
+     |    |    +--- commons-validator:commons-validator:1.3.1 (*)
+     |    |    \--- oro:oro:2.0.8
+     |    +--- org.apache.struts:struts-taglib:1.3.8
+     |    |    \--- org.apache.struts:struts-core:1.3.8 (*)
+     |    +--- org.apache.struts:struts-tiles:1.3.8
+     |    |    \--- org.apache.struts:struts-core:1.3.8 (*)
+     |    \--- org.apache.velocity:velocity:1.6.2 -> 1.7 (*)
      +--- com.google.guava:guava:19.0
-     +--- org.apache.commons:commons-lang3:3.3.2
-     +--- commons-io:commons-io:2.4
+     +--- org.apache.commons:commons-lang3:3.3.2 -> 3.4
      \--- com.google.code.findbugs:annotations:3.0.0
 
 (*) - dependencies omitted (listed previously)
 
 BUILD SUCCESSFUL
 
-Total time: 5.068 secs
+Total time: 1.157 secs
