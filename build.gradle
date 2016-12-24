@@ -8,7 +8,7 @@ plugins {
 
 
 group 'uk.q3c.simplycd'
-version '0.1.2.2'
+version '0.1.5.5'
 
 sourceCompatibility = 1.8
 
@@ -21,6 +21,10 @@ repositories {
 
 dependencies {
 
+    //Git
+    compile 'uk.q3c.build:gitplus:0.18.4.67'
+    compile 'uk.q3c.build:changelog:0.3.1.12'
+
     // Gradle
     compile gradleApi()
 
@@ -30,6 +34,9 @@ dependencies {
     compile 'org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0'
 
     // Testing
+    //project builder
+    testCompile 'uk.q3c.build:projectadmin:0.7.0.4'
+
     testCompile('org.spockframework:spock-core:1.0-groovy-2.4') {
         exclude module: "groovy-all"
     }

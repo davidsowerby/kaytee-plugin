@@ -1,14 +1,12 @@
 package uk.q3c.simplycd.lifecycle
 
+import com.google.common.base.Splitter
+import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
-import org.gradle.testkit.runner.UnexpectedBuildFailure
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
-import uk.q3c.build.gitplus.creator.gradle.ElementFactory
-import uk.q3c.build.gitplus.creator.gradle.GradleFile
-import uk.q3c.build.gitplus.creator.gradle.GradleFileContent
-
+import uk.q3c.build.creator.gradle.GradleGroovyBuilder
 /**
  * Created by David Sowerby on 23 Aug 2016
  */
@@ -19,74 +17,88 @@ class SimplyCDPluginTest2 extends Specification {
     File buildFile
     File projectDir
     File buildDir
-    GradleFile gradleFile
-    GradleFileContent gradleFileContent
-    final String versionUnderTest = '0.1.2.2'
+    GradleGroovyBuilder gradleFile
+    final String versionUnderTest = '0.1.5.5'
+    String output
+    BuildResult result
+    Map<String, String> outputLines
 
 
     def setup() {
         projectDir = tempFolder.getRoot()
-        gradleFile = ElementFactory.INSTANCE.gradleFile(projectDir)
-        gradleFileContent = gradleFile.getContent()
+        gradleFile = new GradleGroovyBuilder()
         buildDir = new File(projectDir, "build")
         buildFile = tempFolder.newFile('build.gradle')
+        gradleFile.outputDir = projectDir
+
         buildscript()
     }
 
-    def "testSets not applied first, throw exception"() {
+    def "apply with no configuration changes"() {
         given:
         applyThisPlugin()
-        gradleFileContent.writeToFile(buildFile)
+        gradleFile.execute()
 
         when:
-        GradleRunner.create()
+        decodeResult(GradleRunner.create()
                 .withProjectDir(projectDir)
-                .build()
+                .withArguments('properties')
+                .build())
 
 
         then:
-        UnexpectedBuildFailure ex = thrown()
-        ex.getMessage().contains("apply plugin 'org.unbroken-dome.test-sets' before this plugin ('uk.q3c.simplycd')")
+        confirmPluginsContains('JavaPlugin', 'GroovyPlugin', 'MavenPlugin', 'MavenPublishPlugin', 'SimplyCDPlugin', 'BintrayPlugin')
+        //gradle changes camel case to open case - 'integrationTest' becomes 'integration test
+        confirmSourceSetsContains('test', 'main', 'integration test', 'smoke test', 'acceptance test', 'functional test')
     }
 
 
-    def "testSets applied, quality gate and report tasks added with dependencies"() {
-        expect: false
-
+    void decodeResult(BuildResult buildResult) {
+        result = buildResult
+        output = result.output
+        outputLines = new TreeMap<>()
+        List<String> outputList = Splitter.on('\n').omitEmptyStrings().splitToList(output)
+        for (String s : outputList) {
+            if (s.contains(':')) {
+                String[] r = s.split(":")
+                outputLines.put(r[0], r[1])
+            }
+        }
     }
 
-    def "default test set only, quality gate and report tasks added with dependencies"() {
-        given:
-        applyTestSetPlugin()
-        applyThisPlugin()
-        gradleFileContent.writeToFile(buildFile)
-
-        when:
-        GradleRunner.create()
-                .withProjectDir(projectDir)
-                .build()
-
-        then:
-        noExceptionThrown()
+    def confirmPluginsContains(String... s) {
+        return elementSetContains("plugins", s)
     }
+
+    def confirmSourceSetsContains(String... s) {
+        return elementSetContains("sourceSets", s)
+    }
+
+    def elementSetContains(String elementSetName, String... s) {
+        String elements = outputLines.get(elementSetName)
+        if (elements == null) {
+            return false
+        }
+        for (String st : s) {
+            if (!elements.contains(st)) {
+                return false
+            }
+        }
+        return true
+    }
+
 
     private void buildscript() {
-        gradleFileContent.buildscript().repositories().mavenLocal().jcenter().end().dependencies().dependencies('classpath', 'uk.q3c.simplycd:simplycd-lifecycle:' + versionUnderTest)
+        gradleFile.buildscript().repositories().mavenLocal().jcenter()
+        gradleFile.buildscript().dependencies().dependencies('classpath', 'uk.q3c.simplycd:simplycd-lifecycle:' + versionUnderTest)
+        gradleFile.buildscript().dependencies().dependencies('classpath', 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3')
     }
 
     private void applyThisPlugin() {
-        gradleFileContent.apply('uk.q3c.simplycd')
+        gradleFile.applyPlugin('uk.q3c.simplycd')
     }
 
-    private void helloWorldTask() {
-//        gradleFileContent.task("'helloWorld'").lines('doLast {', "println 'Hello world!'", "}")
-        gradleFileContent.lines(" task ('helloWorld') << ", "{", "println 'helloWorld'", "}")
-    }
 
-    private void applyTestSetPlugin() {
-        gradleFileContent.plugins("org.unbroken-dome.test-sets")
-        gradleFileContent.repositories().jcenter()
 
-    }
 
 }

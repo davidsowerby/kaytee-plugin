@@ -1,7 +1,6 @@
 package uk.q3c.simplycd.lifecycle
 
 import com.google.common.collect.ImmutableSet
-import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.ConfigurableFileCollection
@@ -18,7 +17,6 @@ import org.junit.rules.TemporaryFolder
 import org.unbrokendome.gradle.plugins.testsets.dsl.TestSet
 import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSetContainer
 import spock.lang.Specification
-
 /**
  * Created by David Sowerby on 23 Aug 2016
  */
@@ -32,7 +30,7 @@ class SimplyCDPluginTest extends Specification {
     Project project = Mock(Project)
     PluginContainer pluginContainer = Mock(PluginContainer)
     File buildFile
-    SimplyCDPlugin plugin
+    SimplyPlugin plugin
     Plugin testSetPlugin = Mock(Plugin)
     ExtensionContainer extensionsContainer = Mock(ExtensionContainer)
     DefaultTestSetContainer testSetContainer = Mock(DefaultTestSetContainer)
@@ -58,28 +56,14 @@ class SimplyCDPluginTest extends Specification {
         project.getTasks() >> taskContainer
         project.getProjectDir() >> projectDir
         project.getBuildDir() >> buildDir
-        plugin = new SimplyCDPlugin()
+        plugin = new SimplyPlugin()
         testSet1.getTestTaskName() >> testGroupName
         reportTask.getReports() >> reportsContainer
         reportsContainer.getXml() >> xmlReport
     }
 
-    def "testSets not applied first, throw exception"() {
-        given:
-        pluginContainer.findPlugin(SimplyCDPlugin.TEST_SETS_PLUGIN_NAME) >> null
-
-        when:
-        plugin.apply(project)
-
-        then:
-        GradleException ex = thrown()
-        ex.message == "apply plugin 'org.unbroken-dome.test-sets' before this plugin ('uk.q3c.simplycd')"
-    }
-
-
     def "testSets applied, quality gate and report tasks added with dependencies"() {
         given:
-        pluginContainer.findPlugin(SimplyCDPlugin.TEST_SETS_PLUGIN_NAME) >> testSetPlugin
         project.getExtensions() >> extensionsContainer
         extensionsContainer.findByName('testSets') >> testSetContainer
         testSets = ImmutableSet.of(testSet1)

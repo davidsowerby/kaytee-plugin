@@ -1,0 +1,1 @@
+Requires a property in build.graadle: *ext.baseVersion* containing the version number without the build number
