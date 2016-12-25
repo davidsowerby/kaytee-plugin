@@ -21,17 +21,20 @@ class TestSetListener {
 
     void testSetAdded(TestSet testSet) {
         addQualityGateTask(testSet)
-        project.getLogger().lifecycle("test set wtih assoicated tasks added for: " + testSet.testTaskName)
     }
 
     void addQualityGateTask(TestSet testSet) {
-        String testGroupName = testSet.testTaskName
+        addQualityGateTaskName(testSet.testTaskName)
+    }
+
+    void addQualityGateTaskName(String testGroupName) {
+        log("adding quality gate task for: " + testGroupName)
         final QualityGateTask qualityGateTask = project.tasks.create(testGroupName + "QualityGate", QualityGateTask.class);
         qualityGateTask.testGroup = testGroupName
         final String reportName = testGroupName + "Report";
         final JacocoReport testReportTask = project.tasks.create(reportName, JacocoReport.class);
 
-        final def testTask = project.tasks.findByName(testSet.testTaskName)
+        final def testTask = project.tasks.findByName(testGroupName)
         testReportTask.executionData(testTask);
 
         final String javaSourcePath = "src/main/java";
@@ -47,5 +50,10 @@ class TestSetListener {
 
         testReportTask.dependsOn(testTask);
         qualityGateTask.dependsOn(testReportTask);
+    }
+
+
+    private void log(String msg) {
+        project.logger.lifecycle(msg)
     }
 }

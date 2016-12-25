@@ -32,11 +32,5 @@ class CreateBuildInfoTaskTest extends Specification {
         false
     }
 
-    def "set env"() {
-        when:
-        System.setEnv(SimplyCDVersion.VERSION_PROPERTY, '437')
 
-        then:
-        true
-    }
 }

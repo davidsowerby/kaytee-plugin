@@ -13,7 +13,7 @@ class GenerateChangeLogTask extends DefaultTask {
 
     @TaskAction
     public void generate() {
-        def config = project.simplycd as SimplyCdContainer
+        def config = project.simplycd as SimplyCDContainer
 
         ChangeLog changelog = ChangeLogFactory.instance
         changelog.remoteRepoUser = config.getRemoteRepoUserName()

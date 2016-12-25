@@ -1,22 +1,13 @@
 package uk.q3c.simplycd.lifecycle
 
-import com.google.common.collect.ImmutableSet
-import org.gradle.api.Plugin
-import org.gradle.api.Project
-import org.gradle.api.file.ConfigurableFileCollection
-import org.gradle.api.plugins.ExtensionContainer
-import org.gradle.api.plugins.PluginContainer
-import org.gradle.api.reporting.SingleFileReport
-import org.gradle.api.tasks.TaskContainer
-import org.gradle.api.tasks.testing.Test
-import org.gradle.testfixtures.ProjectBuilder
-import org.gradle.testing.jacoco.tasks.JacocoReport
-import org.gradle.testing.jacoco.tasks.JacocoReportsContainer
+import com.google.common.base.Splitter
+import org.gradle.testkit.runner.BuildResult
+import org.gradle.testkit.runner.GradleRunner
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
-import org.unbrokendome.gradle.plugins.testsets.dsl.TestSet
-import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSetContainer
 import spock.lang.Specification
+import uk.q3c.build.creator.gradle.GradleGroovyBuilder
+
 /**
  * Created by David Sowerby on 23 Aug 2016
  */
@@ -24,71 +15,101 @@ class SimplyCDPluginTest extends Specification {
 
     @Rule
     final TemporaryFolder tempFolder = new TemporaryFolder()
+    File buildFile
     File projectDir
     File buildDir
+    GradleGroovyBuilder gradleFile
+    final String versionUnderTest = '0.2.1.8'
+    String output
+    BuildResult result
+    Map<String, String> outputLines
 
-    Project project = Mock(Project)
-    PluginContainer pluginContainer = Mock(PluginContainer)
-    File buildFile
-    SimplyPlugin plugin
-    Plugin testSetPlugin = Mock(Plugin)
-    ExtensionContainer extensionsContainer = Mock(ExtensionContainer)
-    DefaultTestSetContainer testSetContainer = Mock(DefaultTestSetContainer)
-    TestSet testSet1 = Mock(TestSet)
-    Set<TestSet> testSets
-    Test wigglyTestTask = Mock(Test)
-    TaskContainer taskContainer = Mock(TaskContainer)
-    QualityGateTask qualityGateTask = Mock(QualityGateTask)
-    JacocoReport reportTask = Mock(JacocoReport)
-    JacocoReportsContainer reportsContainer = Mock(JacocoReportsContainer)
-    SingleFileReport xmlReport = Mock(SingleFileReport)
-    final String testGroupName = 'wigglyTest'
-    final String testReportName = testGroupName + "Report"
-    Project realProject
 
     def setup() {
         projectDir = tempFolder.getRoot()
+        gradleFile = new GradleGroovyBuilder()
         buildDir = new File(projectDir, "build")
-        realProject = ProjectBuilder.builder().build()
         buildFile = tempFolder.newFile('build.gradle')
-        project.getPlugins() >> pluginContainer
-        project.getExtensions() >> extensionsContainer
-        project.getTasks() >> taskContainer
-        project.getProjectDir() >> projectDir
-        project.getBuildDir() >> buildDir
-        plugin = new SimplyPlugin()
-        testSet1.getTestTaskName() >> testGroupName
-        reportTask.getReports() >> reportsContainer
-        reportsContainer.getXml() >> xmlReport
+        gradleFile.outputDir = projectDir
+
+        buildscript()
     }
 
-    def "testSets applied, quality gate and report tasks added with dependencies"() {
+    def "apply with no configuration changes"() {
         given:
-        project.getExtensions() >> extensionsContainer
-        extensionsContainer.findByName('testSets') >> testSetContainer
-        testSets = ImmutableSet.of(testSet1)
-        testSetContainer.toArray() >> testSets.toArray()
-        taskContainer.findByName(testGroupName) >> wigglyTestTask
-        ConfigurableFileCollection sourceFiles = realProject.files(new File(projectDir, 'src/main/java'))
-        ConfigurableFileCollection classFiles = realProject.files(new File(buildDir, 'classes/main'))
-        project.files(_) >>> [sourceFiles, classFiles]
-
-
+        applyThisPlugin()
+        gradleFile.execute()
 
         when:
-        plugin.apply(project)
+        decodeResult(GradleRunner.create()
+                .withProjectDir(projectDir)
+                .withArguments('properties')
+                .build())
+
 
         then:
-        1 * taskContainer.create(testGroupName + "QualityGate", QualityGateTask.class) >> qualityGateTask
-        1 * qualityGateTask.setTestGroup(testGroupName)
-        1 * taskContainer.create(testReportName, JacocoReport.class) >> reportTask
-        1 * reportTask.executionData(wigglyTestTask)
-        1 * xmlReport.setEnabled(true)
-        1 * reportTask.dependsOn(wigglyTestTask)
-        1 * qualityGateTask.dependsOn(reportTask)
-        1 * reportTask.setClassDirectories(classFiles)
-        1 * reportTask.setSourceDirectories(sourceFiles)
+//        confirmPluginsContains('JavaPlugin', 'GroovyPlugin', 'MavenPlugin', 'MavenPublishPlugin', 'SimplyCDPlugin')
+        //gradle changes camel case to open case - 'integrationTest' becomes 'integration test
+        confirmSourceSetsContains('test', 'main', 'integration test', 'smoke test', 'acceptance test', 'functional test')
+        confirmTasksContains("':test'", "':integrationTest'", "':acceptanceTest'", "':functionalTest'", "':smokeTest'")
+        confirmQualityTasksContains('integrationTestQualityGate', 'acceptanceTestQualityGate', 'functionalTestQualityGate', 'smokeTestQualityGate')
+        confirmQualityTasksContains('testQualityGate')
+    }
 
+    def confirmTasksContains(String... tasks) {
+        return elementSetContains('tasks', tasks)
+    }
+
+    def confirmQualityTasksContains(String... tasks) {
+        return elementSetContains('tasks', tasks)
+    }
+
+    void decodeResult(BuildResult buildResult) {
+        result = buildResult
+        output = result.output
+        outputLines = new TreeMap<>()
+        List<String> outputList = Splitter.on('\n').omitEmptyStrings().splitToList(output)
+        for (String s : outputList) {
+            if (s.contains(':')) {
+                int breakAt = s.indexOf(':')
+                String key = s.substring(0, breakAt)
+                String value = s.substring(breakAt)
+                outputLines.put(key, value)
+            }
+        }
+    }
+
+    def confirmPluginsContains(String... s) {
+        return elementSetContains("plugins", s)
+    }
+
+    def confirmSourceSetsContains(String... s) {
+        return elementSetContains("sourceSets", s)
+    }
+
+    def elementSetContains(String elementSetName, String... s) {
+        String elements = outputLines.get(elementSetName)
+        if (elements == null) {
+            return false
+        }
+        for (String st : s) {
+            if (!elements.contains(st)) {
+                return false
+            }
+        }
+        return true
+    }
+
+
+    private void buildscript() {
+        gradleFile.buildscript().repositories().mavenLocal().jcenter()
+        gradleFile.buildscript().dependencies().dependencies('classpath', 'uk.q3c.simplycd:simplycd-lifecycle:' + versionUnderTest)
+        gradleFile.buildscript().dependencies().dependencies('classpath', 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3')
+    }
+
+    private void applyThisPlugin() {
+        gradleFile.applyPlugin('uk.q3c.simplycd')
+        gradleFile.line("ext.baseVersion = '0.9.9'")
     }
 
 

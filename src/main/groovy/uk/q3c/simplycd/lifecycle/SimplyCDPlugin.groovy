@@ -15,7 +15,7 @@ import javax.inject.Inject
 /**
  * Created by David Sowerby on 19 Dec 2016
  */
-public class SimplyPlugin implements Plugin<Project> {
+public class SimplyCDPlugin implements Plugin<Project> {
 
     final static String CREATE_BUILD_INFO_TASK_NAME = 'createBuildInfo'
     final static String GENERATE_CHANGE_LOG_TASK_NAME = 'generateChangeLog'
@@ -26,7 +26,7 @@ public class SimplyPlugin implements Plugin<Project> {
 
 
     @Inject
-    public SimplyPlugin(Instantiator instantiator) {
+    public SimplyCDPlugin(Instantiator instantiator) {
         this.instantiator = instantiator
     }
 
@@ -42,7 +42,12 @@ public class SimplyPlugin implements Plugin<Project> {
         project.apply plugin: 'jacoco'
         project.apply plugin: TestSetsPlugin
 
-        instantiator.newInstance TestSetListener, project
+        // the default 'test' set will not trigger the listener, so we need to force it
+        TestSetListener testSetListener = instantiator.newInstance TestSetListener, project
+        testSetListener.addQualityGateTaskName('test')
+
+
+
         DefaultTestSetContainer container = project.testSets
         for (String ts : defaultTestSets) {
             container.add(new DefaultTestSet(ts))
@@ -51,13 +56,15 @@ public class SimplyPlugin implements Plugin<Project> {
         project.tasks.create(GENERATE_CHANGE_LOG_TASK_NAME, GenerateChangeLogTask)
         project.version = new SimplyCDVersion(project)
 
-        project.extensions.create('simplycd', SimplyCdContainer)
+        project.extensions.create('simplycd', SimplyCDContainer)
         project.afterEvaluate(new AfterEvaluateAction(project))
+
+
     }
 
 }
 
-class SimplyCdContainer {
+class SimplyCDContainer {
 
     String remoteRepoUserName = 'davidsowerby'
 }
