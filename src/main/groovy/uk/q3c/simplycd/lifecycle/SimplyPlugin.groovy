@@ -52,6 +52,7 @@ public class SimplyPlugin implements Plugin<Project> {
         project.version = new SimplyCDVersion(project)
 
         project.extensions.create('simplycd', SimplyCdContainer)
+        project.afterEvaluate(new AfterEvaluateAction(project))
     }
 
 }
