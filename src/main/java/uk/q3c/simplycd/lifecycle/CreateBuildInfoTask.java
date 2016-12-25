@@ -1,5 +1,6 @@
 package uk.q3c.simplycd.lifecycle;
 
+import org.apache.commons.io.FileUtils;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.Project;
 import org.gradle.api.tasks.TaskAction;
@@ -41,7 +42,11 @@ public class CreateBuildInfoTask extends DefaultTask {
         properties.setProperty("commit", commitId());
         properties.setProperty("host", hostName());
         final Project project = getProject();
-        final File buildInfoFile = new File(project.getBuildDir(), "resources/main/buildInfo.properties");
+        final File buildResourcesDir = new File(project.getBuildDir(), "resources/main");
+        final File buildInfoFile = new File(buildResourcesDir, "buildInfo.properties");
+        if (!buildResourcesDir.exists()) {
+            FileUtils.forceMkdir(buildResourcesDir);
+        }
         try (FileOutputStream fw = new FileOutputStream(buildInfoFile)) {
             properties.store(fw, "");
         } catch (Exception e) {
