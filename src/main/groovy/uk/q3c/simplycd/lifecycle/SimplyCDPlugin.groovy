@@ -42,6 +42,8 @@ public class SimplyCDPlugin implements Plugin<Project> {
         project.apply plugin: 'jacoco'
         project.apply plugin: TestSetsPlugin
 
+        repositories(project)
+
         // the default 'test' set will not trigger the listener, so we need to force it
         TestSetListener testSetListener = instantiator.newInstance TestSetListener, project
         testSetListener.addQualityGateTaskName('test')
@@ -58,10 +60,16 @@ public class SimplyCDPlugin implements Plugin<Project> {
 
         project.extensions.create('simplycd', SimplyCDContainer)
         project.afterEvaluate(new AfterEvaluateAction(project))
-
-
     }
 
+    private void repositories(Project project) {
+        project.repositories {
+            mavenLocal()
+            jcenter()
+            mavenCentral()
+        }
+
+    }
 }
 
 class SimplyCDContainer {
