@@ -43,6 +43,7 @@ public class SimplyCDPlugin implements Plugin<Project> {
         project.apply plugin: TestSetsPlugin
 
         repositories(project)
+        defaultProperties(project)
 
         // the default 'test' set will not trigger the listener, so we need to force it
         TestSetListener testSetListener = instantiator.newInstance TestSetListener, project
@@ -62,13 +63,17 @@ public class SimplyCDPlugin implements Plugin<Project> {
         project.afterEvaluate(new AfterEvaluateAction(project))
     }
 
+    private void defaultProperties(Project project) {
+        project.ext.baseVersion = '0.0.0'
+        project.sourceCompatibility = '1.8'
+    }
+
     private void repositories(Project project) {
         project.repositories {
             mavenLocal()
             jcenter()
             mavenCentral()
         }
-
     }
 }
 
