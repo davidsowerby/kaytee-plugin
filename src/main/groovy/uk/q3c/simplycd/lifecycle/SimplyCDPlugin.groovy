@@ -55,6 +55,9 @@ public class SimplyCDPlugin implements Plugin<Project> {
     void config(Project project) {
         SimplyCDContainer config = project.extensions.create('simplycd', SimplyCDContainer, instantiator)
         config.add(new TestConfiguration('test'))
+        TestConfiguration testConfiguration = config.getByName('test')
+        testConfiguration.enabled = true
+        testConfiguration.qualityGateEnabled = true
         for (String name : defaultTestSets) {
             config.add(new TestConfiguration(name))
         }

@@ -3,8 +3,8 @@ package uk.q3c.simplycd.lifecycle
 import org.gradle.api.Named
 
 class TestConfiguration implements Named {
-    boolean enabled = true
-    boolean qualityGateEnabled = true
+    boolean enabled = false
+    boolean qualityGateEnabled = false
     double instruction = 81
     double branch = 70
     double line = 90
