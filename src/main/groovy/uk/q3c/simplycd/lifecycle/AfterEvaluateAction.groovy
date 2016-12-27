@@ -18,7 +18,7 @@ class AfterEvaluateAction implements Action<Project> {
 
     @Override
     void execute(Project project) {
-        project.getLogger().lifecycle('after evaluate')
+        project.getLogger().debug('after evaluate')
 
         project.tasks.create(name: 'sourcesJar', type: Jar, dependsOn: project.classes) {
             classifier = 'sources'
@@ -48,7 +48,5 @@ class AfterEvaluateAction implements Action<Project> {
 
     }
 
-    private void log(String s) {
-        project.getLogger().lifecycle(s)
-    }
+
 }

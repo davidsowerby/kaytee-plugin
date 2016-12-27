@@ -8,7 +8,7 @@ plugins {
 
 
 group 'uk.q3c.simplycd'
-version '0.3.1.10'
+version '0.4.0.11'
 
 sourceCompatibility = 1.8
 
@@ -76,4 +76,8 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
+}
+
+sourceSets {
+    main.java.srcDirs += 'src/main/groovy'
 }

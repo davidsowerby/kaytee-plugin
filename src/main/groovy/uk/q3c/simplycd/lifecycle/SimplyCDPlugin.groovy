@@ -44,11 +44,27 @@ public class SimplyCDPlugin implements Plugin<Project> {
 
         repositories(project)
         defaultProperties(project)
+        testSets(project)
+        config(project)
 
+        // actions required after evaluation, notably publishing
+        project.afterEvaluate(new AfterEvaluateAction(project))
+
+    }
+
+    void config(Project project) {
+        SimplyCDContainer config = project.extensions.create('simplycd', SimplyCDContainer, instantiator)
+        config.add(new TestConfiguration('test'))
+        for (String name : defaultTestSets) {
+            config.add(new TestConfiguration(name))
+        }
+    }
+
+
+    private void testSets(Project project) {
         // the default 'test' set will not trigger the listener, so we need to force it
         TestSetListener testSetListener = instantiator.newInstance TestSetListener, project
         testSetListener.addQualityGateTaskName('test')
-
 
 
         DefaultTestSetContainer container = project.testSets
@@ -57,15 +73,14 @@ public class SimplyCDPlugin implements Plugin<Project> {
         }
         project.tasks.create(CREATE_BUILD_INFO_TASK_NAME, CreateBuildInfoTask)
         project.tasks.create(GENERATE_CHANGE_LOG_TASK_NAME, GenerateChangeLogTask)
-        project.version = new SimplyCDVersion(project)
 
-        project.extensions.create('simplycd', SimplyCDContainer)
-        project.afterEvaluate(new AfterEvaluateAction(project))
     }
 
+    @SuppressWarnings("GrMethodMayBeStatic")
     private void defaultProperties(Project project) {
         project.ext.baseVersion = '0.0.0'
         project.sourceCompatibility = '1.8'
+        project.version = new SimplyCDVersion(project)
     }
 
     private void repositories(Project project) {
@@ -75,10 +90,11 @@ public class SimplyCDPlugin implements Plugin<Project> {
             mavenCentral()
         }
     }
+
+
 }
 
-class SimplyCDContainer {
 
-    String remoteRepoUserName = 'davidsowerby'
-}
+
+
 

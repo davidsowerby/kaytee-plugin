@@ -1,44 +1,20 @@
-package uk.q3c.simplycd.lifecycle;
+package uk.q3c.simplycd.lifecycle
 
-import groovy.util.Node;
-import groovy.util.XmlParser;
-import org.gradle.api.DefaultTask;
-import org.gradle.api.GradleException;
-import org.gradle.api.tasks.TaskAction;
+import org.gradle.api.DefaultTask
+import org.gradle.api.GradleException
+import org.gradle.api.tasks.TaskAction
 
-import java.io.File;
-import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.text.DecimalFormat
 
 /**
- * Created by David Sowerby on 08 Aug 2016
+ * Created by David Sowerby on 27 Dec 2016
  */
-@SuppressWarnings({"MagicNumber", "PublicMethodNotExposedInInterface", "ReturnOfCollectionOrArrayField", "AssignmentToCollectionOrArrayFieldFromParameter",
-        "DuplicateStringLiteralInspection"})
-public class QualityGateTask extends DefaultTask {
-    private static final Map<String, Integer> defaultThresholds;
-
-    static {
-        defaultThresholds = new HashMap<>(6);
-        defaultThresholds.put("instruction", 81);
-        defaultThresholds.put("branch", 70);
-        defaultThresholds.put("line", 90);
-        defaultThresholds.put("complexity", 90);
-        defaultThresholds.put("method", 90);
-        defaultThresholds.put("class", 90);
-    }
-
+class QualityGateTask extends DefaultTask {
     private String testGroup = "unspecified";
-    private Map<String, Integer> thresholds = defaultThresholds;
+    private final Map<String, Double> thresholds = new HashMap<>(10);
 
-    public Map<String, Integer> getThresholds() {
+    public Map<String, Double> getThresholds() {
         return thresholds;
-    }
-
-    public void setThresholds(Map<String, Integer> thresholds) {
-        this.thresholds = thresholds;
     }
 
     public String getTestGroup() {
@@ -50,21 +26,30 @@ public class QualityGateTask extends DefaultTask {
         this.testGroup = testGroup;
     }
 
-    @SuppressWarnings({"CallToStringEquals", "StringConcatenationMissingWhitespace", "HardcodedFileSeparator", "PublicMethodWithoutLogging",
-            "MagicCharacter"})
-    @TaskAction
     /**
-     * Evaluates the code coverage results against the {@link #thresholds}
+     * Evaluates the code coverage results against the thresholds
      */
+    @TaskAction
     public void evaluate() {
-        getLogger().lifecycle("evaluating test results against thresholds");
+        getLogger().debug("evaluating '" + testGroup + "' results against required thresholds");
+        final SimplyCDContainer config = (SimplyCDContainer) getProject().getExtensions().findByName("simplycd");
+        final TestConfiguration testConfig = config.getByName(testGroup);
+        if (!testConfig.isQualityGateEnabled()) {
+            getLogger().quiet("quality gate for '" + testGroup + "' is disabled");
+            return;
+        }
+
+
+        setThresholdsFromConfiguration(testConfig);
+
+
         final File baseReportsDir = new File(getProject().getBuildDir(), "reports/jacoco");
-        getLogger().lifecycle(baseReportsDir.getAbsolutePath());
+        getLogger().debug(baseReportsDir.getAbsolutePath());
         final String reportFolderName = testGroup + "Report";
         final String reportFileName = reportFolderName + ".xml";
         final File reportDir = new File(baseReportsDir, reportFolderName);
         final File reportFile = new File(reportDir, reportFileName);
-        getLogger().lifecycle("Reading coverage results from: " + reportFile.getAbsolutePath());
+        getLogger().debug("Reading coverage results from: " + reportFile.getAbsolutePath());
 
         final Node results = parseFile(reportFile);
 
@@ -77,18 +62,28 @@ public class QualityGateTask extends DefaultTask {
 
     }
 
+    private void setThresholdsFromConfiguration(TestConfiguration testConfig) {
+        thresholds.put("instruction", testConfig.getInstruction());
+        thresholds.put("class", testConfig.getClazz());
+        thresholds.put("branch", testConfig.getBranch());
+        thresholds.put("complexity", testConfig.getComplexity());
+        thresholds.put("line", testConfig.getLine());
+        thresholds.put("method", testConfig.getMethod());
+
+    }
+
     private void presentFailures(Map<String, Double> failures) {
         if (failures.isEmpty()) {
-            getLogger().quiet("Passed Code Coverage Checks");
+            getLogger().quiet("'" + testGroup + "' passed quality gate (code coverage met required thresholds)");
         } else {
             getLogger().quiet("------------------ Code Coverage Failed -----------------------");
             final DecimalFormat df = new DecimalFormat("#.0");
-            for (final Entry<String, Double> fail : failures.entrySet()) {
+            for (final Map.Entry<String, Double> fail : failures.entrySet()) {
                 final String measure = fail.getKey();
                 final Double actual = fail.getValue();
                 final String actualStr = df.format(actual);
-                final int required = thresholds.get(measure.toLowerCase());
-                getLogger().quiet(measure + " coverage is " + actualStr + "%, but " + required + "% is required");
+                final double required = thresholds.get(measure.toLowerCase());
+                getLogger().quiet(measure + " result is " + actualStr + "%, but " + required + "% is required");
             }
             getLogger().quiet("---------------------------------------------------------------");
             throw new GradleException("Code coverage failed");
@@ -105,7 +100,7 @@ public class QualityGateTask extends DefaultTask {
 
         } catch (Exception e) {
             throw new GradleException(e.getClass()
-                                       .getSimpleName() + " occurred in QualityGateTask for " + testGroup, e);
+                    .getSimpleName() + " occurred in QualityGateTask for " + testGroup, e);
         }
     }
 
@@ -121,18 +116,23 @@ public class QualityGateTask extends DefaultTask {
     }
 
     private Map<String, Double> identifyFailures(Map<String, Node> resultsMap) {
+        getLogger().debug('Examining thresholds for ' + testGroup)
+        for (String s : thresholds.keySet()) {
+            getLogger().debug(s + ' = ' + thresholds.get(s))
+        }
         final Map<String, Double> failures = new HashMap<>(10);
-        for (final Entry<String, Node> entry : resultsMap.entrySet()) {
+        for (final Map.Entry<String, Node> entry : resultsMap.entrySet()) {
             final int covered = Integer.parseInt(entry.getValue()
-                                                      .get("@covered")
-                                                      .toString());
+                    .get("@covered")
+                    .toString());
             final int missed = Integer.parseInt(entry.getValue()
-                                                     .get("@missed")
-                                                     .toString());
+                    .get("@missed")
+                    .toString());
+            getLogger().debug("entry for " + entry.getKey() + ", covered = " + covered + ", missed = " + missed)
             final int total = missed + covered;
             final double percentageAchieved = ((double) covered / (double) total) * 100.0;
             final double threshold = thresholds.get(entry.getKey()
-                                                         .toLowerCase());
+                    .toLowerCase());
             if (percentageAchieved < threshold) {
                 failures.put(entry.getKey(), percentageAchieved);
             }
