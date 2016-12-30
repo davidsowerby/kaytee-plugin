@@ -1,35 +1,38 @@
-plugins {
-    id 'java'
-    id 'groovy'
-    id 'maven'
-    id 'maven-publish'
+//noinspection GrPackage
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+//        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'uk.q3c.simplycd:simplycd-lifecycle:0.6.1.14'
+    }
 }
 
+
+apply plugin: 'uk.q3c.simplycd'
 
 
 group 'uk.q3c.simplycd'
-version '0.5.0.12'
+version '0.6.1.14'
 
-sourceCompatibility = 1.8
-
-repositories {
-    jcenter()
-    mavenLocal()
+simplycd {
+    test {
+        qualityGateEnabled = false
+    }
 }
-
-
 
 dependencies {
 
     //Git
-    compile 'uk.q3c.build:gitplus:0.18.4.67'
+    compile 'uk.q3c.build:gitplus:0.19.1.69'
     compile 'uk.q3c.build:changelog:0.3.1.12'
 
     // Gradle
     compile gradleApi()
 
     compile 'com.google.code.findbugs:annotations:3.0.0'
-//    compile 'org.codehaus.groovy:groovy-all:2.4.4'
     compile 'com.google.guava:guava:19.0'
     compile 'org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0'
 
@@ -53,31 +56,3 @@ dependencies {
 
 }
 
-publishing {
-    publications {
-        mavenStuff(MavenPublication) {
-            from components.java
-
-            artifact sourcesJar {
-                classifier "sources"
-            }
-
-            artifact javadocJar {
-                classifier "javadoc"
-            }
-        }
-    }
-}
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-sourceSets {
-    main.java.srcDirs += 'src/main/groovy'
-}

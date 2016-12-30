@@ -3,6 +3,7 @@ package uk.q3c.simplycd.lifecycle
 import org.apache.commons.io.FileUtils
 import org.gradle.api.GradleException
 import org.gradle.api.Project
+import org.gradle.internal.reflect.Instantiator
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
@@ -20,21 +21,31 @@ class QualityGateTaskTest extends Specification {
 
     @Rule
     TemporaryFolder temporaryFolder
+    Project project
 
     File temp
     File projectDir
+    SimplyCDContainer simplyCDContainer
+    TestConfiguration testConfiguration
 
     def setup() {
         temp = temporaryFolder.getRoot()
-        Project project = ProjectBuilder.builder().build()
+        project = ProjectBuilder.builder().build()
         projectDir = project.getProjectDir()
+        Instantiator instantiator = Mock(Instantiator)
+        simplyCDContainer = project.extensions.create('simplycd', SimplyCDContainer.class, instantiator)
+        testConfiguration = new TestConfiguration('integrationTest')
+        testConfiguration.instruction = 100
+        simplyCDContainer.add(testConfiguration)
         task = project.getTasks().create("qg", QualityGateTask.class);
+        task.setTestGroup('integrationTest')
     }
 
     def "check fails thresholds"() {
 
         given:
         setupFile()
+        testConfiguration.qualityGateEnabled = true
 
         when:
         task.evaluate()
@@ -47,29 +58,20 @@ class QualityGateTaskTest extends Specification {
     def "results file missing"() {
 
         given:
-        task.setTestGroup('IntegrationTest')
+        testConfiguration.qualityGateEnabled = true
 
         when:
         task.evaluate()
 
         then:
         GradleException ex = thrown()
-        ex.getMessage().equals('FileNotFoundException occurred in QualityGateTask for IntegrationTest')
+        ex.getMessage().equals('FileNotFoundException occurred in QualityGateTask for integrationTest')
     }
 
-    def "check passes"() {
+    def "check passes because quality check is disabled"() {
         given:
-        setupFile()
-        final Map<String, Integer> thresholds;
-        thresholds = new HashMap<>(6);
-        thresholds.put("instruction", 69);
-        thresholds.put("branch", 70);
-        thresholds.put("line", 66);
-        thresholds.put("complexity", 66);
-        thresholds.put("method", 66);
-        thresholds.put("class", 90);
 
-        task.setThresholds(thresholds)
+        setupFile()
 
         when:
         task.evaluate()
@@ -78,13 +80,36 @@ class QualityGateTaskTest extends Specification {
         noExceptionThrown()
     }
 
+    def "check passes"() {
+        given:
+
+        testConfiguration.qualityGateEnabled = true
+        testConfiguration.instruction = 50
+        testConfiguration.branch = 70
+        testConfiguration.complexity = 66
+        testConfiguration.line = 66
+        testConfiguration.method = 66
+        testConfiguration.clazz = 90
+
+
+        setupFile()
+
+        when:
+        task.evaluate()
+
+        then:
+        noExceptionThrown()
+        task.getThresholds().get("instruction") == new Double(50)
+        task.testGroup == 'integrationTest'
+    }
+
 
     def setupFile() {
         File reportDir = new File(projectDir, 'build/reports/jacoco/integrationTestReport')
         String reportFileName = 'integrationTestReport.xml'
         FileUtils.forceMkdir(reportDir)
         FileUtils.copyFileToDirectory(TestResource.resource(this, reportFileName), reportDir)
-        task.setTestGroup('integrationTest')
+
     }
 
 }
