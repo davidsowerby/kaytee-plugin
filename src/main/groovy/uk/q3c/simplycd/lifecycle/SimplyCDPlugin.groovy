@@ -17,9 +17,9 @@ import javax.inject.Inject
  */
 public class SimplyCDPlugin implements Plugin<Project> {
 
-    final static String CREATE_BUILD_INFO_TASK_NAME = 'createBuildInfo'
-    final static String GENERATE_CHANGE_LOG_TASK_NAME = 'generateChangeLog'
-    final
+    public final static String CREATE_BUILD_INFO_TASK_NAME = 'createBuildInfo'
+    public final static String GENERATE_CHANGE_LOG_TASK_NAME = 'generateChangeLog'
+    public final
     static List<String> defaultTestSets = ImmutableList.of("integrationTest", "functionalTest", "acceptanceTest", "smokeTest")
 
     private final Instantiator instantiator

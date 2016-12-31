@@ -6,7 +6,7 @@ buildscript {
     }
     dependencies {
 //        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
-        classpath 'uk.q3c.simplycd:simplycd-lifecycle:0.6.1.14'
+        classpath 'uk.q3c.simplycd:simplycd-lifecycle:0.6.2.15'
     }
 }
 
@@ -15,7 +15,7 @@ apply plugin: 'uk.q3c.simplycd'
 
 
 group 'uk.q3c.simplycd'
-version '0.6.1.14'
+version '0.6.2.15'
 
 simplycd {
     test {
