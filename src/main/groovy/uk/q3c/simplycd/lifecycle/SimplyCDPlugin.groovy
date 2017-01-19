@@ -3,6 +3,7 @@ package uk.q3c.simplycd.lifecycle
 import com.google.common.collect.ImmutableList
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.internal.reflect.Instantiator
@@ -19,6 +20,7 @@ public class SimplyCDPlugin implements Plugin<Project> {
 
     public final static String CREATE_BUILD_INFO_TASK_NAME = 'createBuildInfo'
     public final static String GENERATE_CHANGE_LOG_TASK_NAME = 'generateChangeLog'
+    public final static String GENERATE_CONFIG_TASK_NAME = 'simplycdConfigToJson'
     public final
     static List<String> defaultTestSets = ImmutableList.of("integrationTest", "functionalTest", "acceptanceTest", "smokeTest")
 
@@ -45,6 +47,14 @@ public class SimplyCDPlugin implements Plugin<Project> {
         repositories(project)
         defaultProperties(project)
         testSets(project)
+
+        Task t = project.tasks.create(CREATE_BUILD_INFO_TASK_NAME, CreateBuildInfoTask)
+        project.logger.lifecycle("added task " + t.getName())
+        t = project.tasks.create(GENERATE_CHANGE_LOG_TASK_NAME, GenerateChangeLogTask)
+        project.logger.lifecycle("added task " + t.getName())
+        t = project.tasks.create(GENERATE_CONFIG_TASK_NAME, ConfigToJsonTask)
+        project.logger.lifecycle("added task " + t.getName())
+
         config(project)
 
         // actions required after evaluation, notably publishing
@@ -53,13 +63,13 @@ public class SimplyCDPlugin implements Plugin<Project> {
     }
 
     void config(Project project) {
-        SimplyCDContainer config = project.extensions.create('simplycd', SimplyCDContainer, instantiator)
-        config.add(new TestConfiguration('test'))
-        TestConfiguration testConfiguration = config.getByName('test')
-        testConfiguration.enabled = true
-        testConfiguration.qualityGateEnabled = true
+        project.extensions.create('simplycd', SimplyCDProjectExtension)
+
+        ThresholdsContainer thresholds = project.extensions.create('thresholds', ThresholdsContainer, instantiator)
+        thresholds.add(new TestGroupThresholds('test'))
+
         for (String name : defaultTestSets) {
-            config.add(new TestConfiguration(name))
+            thresholds.add(new TestGroupThresholds(name))
         }
     }
 
@@ -74,9 +84,6 @@ public class SimplyCDPlugin implements Plugin<Project> {
         for (String ts : defaultTestSets) {
             container.add(new DefaultTestSet(ts))
         }
-        project.tasks.create(CREATE_BUILD_INFO_TASK_NAME, CreateBuildInfoTask)
-        project.tasks.create(GENERATE_CHANGE_LOG_TASK_NAME, GenerateChangeLogTask)
-
     }
 
     @SuppressWarnings("GrMethodMayBeStatic")

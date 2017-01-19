@@ -32,15 +32,16 @@ class QualityGateTask extends DefaultTask {
     @TaskAction
     public void evaluate() {
         getLogger().debug("evaluating '" + testGroup + "' results against required thresholds");
-        final SimplyCDContainer config = (SimplyCDContainer) getProject().getExtensions().findByName("simplycd");
-        final TestConfiguration testConfig = config.getByName(testGroup);
-        if (!testConfig.isQualityGateEnabled()) {
+        final SimplyCDProjectExtension projectInfo = getProject().getExtensions().findByName("simplycd") as SimplyCDProjectExtension;
+
+        if (!projectInfo.qualityGateEnabled(testGroup)) {
             getLogger().quiet("quality gate for '" + testGroup + "' is disabled");
             return;
         }
 
-
-        setThresholdsFromConfiguration(testConfig);
+        final ThresholdsContainer config = (ThresholdsContainer) getProject().getExtensions().findByName("thresholds");
+        final TestGroupThresholds thresholds = config.getByName(testGroup);
+        setThresholdsFromConfiguration(thresholds);
 
 
         final File baseReportsDir = new File(getProject().getBuildDir(), "reports/jacoco");
@@ -62,7 +63,7 @@ class QualityGateTask extends DefaultTask {
 
     }
 
-    private void setThresholdsFromConfiguration(TestConfiguration testConfig) {
+    private void setThresholdsFromConfiguration(TestGroupThresholds testConfig) {
         thresholds.put("instruction", testConfig.getInstruction());
         thresholds.put("class", testConfig.getClazz());
         thresholds.put("branch", testConfig.getBranch());

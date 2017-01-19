@@ -25,18 +25,21 @@ class QualityGateTaskTest extends Specification {
 
     File temp
     File projectDir
-    SimplyCDContainer simplyCDContainer
-    TestConfiguration testConfiguration
+    ThresholdsContainer thresholds
+    SimplyCDProjectExtension simplycd
+    TestGroupThresholds testConfiguration
 
     def setup() {
         temp = temporaryFolder.getRoot()
         project = ProjectBuilder.builder().build()
         projectDir = project.getProjectDir()
         Instantiator instantiator = Mock(Instantiator)
-        simplyCDContainer = project.extensions.create('simplycd', SimplyCDContainer.class, instantiator)
-        testConfiguration = new TestConfiguration('integrationTest')
+        thresholds = project.extensions.create('thresholds', ThresholdsContainer.class, instantiator)
+        simplycd = project.extensions.create('simplycd', SimplyCDProjectExtension.class)
+
+        testConfiguration = new TestGroupThresholds('integrationTest')
         testConfiguration.instruction = 100
-        simplyCDContainer.add(testConfiguration)
+        thresholds.add(testConfiguration)
         task = project.getTasks().create("qg", QualityGateTask.class);
         task.setTestGroup('integrationTest')
     }
@@ -45,7 +48,7 @@ class QualityGateTaskTest extends Specification {
 
         given:
         setupFile()
-        testConfiguration.qualityGateEnabled = true
+        simplycd.integrationTestQualityGate = true
 
         when:
         task.evaluate()
@@ -58,7 +61,7 @@ class QualityGateTaskTest extends Specification {
     def "results file missing"() {
 
         given:
-        testConfiguration.qualityGateEnabled = true
+        simplycd.integrationTestQualityGate = true
 
         when:
         task.evaluate()
@@ -83,7 +86,7 @@ class QualityGateTaskTest extends Specification {
     def "check passes"() {
         given:
 
-        testConfiguration.qualityGateEnabled = true
+        simplycd.integrationTestQualityGate = true
         testConfiguration.instruction = 50
         testConfiguration.branch = 70
         testConfiguration.complexity = 66

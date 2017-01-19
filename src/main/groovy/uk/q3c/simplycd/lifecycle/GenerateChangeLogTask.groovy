@@ -17,7 +17,7 @@ class GenerateChangeLogTask extends DefaultTask {
 
     @TaskAction
     public void generate() {
-        delegate.generate(project, project.simplycd as SimplyCDContainer, ChangeLogFactory.instance)
+        delegate.generate(project, project.simplycd as ThresholdsContainer, ChangeLogFactory.instance)
     }
 
 

@@ -15,7 +15,7 @@ class GenerateChangeLogTaskTest extends Specification {
     GenerateChangeLogTask task
 
     Project project
-    SimplyCDContainer simplyCDContainer = Mock(SimplyCDContainer)
+    ThresholdsContainer simplyCDContainer = Mock(ThresholdsContainer)
 
     def setup() {
         project = ProjectBuilder.builder().build()

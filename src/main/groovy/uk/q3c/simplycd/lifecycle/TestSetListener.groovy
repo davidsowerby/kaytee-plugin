@@ -28,7 +28,7 @@ class TestSetListener {
     }
 
     void addQualityGateTaskName(String testGroupName) {
-        log("adding quality gate task for: " + testGroupName)
+        log("adding quality gate task for test set: " + testGroupName)
         final QualityGateTask qualityGateTask = project.tasks.create(testGroupName + "QualityGate", QualityGateTask.class);
         qualityGateTask.testGroup = testGroupName
         final String reportName = testGroupName + "Report";

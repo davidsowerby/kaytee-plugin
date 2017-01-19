@@ -15,13 +15,11 @@ apply plugin: 'uk.q3c.simplycd'
 
 
 group 'uk.q3c.simplycd'
-version '0.6.2.15'
+version '0.7.0.16'
 
-simplycd {
-    test {
-        qualityGateEnabled = false
-    }
-}
+
+
+ext.jacksonVersion = '2.8.6'
 
 dependencies {
 
@@ -35,6 +33,10 @@ dependencies {
     compile 'com.google.code.findbugs:annotations:3.0.0'
     compile 'com.google.guava:guava:19.0'
     compile 'org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0'
+
+    // Jackson for JSON output of config
+    compile 'com.fasterxml.jackson.core:jackson-annotations:' + jacksonVersion
+    compile 'com.fasterxml.jackson.core:jackson-databind:' + jacksonVersion
 
     // Testing
     //project builder

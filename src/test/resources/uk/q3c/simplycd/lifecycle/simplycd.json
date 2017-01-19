@@ -1,0 +1,13 @@
+{
+  "remoteRepoUserName": "davidsowerby",
+  "test": true,
+  "testQualityGate": true,
+  "integrationTest": false,
+  "integrationTestQualityGate": false,
+  "functionalTest": false,
+  "functionalTestQualityGate": false,
+  "acceptanceTest": false,
+  "acceptanceTestQualityGate": false,
+  "smokeTest": false,
+  "smokeTestQualityGate": false
+}

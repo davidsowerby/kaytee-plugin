@@ -9,7 +9,7 @@ import uk.q3c.build.changelog.ChangeLog
 class GenerateChangeLogTaskDelegate {
 
 
-    public void generate(Project project, SimplyCDContainer config, ChangeLog changelog) {
+    public void generate(Project project, ThresholdsContainer config, ChangeLog changelog) {
 
         changelog.remoteRepoUser(config.getRemoteRepoUserName())
         changelog.projectDirParent(project.getProjectDir().getParentFile())

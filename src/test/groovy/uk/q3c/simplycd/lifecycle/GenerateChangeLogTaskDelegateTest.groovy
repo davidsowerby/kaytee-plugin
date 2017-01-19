@@ -19,7 +19,7 @@ class GenerateChangeLogTaskDelegateTest extends Specification {
     GenerateChangeLogTaskDelegate delegate
     ChangeLog changeLog = Mock(ChangeLog)
     Project project = Mock(Project)
-    SimplyCDContainer simplyCDContainer = Mock(SimplyCDContainer)
+    ThresholdsContainer simplyCDContainer = Mock(ThresholdsContainer)
 
     void setup() {
         temp = temporaryFolder.getRoot()
