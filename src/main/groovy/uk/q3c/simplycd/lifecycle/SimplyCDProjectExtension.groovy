@@ -1,4 +1,7 @@
 package uk.q3c.simplycd.lifecycle
+
+import org.gradle.util.ConfigureUtil
+
 /**
  *
  * Properties relating to the project from a SimplyCD perspective.
@@ -12,37 +15,49 @@ class SimplyCDProjectExtension {
 
     String remoteRepoUserName = "davidsowerby";
 
-    Boolean test = true
-    Boolean testQualityGate = true
-    Boolean integrationTest = false
-    Boolean integrationTestQualityGate = false
-    Boolean functionalTest = false
-    Boolean functionalTestQualityGate = false
-    Boolean acceptanceTest = false
-    Boolean acceptanceTestQualityGate = false
-    Boolean smokeTest = false
-    Boolean smokeTestQualityGate = false
 
+    class GroupConfig {
+        boolean enabled = false
+        boolean qualityGate = false
+        boolean auto = true
+        boolean manual = false
+        boolean external = false
+        String externalRepoUrl = ""
+        String externalRepoTask = "test"
+    }
 
-    boolean testEnabled(String group) {
-        switch (group) {
-            case 'test': return test
-            case 'integrationTest': return integrationTest
-            case 'functionalTest': return functionalTest
-            case 'acceptanceTest': return acceptanceTest
-            case 'smokeTest': return smokeTest
+    class UnitTestConfig extends GroupConfig {
+        UnitTestConfig() {
+            super.setEnabled(true)
         }
     }
 
-    boolean qualityGateEnabled(String group) {
-        switch (group) {
-            case 'test': return testQualityGate
-            case 'integrationTest': return integrationTestQualityGate
-            case 'functionalTest': return functionalTestQualityGate
-            case 'acceptanceTest': return acceptanceTestQualityGate
-            case 'smokeTest': return smokeTestQualityGate
-        }
+    UnitTestConfig unitTest = new UnitTestConfig()
+    GroupConfig integrationTest = new GroupConfig()
+    GroupConfig functionalTest = new GroupConfig()
+    GroupConfig acceptanceTest = new GroupConfig()
+    GroupConfig smokeTest = new GroupConfig()
+
+    def unitTest(Closure closure) {
+        ConfigureUtil.configure(closure, unitTest)
     }
+
+    def integrationTest(Closure closure) {
+        ConfigureUtil.configure(closure, integrationTest)
+    }
+
+    def functionalTest(Closure closure) {
+        ConfigureUtil.configure(closure, functionalTest)
+    }
+
+    def acceptanceTest(Closure closure) {
+        ConfigureUtil.configure(closure, acceptanceTest)
+    }
+
+    def smokeTest(Closure closure) {
+        ConfigureUtil.configure(closure, smokeTest)
+    }
+
     /**
      * This seems unnecessary, but the extension is byte enhanced by Gradle, which causes Jackson to blow up (stack overflow)
      * This just copies out the data into an un-enhanced instance
@@ -52,16 +67,7 @@ class SimplyCDProjectExtension {
      */
     SimplyCDProjectExtension copy() {
         SimplyCDProjectExtension properConfig = new SimplyCDProjectExtension()
-        properConfig.remoteRepoUserName = this.remoteRepoUserName
-        properConfig.testQualityGate = this.testQualityGate
-        properConfig.integrationTest = this.integrationTest
-        properConfig.integrationTestQualityGate = this.integrationTestQualityGate
-        properConfig.functionalTest = this.functionalTest
-        properConfig.functionalTestQualityGate = this.functionalTestQualityGate
-        properConfig.acceptanceTest = this.acceptanceTest
-        properConfig.acceptanceTestQualityGate = this.acceptanceTestQualityGate
-        properConfig.smokeTest = this.smokeTest
-        properConfig.smokeTestQualityGate = this.smokeTestQualityGate
+
         return properConfig
     }
 
