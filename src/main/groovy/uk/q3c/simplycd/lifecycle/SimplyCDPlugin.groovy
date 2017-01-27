@@ -13,16 +13,16 @@ import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSetContainer
 
 import javax.inject.Inject
 
+import static uk.q3c.simplycd.lifecycle.TaskNames.*
+
 /**
  * Created by David Sowerby on 19 Dec 2016
  */
 public class SimplyCDPlugin implements Plugin<Project> {
 
-    public final static String CREATE_BUILD_INFO_TASK_NAME = 'createBuildInfo'
-    public final static String GENERATE_CHANGE_LOG_TASK_NAME = 'generateChangeLog'
-    public final static String GENERATE_CONFIG_TASK_NAME = 'simplycdConfigToJson'
+
     public final
-    static List<String> defaultTestSets = ImmutableList.of("integrationTest", "functionalTest", "acceptanceTest", "smokeTest")
+    static List<String> defaultTestSets = ImmutableList.of(INTEGRATION_TEST, FUNCTIONAL_TEST, ACCEPTANCE_TEST, PRODUCTION_TEST)
 
     private final Instantiator instantiator
 

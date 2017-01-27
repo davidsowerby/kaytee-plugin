@@ -1,0 +1,27 @@
+package uk.q3c.simplycd.lifecycle
+
+/**
+ * Created by David Sowerby on 27 Jan 2017
+ */
+class TaskNames {
+
+    public final static String CREATE_BUILD_INFO_TASK_NAME = 'createBuildInfo'
+    public final static String GENERATE_CHANGE_LOG_TASK_NAME = 'generateChangeLog'
+    public final static String GENERATE_CONFIG_TASK_NAME = 'simplycdConfigToJson'
+
+    public final static String UNIT_TEST = 'test'
+    public final static String UNIT_TEST_QUALITY_GATE = 'testQualityGate'
+
+    public final static String INTEGRATION_TEST = 'integrationTest'
+    public final static String INTEGRATION_QUALITY_GATE = 'integrationTestQualityGate'
+
+    public final static String FUNCTIONAL_TEST = 'functionalTest'
+    public final static String FUNCTIONAL_QUALITY_GATE = 'functionalTestQualityGate'
+
+    public final static String ACCEPTANCE_TEST = 'acceptanceTest'
+    public final static String ACCEPTANCE_QUALITY_GATE = 'acceptanceTestQualityGate'
+
+
+    public final static String PRODUCTION_TEST = 'productionTest'
+    public final static String PRODUCTION_QUALITY_GATE = 'productionTestQualityGate'
+}

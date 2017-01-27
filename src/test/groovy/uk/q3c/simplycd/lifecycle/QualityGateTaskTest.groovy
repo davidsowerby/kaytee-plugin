@@ -48,7 +48,7 @@ class QualityGateTaskTest extends Specification {
 
         given:
         setupFile()
-        simplycd.integrationTestQualityGate = true
+        simplycd.integrationTest.qualityGate = true
 
         when:
         task.evaluate()
@@ -61,7 +61,7 @@ class QualityGateTaskTest extends Specification {
     def "results file missing"() {
 
         given:
-        simplycd.integrationTestQualityGate = true
+        simplycd.integrationTest.qualityGate = true
 
         when:
         task.evaluate()
@@ -71,7 +71,7 @@ class QualityGateTaskTest extends Specification {
         ex.getMessage().equals('FileNotFoundException occurred in QualityGateTask for integrationTest')
     }
 
-    def "check passes because quality check is disabled"() {
+    def "check still fails when disabled - disabled refers only to SimplyCD server"() {
         given:
 
         setupFile()
@@ -80,13 +80,14 @@ class QualityGateTaskTest extends Specification {
         task.evaluate()
 
         then:
-        noExceptionThrown()
+        GradleException ex = thrown()
+        ex.getMessage().equals('Code coverage failed')
     }
 
     def "check passes"() {
         given:
 
-        simplycd.integrationTestQualityGate = true
+        simplycd.integrationTest.qualityGate = true
         testConfiguration.instruction = 50
         testConfiguration.branch = 70
         testConfiguration.complexity = 66

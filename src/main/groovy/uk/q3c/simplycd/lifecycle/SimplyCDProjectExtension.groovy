@@ -36,7 +36,7 @@ class SimplyCDProjectExtension {
     GroupConfig integrationTest = new GroupConfig()
     GroupConfig functionalTest = new GroupConfig()
     GroupConfig acceptanceTest = new GroupConfig()
-    GroupConfig smokeTest = new GroupConfig()
+    GroupConfig productionTest = new GroupConfig()
 
     def unitTest(Closure closure) {
         ConfigureUtil.configure(closure, unitTest)
@@ -54,8 +54,8 @@ class SimplyCDProjectExtension {
         ConfigureUtil.configure(closure, acceptanceTest)
     }
 
-    def smokeTest(Closure closure) {
-        ConfigureUtil.configure(closure, smokeTest)
+    def productionTest(Closure closure) {
+        ConfigureUtil.configure(closure, productionTest)
     }
 
     /**

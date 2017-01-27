@@ -19,7 +19,7 @@ class SimplyCDPluginFTest extends Specification {
     File projectDir
     File buildDir
     GradleGroovyBuilder gradleFile
-    final String versionUnderTest = '0.2.1.8'
+    final String versionUnderTest = '0.7.2.18'
     String output
     BuildResult result
     Map<String, String> outputLines
@@ -50,9 +50,9 @@ class SimplyCDPluginFTest extends Specification {
         then:
 //        confirmPluginsContains('JavaPlugin', 'GroovyPlugin', 'MavenPlugin', 'MavenPublishPlugin', 'SimplyCDPlugin')
         //gradle changes camel case to open case - 'integrationTest' becomes 'integration test
-        confirmSourceSetsContains('test', 'main', 'integration test', 'smoke test', 'acceptance test', 'functional test')
-        confirmTasksContains("':test'", "':integrationTest'", "':acceptanceTest'", "':functionalTest'", "':smokeTest'")
-        confirmQualityTasksContains('integrationTestQualityGate', 'acceptanceTestQualityGate', 'functionalTestQualityGate', 'smokeTestQualityGate')
+        confirmSourceSetsContains('test', 'main', 'integration test', 'production test', 'acceptance test', 'functional test')
+        confirmTasksContains("':test'", "':integrationTest'", "':acceptanceTest'", "':functionalTest'", "':productionTest'")
+        confirmQualityTasksContains('integrationTestQualityGate', 'acceptanceTestQualityGate', 'functionalTestQualityGate', 'productionTestQualityGate')
         confirmQualityTasksContains('testQualityGate')
     }
 
@@ -94,6 +94,7 @@ class SimplyCDPluginFTest extends Specification {
         }
         for (String st : s) {
             if (!elements.contains(st)) {
+                println "unable to find element: " + st
                 return false
             }
         }

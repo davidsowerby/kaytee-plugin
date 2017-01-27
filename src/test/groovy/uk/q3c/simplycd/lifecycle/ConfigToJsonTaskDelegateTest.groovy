@@ -26,7 +26,7 @@ class ConfigToJsonTaskDelegateTest extends Specification {
     SimplyCDProjectExtension projectInfo = new SimplyCDProjectExtension()
     ThresholdsContainer thresholdsContainer = new ThresholdsContainer(instantiator)
     ObjectMapper objectMapper = new ObjectMapper()
-    Instantiator instantiator = Mock()
+    Instantiator instantiator = Mock(Instantiator)
 
     void setup() {
         thresholdsContainer.add(new TestGroupThresholds('integrationTest'))
