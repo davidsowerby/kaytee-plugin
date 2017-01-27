@@ -15,7 +15,7 @@ apply plugin: 'uk.q3c.simplycd'
 
 
 group 'uk.q3c.simplycd'
-version '0.7.2.18'
+version '0.7.3.19'
 
 
 

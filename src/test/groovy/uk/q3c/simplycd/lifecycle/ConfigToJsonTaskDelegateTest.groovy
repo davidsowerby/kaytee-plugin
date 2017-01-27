@@ -41,26 +41,26 @@ class ConfigToJsonTaskDelegateTest extends Specification {
 
     def "writeInfo"() {
         given:
-        File expectedSimplyFile = new File(temp, 'build/simplycd.json')
-        File expectedThresholdsFile = new File(temp, 'build/thresholds.json')
+        File actualSimplyFile = new File(temp, 'build/simplycd.json')
+        File actualThresholdsFile = new File(temp, 'build/thresholds.json')
 
         when:
         delegate.writeInfo()
 
         then:
-        expectedSimplyFile.exists()
-        expectedThresholdsFile.exists()
+        actualSimplyFile.exists()
+        actualThresholdsFile.exists()
 
         when: "run a second time, so tha t build dir already there"
         delegate.writeInfo()
 
         then:
-        expectedSimplyFile.exists()
-        expectedThresholdsFile.exists()
+        actualSimplyFile.exists()
+        actualThresholdsFile.exists()
 
         then:
-        !FileTestUtil.compare(expectedSimplyFile, TestResource.resource(this, 'simplycd.json')).present
-        !FileTestUtil.compare(expectedThresholdsFile, TestResource.resource(this, 'thresholds.json')).present
+        !FileTestUtil.compare(actualSimplyFile, TestResource.resource(this, 'simplycd.json')).present
+        !FileTestUtil.compare(actualThresholdsFile, TestResource.resource(this, 'thresholds.json')).present
 
     }
 
