@@ -11,6 +11,19 @@ class ThresholdsContainer extends AbstractNamedDomainObjectContainer<TestGroupTh
         super(TestGroupThresholds.class, instantiator)
     }
 
+    /**
+     * copy constructor
+     */
+    ThresholdsContainer(ThresholdsContainer other) {
+        super(TestGroupThresholds.class, other.instantiator)
+        Iterator<TestGroupThresholds> iter = other.iterator()
+        while (iter.hasNext()) {
+            TestGroupThresholds otherEntry = iter.next()
+            TestGroupThresholds newEntry = create(otherEntry.name)
+            newEntry.copy(otherEntry)
+        }
+    }
+
     @Override
     protected TestGroupThresholds doCreate(String name) {
         return new TestGroupThresholds(name)

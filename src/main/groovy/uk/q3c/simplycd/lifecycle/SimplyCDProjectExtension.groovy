@@ -13,24 +13,18 @@ import org.gradle.util.ConfigureUtil
 
 class SimplyCDProjectExtension {
 
-    String remoteRepoUserName = "davidsowerby";
-
-
-    class GroupConfig {
-        boolean enabled = false
-        boolean qualityGate = false
-        boolean auto = true
-        boolean manual = false
-        boolean external = false
-        String externalRepoUrl = ""
-        String externalRepoTask = "test"
+    SimplyCDProjectExtension() {
     }
 
-    class UnitTestConfig extends GroupConfig {
-        UnitTestConfig() {
-            super.setEnabled(true)
-        }
+    SimplyCDProjectExtension(SimplyCDProjectExtension other) {
+        unitTest = new UnitTestConfig(other.unitTest)
+        integrationTest = new GroupConfig(other.integrationTest)
+        functionalTest = new GroupConfig(other.functionalTest)
+        acceptanceTest = new GroupConfig(other.acceptanceTest)
+        productionTest = new GroupConfig(other.productionTest)
     }
+    String remoteRepoUserName = "davidsowerby"
+
 
     UnitTestConfig unitTest = new UnitTestConfig()
     GroupConfig integrationTest = new GroupConfig()
@@ -60,15 +54,41 @@ class SimplyCDProjectExtension {
 
     /**
      * This seems unnecessary, but the extension is byte enhanced by Gradle, which causes Jackson to blow up (stack overflow)
-     * This just copies out the data into an un-enhanced instance
+     * This just copies out the data into an un-enhanced instance, so Jackson does not get upset.
+     *
+     * You can just as easily use the copy constructor
      *
      * @param config
      * @return
      */
     SimplyCDProjectExtension copy() {
-        SimplyCDProjectExtension properConfig = new SimplyCDProjectExtension()
-
-        return properConfig
+        return new SimplyCDProjectExtension(this)
     }
 
+    boolean equals(o) {
+        if (this.is(o)) return true
+        if (getClass() != o.class) return false
+
+        SimplyCDProjectExtension that = (SimplyCDProjectExtension) o
+
+        if (acceptanceTest != that.acceptanceTest) return false
+        if (functionalTest != that.functionalTest) return false
+        if (integrationTest != that.integrationTest) return false
+        if (productionTest != that.productionTest) return false
+        if (remoteRepoUserName != that.remoteRepoUserName) return false
+        if (unitTest != that.unitTest) return false
+
+        return true
+    }
+
+    int hashCode() {
+        int result
+        result = remoteRepoUserName.hashCode()
+        result = 31 * result + unitTest.hashCode()
+        result = 31 * result + integrationTest.hashCode()
+        result = 31 * result + functionalTest.hashCode()
+        result = 31 * result + acceptanceTest.hashCode()
+        result = 31 * result + productionTest.hashCode()
+        return result
+    }
 }

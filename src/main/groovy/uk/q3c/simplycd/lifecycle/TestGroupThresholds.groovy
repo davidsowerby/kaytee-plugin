@@ -11,8 +11,22 @@ class TestGroupThresholds implements Named {
     double clazz = 90
     String name
 
+    TestGroupThresholds(TestGroupThresholds other) {
+        copy(other)
+    }
+
     TestGroupThresholds(String name) {
         this.name = name
+    }
+
+    void copy(TestGroupThresholds other) {
+        this.instruction = other.instruction
+        this.branch = other.branch
+        this.line = other.line
+        this.complexity = other.complexity
+        this.method = other.method
+        this.clazz = other.clazz
+        this.name = other.name
     }
 
     @Override

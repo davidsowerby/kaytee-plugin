@@ -1,0 +1,48 @@
+{
+  "remoteRepoUserName": "davidsowerby",
+  "unitTest": {
+    "enabled": true,
+    "qualityGate": false,
+    "auto": true,
+    "manual": false,
+    "external": false,
+    "externalRepoUrl": "",
+    "externalRepoTask": "test"
+  },
+  "integrationTest": {
+    "enabled": true,
+    "qualityGate": true,
+    "auto": true,
+    "manual": false,
+    "external": false,
+    "externalRepoUrl": "",
+    "externalRepoTask": "test"
+  },
+  "functionalTest": {
+    "enabled": false,
+    "qualityGate": false,
+    "auto": true,
+    "manual": false,
+    "external": false,
+    "externalRepoUrl": "",
+    "externalRepoTask": "test"
+  },
+  "acceptanceTest": {
+    "enabled": true,
+    "qualityGate": false,
+    "auto": false,
+    "manual": true,
+    "external": true,
+    "externalRepoUrl": "https://example.com",
+    "externalRepoTask": "acceptance-test"
+  },
+  "productionTest": {
+    "enabled": false,
+    "qualityGate": false,
+    "auto": true,
+    "manual": false,
+    "external": false,
+    "externalRepoUrl": "",
+    "externalRepoTask": "test"
+  }
+}

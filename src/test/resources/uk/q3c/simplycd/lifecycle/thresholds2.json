@@ -1,8 +1,8 @@
 [
   {
-    "instruction": 81.0,
-    "branch": 70.0,
-    "line": 90.0,
+    "instruction": 81.1,
+    "branch": 70.1,
+    "line": 90.1,
     "complexity": 90.0,
     "method": 90.0,
     "clazz": 90.0,

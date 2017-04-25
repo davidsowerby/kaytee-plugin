@@ -7,14 +7,10 @@ import org.gradle.api.plugins.ExtensionContainer
 import org.gradle.internal.reflect.Instantiator
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
-import spock.lang.Specification
-import uk.q3c.util.testutil.FileTestUtil
-import uk.q3c.util.testutil.TestResource
-
 /**
  * Created by David Sowerby on 19 Jan 2017
  */
-class ConfigToJsonTaskDelegateTest extends Specification {
+class ConfigToJsonTaskDelegateTest extends JsonTest {
 
     @Rule
     TemporaryFolder temporaryFolder
@@ -23,26 +19,28 @@ class ConfigToJsonTaskDelegateTest extends Specification {
     ConfigToJsonTaskDelegate delegate
     Project project = Mock(Project)
     ExtensionContainer extensionContainer = Mock(ExtensionContainer)
-    SimplyCDProjectExtension projectInfo = new SimplyCDProjectExtension()
+    SimplyCDProjectExtension simplyConfig = new SimplyCDProjectExtension()
     ThresholdsContainer thresholdsContainer = new ThresholdsContainer(instantiator)
     ObjectMapper objectMapper = new ObjectMapper()
     Instantiator instantiator = Mock(Instantiator)
 
-    void setup() {
+    def setup() {
         thresholdsContainer.add(new TestGroupThresholds('integrationTest'))
+        thresholdsContainer.add(new TestGroupThresholds('acceptanceTest'))
         temp = temporaryFolder.getRoot()
         project.buildDir >> new File(temp, 'build')
         project.logger >> logger
         project.extensions >> extensionContainer
-        extensionContainer.getByName('simplycd') >> projectInfo
+        extensionContainer.getByName('simplycd') >> simplyConfig
         extensionContainer.getByName('thresholds') >> thresholdsContainer
         delegate = new ConfigToJsonTaskDelegate(project)
     }
 
-    def "writeInfo"() {
+    def "write default info"() {
         given:
         File actualSimplyFile = new File(temp, 'build/simplycd.json')
         File actualThresholdsFile = new File(temp, 'build/thresholds.json')
+        resource = thresholdsContainer
 
         when:
         delegate.writeInfo()
@@ -51,7 +49,7 @@ class ConfigToJsonTaskDelegateTest extends Specification {
         actualSimplyFile.exists()
         actualThresholdsFile.exists()
 
-        when: "run a second time, so tha t build dir already there"
+        when: "run a second time, so that build dir already there"
         delegate.writeInfo()
 
         then:
@@ -59,10 +57,56 @@ class ConfigToJsonTaskDelegateTest extends Specification {
         actualThresholdsFile.exists()
 
         then:
-        !FileTestUtil.compare(actualSimplyFile, TestResource.resource(this, 'simplycd.json')).present
-        !FileTestUtil.compare(actualThresholdsFile, TestResource.resource(this, 'thresholds.json')).present
+        asExpectedFromFile("thresholds.json")
 
+        when:
+        resource = simplyConfig
+
+        then:
+        asExpectedFromFile("simplycd.json")
     }
 
+    def "write modified lifecycle info"() {
+        given:
+        File actualSimplyFile = new File(temp, 'build/simplycd.json')
+        File actualThresholdsFile = new File(temp, 'build/thresholds.json')
+
+        simplyConfig.integrationTest.enabled = true
+        simplyConfig.integrationTest.qualityGate = true
+        simplyConfig.acceptanceTest.enabled = true
+        simplyConfig.acceptanceTest.auto = false
+        simplyConfig.acceptanceTest.manual = true
+        simplyConfig.acceptanceTest.external = false
+        simplyConfig.acceptanceTest.external = true
+        simplyConfig.acceptanceTest.externalRepoUrl = "https://example.com"
+        simplyConfig.acceptanceTest.externalRepoTask = "acceptance-test"
+        resource = simplyConfig
+
+        when:
+        delegate.writeInfo()
+        resource2 = objectMapper.readValue(actualSimplyFile, SimplyCDProjectExtension)
+
+
+        then:
+        resource == resource2
+    }
+
+    def "write modified threshold info"() {
+        given:
+        File actualThresholdsFile = new File(temp, 'build/thresholds.json')
+        TestGroupThresholds acceptanceLevels = thresholdsContainer.getByName("acceptanceTest")
+        acceptanceLevels.instruction = 81.1
+        acceptanceLevels.branch = 70.1
+        acceptanceLevels.line = 90.1
+
+        resource = thresholdsContainer
+
+        when:
+        delegate.writeInfo()
+
+
+        then:
+        asExpectedFromFile("thresholds2.json")
+    }
 
 }
