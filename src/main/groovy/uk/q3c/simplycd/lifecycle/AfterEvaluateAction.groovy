@@ -2,6 +2,7 @@ package uk.q3c.simplycd.lifecycle
 
 import org.gradle.api.Action
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.bundling.Jar
 
@@ -12,7 +13,7 @@ class AfterEvaluateAction implements Action<Project> {
 
     final Project project
 
-    def AfterEvaluateAction(Project project) {
+    AfterEvaluateAction(Project project) {
         this.project = project
     }
 
@@ -45,6 +46,14 @@ class AfterEvaluateAction implements Action<Project> {
                 }
             }
         }
+
+        Task buildInfo = project.tasks.getByName("createBuildInfo")
+        Task clog = project.tasks.getByName("generateChangeLog")
+        Task publish = project.tasks.getByName("publishToMavenLocal")
+
+        publish.dependsOn clog
+        clog.dependsOn buildInfo
+
 
     }
 
