@@ -60,6 +60,7 @@ class CreateBuildInfoTaskDelegate {
         writeFile(properties, buildInfoFile)
         properties.setProperty("version", getVersion())
         writeFile(properties, buildInfoFile)
+        tag()
     }
 
     void writeFile(Properties properties, File buildInfoFile) {
@@ -113,7 +114,7 @@ class CreateBuildInfoTaskDelegate {
         String version = getVersion()
         gitLocal.tag(version, 'version ' + version)
         gitLocal.push(true, false)
-        logDebug("Git tagged as version " + version)
+        logLifecycle("Git tagged as version " + version)
         return version
     }
 
