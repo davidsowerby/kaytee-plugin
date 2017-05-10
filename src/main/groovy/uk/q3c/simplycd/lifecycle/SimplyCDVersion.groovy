@@ -19,20 +19,20 @@ class SimplyCDVersion {
     String toString() {
         File propertiesFile = new File(project.getBuildDir(), CreateBuildInfoTaskDelegate.PATH_TO_BUILD_INFO_PROPS)
 
-        String buildNumber
-        if (!propertiesFile.exists()) {
-            buildNumber = 'dev'
-        } else {
+        String buildNumber = 'dev'
+        if (propertiesFile.exists()) {
             Properties buildProperties = new Properties()
             try {
                 buildProperties.load(new FileReader(propertiesFile))
                 String commitId = buildProperties.getProperty(CreateBuildInfoTaskDelegate.PROPERTY_NAME_COMMIT_ID)
                 buildNumber = new GitSHA(commitId).short()
             } catch (Exception e) {
-                project.logger.warn('Unable to load build info properties file at ' + propertiesFile.getAbsolutePath(), e)
-                buildNumber = 'dev'
+                // do nothing, just leave build number as 'dev'
+                project.logger.warn('Unable to load build info properties file at ' + propertiesFile.getAbsolutePath())
             }
+        } else {
+            project.logger.warn('Build info properties file is missing, expected at: ' + propertiesFile.getAbsolutePath())
         }
-        return project.baseVersion + '.' + buildNumber
+        return project.property("baseVersion") + '.' + buildNumber
     }
 }

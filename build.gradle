@@ -15,7 +15,7 @@ apply plugin: 'uk.q3c.simplycd'
 
 
 group 'uk.q3c.simplycd'
-version '0.7.8.24'
+version '0.7.9.25'
 
 ext.jacksonVersion = '2.8.6'
 

@@ -3,13 +3,10 @@ package uk.q3c.simplycd.lifecycle
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
 import uk.q3c.build.gitplus.gitplus.GitPlus
-import uk.q3c.build.gitplus.local.GitBranch
-import uk.q3c.build.gitplus.local.GitLocal
-import uk.q3c.build.gitplus.local.GitLocalConfiguration
+import uk.q3c.build.gitplus.local.*
 
-import java.time.LocalDateTime
+import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
-
 /**
  * Carries out most of the work for {@link CreateBuildInfoTask}, to enable testing
 
@@ -44,9 +41,11 @@ class CreateBuildInfoTaskDelegate {
     void writeInfo() throws IOException {
         logLifecycle("creating build info file")
         final Properties properties = new Properties()
-        properties.setProperty("baseVersion", project.baseVersion as String)
-        properties.setProperty("date", LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME))
-        properties.setProperty(PROPERTY_NAME_COMMIT_ID, getCommitId())
+        final String baseVersion = project.property("baseVersion") as String
+        properties.setProperty("baseVersion", baseVersion)
+        properties.setProperty("date", OffsetDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME))
+        String commitId = getCommitId()
+        properties.setProperty(PROPERTY_NAME_COMMIT_ID, commitId)
         properties.setProperty("host", hostName())
         final Project project = getProject()
         final File buildResourcesDir = new File(project.getBuildDir(), "resources/main")
@@ -60,7 +59,7 @@ class CreateBuildInfoTaskDelegate {
         writeFile(properties, buildInfoFile)
         properties.setProperty("version", getVersion())
         writeFile(properties, buildInfoFile)
-        tag()
+        tag(commitId)
     }
 
     void writeFile(Properties properties, File buildInfoFile) {
@@ -108,10 +107,33 @@ class CreateBuildInfoTaskDelegate {
         return gitLocal.latestCommitSHA(currentBranch).getSha()
     }
 
-    private String tag() {
+    /**
+     * It is entirely possible that a tag for the commit being built has already been created - a build re-run for example.
+     * Existence of tag is checked first, and if already there, no action taken
+     *
+     * @return the tag value, either created or confirmed
+     */
+    private String tag(String commitId) {
 
         final GitLocal gitLocal = gitPlus.getLocal()
         String version = getVersion()
+
+        // look for existing tag with this version
+        final List<Tag> tags = gitLocal.tags()
+        boolean tagFound = false
+        for (Tag tag : tags) {
+            if (tag.tagName.equals(version)) {
+                logDebug("version tag already exists")
+                tagFound = true
+                if (tag.commit.hash != commitId) {
+                    throw new GitLocalException("A duplicate tag '$version' has been found, but is attached to commit $commitId, instead of the current commit ${tag.commit.hash}")
+                }
+                break
+            }
+        }
+        if (tagFound) {
+            return version
+        }
         gitLocal.tag(version, 'version ' + version)
         gitLocal.push(true, false)
         logLifecycle("Git tagged as version " + version)
