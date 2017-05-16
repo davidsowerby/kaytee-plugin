@@ -14,11 +14,10 @@ import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSetContainer
 import javax.inject.Inject
 
 import static uk.q3c.simplycd.lifecycle.TaskNames.*
-
 /**
  * Created by David Sowerby on 19 Dec 2016
  */
-public class SimplyCDPlugin implements Plugin<Project> {
+class SimplyCDPlugin implements Plugin<Project> {
 
 
     public final
@@ -28,7 +27,7 @@ public class SimplyCDPlugin implements Plugin<Project> {
 
 
     @Inject
-    public SimplyCDPlugin(Instantiator instantiator) {
+    SimplyCDPlugin(Instantiator instantiator) {
         this.instantiator = instantiator
     }
 
@@ -64,6 +63,17 @@ public class SimplyCDPlugin implements Plugin<Project> {
 
     void config(Project project) {
         project.extensions.create('simplycd', SimplyCDProjectExtension)
+        SimplyCDProjectExtension config = project.extensions.getByName("simplycd") as SimplyCDProjectExtension
+        config.wikiLocalConfiguration.active = true
+        config.wikiLocalConfiguration.cloneFromRemote = true
+        config.gitRemoteConfiguration.repoName = project.name
+        config.gitRemoteConfiguration.repoUser = config.remoteRepoUserName
+        config.gitLocalConfiguration.projectName = project.name
+        config.gitLocalConfiguration.projectDirParent = project.projectDir.parentFile
+
+        config.changeLog.projectName = project.name
+        config.changeLog.projectDirParent = project.projectDir.parentFile
+        config.changeLog.autoTagLatestCommit = false
 
         ThresholdsContainer thresholds = project.extensions.create('thresholds', ThresholdsContainer, instantiator)
         thresholds.add(new TestGroupThresholds('test'))
@@ -88,7 +98,6 @@ public class SimplyCDPlugin implements Plugin<Project> {
 
     @SuppressWarnings("GrMethodMayBeStatic")
     private void defaultProperties(Project project) {
-        project.ext.baseVersion = '0.0.0'
         project.sourceCompatibility = '1.8'
         project.version = new SimplyCDVersion(project)
     }

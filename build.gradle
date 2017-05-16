@@ -15,15 +15,14 @@ apply plugin: 'uk.q3c.simplycd'
 
 
 group 'uk.q3c.simplycd'
-version '0.7.9.25'
+version '0.7.10.26'
 
 ext.jacksonVersion = '2.8.6'
 
 dependencies {
 
-    //Git
-    compile 'uk.q3c.build:gitplus:0.24.0.75'
-    compile 'uk.q3c.build:changelog:0.3.1.12'
+    //Changelog (also brings in GitPlus)
+    compile 'uk.q3c.build:changelog:0.4.3.23'
 
     // Gradle
     compile gradleApi()

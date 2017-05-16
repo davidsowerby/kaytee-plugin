@@ -34,6 +34,7 @@ class ConfigToJsonTaskDelegateTest extends JsonTest {
         extensionContainer.getByName('simplycd') >> simplyConfig
         extensionContainer.getByName('thresholds') >> thresholdsContainer
         delegate = new ConfigToJsonTaskDelegate(project)
+//        simplyConfig.changeLogConfiguration.outputTarget()
     }
 
     def "write default info"() {

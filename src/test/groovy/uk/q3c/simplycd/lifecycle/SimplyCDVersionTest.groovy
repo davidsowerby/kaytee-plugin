@@ -4,6 +4,7 @@ import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
 import org.gradle.api.logging.Logger
+import org.gradle.api.plugins.ExtensionContainer
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
@@ -21,6 +22,9 @@ class SimplyCDVersionTest extends Specification {
     Project project
     File buildDir
     Logger logger = Mock(Logger)
+    SimplyCDProjectExtension extension
+    ExtensionContainer extensions = Mock(ExtensionContainer)
+
 
     def setup() {
         temp = temporaryFolder.getRoot()
@@ -29,6 +33,11 @@ class SimplyCDVersionTest extends Specification {
         project.buildDir >> buildDir
         version = new SimplyCDVersion(project)
         project.logger >> logger
+        extension = new SimplyCDProjectExtension()
+        project.extensions >> extensions
+        extensions.getByName("simplycd") >> extension
+
+
     }
 
 
@@ -40,7 +49,7 @@ class SimplyCDVersionTest extends Specification {
         File f = new File(buildDir, CreateBuildInfoTaskDelegate.PATH_TO_BUILD_INFO_PROPS)
         FileWriter fw = new FileWriter(f)
         properties.store(fw, "any")
-        project.property("baseVersion") >> "0.9.8"
+        extension.setProperty("baseVersion", "0.9.8")
 
         expect:
         version.toString() == "0.9.8." + testSha().short()
@@ -48,7 +57,7 @@ class SimplyCDVersionTest extends Specification {
 
     def "no props file, uses 'dev' as build number"() {
         given:
-        project.property("baseVersion") >> "0.9.8"
+        extension.setProperty("baseVersion", "0.9.8")
 
         expect:
         version.toString() == "0.9.8." + "dev"
@@ -61,7 +70,7 @@ class SimplyCDVersionTest extends Specification {
         File f = new File(buildDir, CreateBuildInfoTaskDelegate.PATH_TO_BUILD_INFO_PROPS)
         FileWriter fw = new FileWriter(f)
         properties.store(fw, "any")
-        project.property("baseVersion") >> "0.9.8"
+        extension.setProperty("baseVersion", "0.9.8")
 
         expect:
         version.toString() == "0.9.8." + "dev"

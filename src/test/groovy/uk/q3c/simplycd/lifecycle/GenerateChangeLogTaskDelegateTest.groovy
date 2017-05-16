@@ -1,47 +1,41 @@
 package uk.q3c.simplycd.lifecycle
 
 import org.gradle.api.Project
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
+import org.gradle.api.logging.Logger
+import org.gradle.api.plugins.ExtensionContainer
 import spock.lang.Specification
 import uk.q3c.build.changelog.ChangeLog
-
 /**
  * Created by David Sowerby on 29 Dec 2016
  */
 class GenerateChangeLogTaskDelegateTest extends Specification {
 
-    @Rule
-    TemporaryFolder temporaryFolder
-    File temp
-    File projectDir
+    Logger logger = Mock(Logger)
 
     GenerateChangeLogTaskDelegate delegate
     ChangeLog changeLog = Mock(ChangeLog)
     Project project = Mock(Project)
-    ThresholdsContainer simplyCDContainer = Mock(ThresholdsContainer)
+    SimplyCDProjectExtension simplyCdConfig
+    ExtensionContainer projectExtensions = Mock(ExtensionContainer)
 
     void setup() {
-        temp = temporaryFolder.getRoot()
-        projectDir = new File(temp, 'wiggly')
         delegate = new GenerateChangeLogTaskDelegate()
+        project.logger >> logger
+        simplyCdConfig = new SimplyCDProjectExtension()
+        project.extensions >> projectExtensions
+        projectExtensions.getByName("simplycd") >> simplyCdConfig
     }
 
     def "Generate"() {
         given:
-        String name = 'wiggly'
 
-        project.name >> name
-        project.projectDir >> projectDir
-        simplyCDContainer.remoteRepoUserName >> 'munchkin'
+        simplyCdConfig.remoteRepoUserName = 'munchkin'
 
         when:
-        delegate.generate(project, simplyCDContainer, changeLog)
+        delegate.generate(project, changeLog)
 
         then:
-        1 * changeLog.remoteRepoUser('munchkin')
-        1 * changeLog.projectName(name)
-        1 * changeLog.projectDirParent(temp)
+        1 * changeLog.setConfiguration(simplyCdConfig.changeLog)
 
         then:
         1 * changeLog.generate()

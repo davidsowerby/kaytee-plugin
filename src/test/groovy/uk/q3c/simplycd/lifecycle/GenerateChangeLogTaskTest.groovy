@@ -15,14 +15,14 @@ class GenerateChangeLogTaskTest extends Specification {
     GenerateChangeLogTask task
 
     Project project
-    ThresholdsContainer simplyCDContainer = Mock(ThresholdsContainer)
+    ThresholdsContainer thresholdsContainer = Mock(ThresholdsContainer)
 
     def setup() {
         project = ProjectBuilder.builder().build()
         versionObject.toString() >> '9.9.9.1000'
         project.version = versionObject
-        task = project.getTasks().create("generateChangeLog", GenerateChangeLogTask.class);
-        project.extensions.add("simplycd", simplyCDContainer)
+        task = project.getTasks().create("generateChangeLog", GenerateChangeLogTask.class)
+        project.extensions.add("thresholds", thresholdsContainer)
     }
 
     def "invoke delegate"() {
@@ -34,6 +34,6 @@ class GenerateChangeLogTaskTest extends Specification {
         task.generate()
 
         then:
-        1 * delegate.generate(project, simplyCDContainer, _ as ChangeLog)
+        1 * delegate.generate(project, _ as ChangeLog)
     }
 }

@@ -1,12 +1,15 @@
 package uk.q3c.simplycd.lifecycle
 
 import org.gradle.util.ConfigureUtil
+import uk.q3c.build.changelog.DefaultChangeLogConfiguration
+import uk.q3c.build.gitplus.local.DefaultGitLocalConfiguration
+import uk.q3c.build.gitplus.remote.DefaultGitRemoteConfiguration
 
 /**
  *
  * Properties relating to the project from a SimplyCD perspective.
  *
- * <b>NOTE:</b> if you add / delete a property MAKE SURE YOU CHANGE the copy method
+ * <b>NOTE:</b> if you add / delete a property MAKE SURE YOU CHANGE the copy constructor
  *
  * Created by David Sowerby on 19 Jan 2017
  */
@@ -14,16 +17,38 @@ import org.gradle.util.ConfigureUtil
 class SimplyCDProjectExtension {
 
     SimplyCDProjectExtension() {
+        changeLog = new DefaultChangeLogConfiguration()
+        gitLocalConfiguration = new DefaultGitLocalConfiguration()
+        wikiLocalConfiguration = new DefaultGitLocalConfiguration()
+        gitRemoteConfiguration = new DefaultGitRemoteConfiguration()
     }
 
     SimplyCDProjectExtension(SimplyCDProjectExtension other) {
+
+        this.remoteRepoUserName = other.remoteRepoUserName
+        this.baseVersion = other.baseVersion
+
         unitTest = new UnitTestConfig(other.unitTest)
         integrationTest = new GroupConfig(other.integrationTest)
         functionalTest = new GroupConfig(other.functionalTest)
         acceptanceTest = new GroupConfig(other.acceptanceTest)
         productionTest = new GroupConfig(other.productionTest)
+
+        String projectName = other.changeLog.projectName // for change log copy
+        changeLog = ((other.changeLog) as DefaultChangeLogConfiguration).copy(projectName)
+
+        projectName = other.gitLocalConfiguration.projectName
+        gitLocalConfiguration = other.gitLocalConfiguration.copy(projectName)
+
+        String user = other.gitRemoteConfiguration.repoUser
+        String repoName = other.gitRemoteConfiguration.repoName
+        gitRemoteConfiguration = other.gitRemoteConfiguration.copy(user, repoName)
+
+        projectName = other.wikiLocalConfiguration.projectName
+        wikiLocalConfiguration = other.wikiLocalConfiguration.copy(projectName)
     }
     String remoteRepoUserName = "davidsowerby"
+    String baseVersion = '0.0.0.0'
 
 
     UnitTestConfig unitTest = new UnitTestConfig()
@@ -31,6 +56,12 @@ class SimplyCDProjectExtension {
     GroupConfig functionalTest = new GroupConfig()
     GroupConfig acceptanceTest = new GroupConfig()
     GroupConfig productionTest = new GroupConfig()
+
+    // Cannot use interface - Jackson does not know how to reconstruct it
+    DefaultChangeLogConfiguration changeLog
+    DefaultGitLocalConfiguration gitLocalConfiguration
+    DefaultGitLocalConfiguration wikiLocalConfiguration
+    DefaultGitRemoteConfiguration gitRemoteConfiguration
 
     def unitTest(Closure closure) {
         ConfigureUtil.configure(closure, unitTest)
@@ -50,6 +81,10 @@ class SimplyCDProjectExtension {
 
     def productionTest(Closure closure) {
         ConfigureUtil.configure(closure, productionTest)
+    }
+
+    def changelog(Closure closure) {
+        ConfigureUtil.configure(closure, changeLog)
     }
 
     /**

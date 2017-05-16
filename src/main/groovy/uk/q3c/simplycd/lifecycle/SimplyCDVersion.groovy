@@ -33,6 +33,7 @@ class SimplyCDVersion {
         } else {
             project.logger.warn('Build info properties file is missing, expected at: ' + propertiesFile.getAbsolutePath())
         }
-        return project.property("baseVersion") + '.' + buildNumber
+        SimplyCDProjectExtension extension = project.extensions.getByName("simplycd") as SimplyCDProjectExtension
+        return extension.getProperty("baseVersion") + '.' + buildNumber
     }
 }

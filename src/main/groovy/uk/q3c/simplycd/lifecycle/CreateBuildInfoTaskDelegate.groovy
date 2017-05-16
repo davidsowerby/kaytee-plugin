@@ -2,6 +2,7 @@ package uk.q3c.simplycd.lifecycle
 
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
+import uk.q3c.build.gitplus.GitPlusFactory
 import uk.q3c.build.gitplus.gitplus.GitPlus
 import uk.q3c.build.gitplus.local.*
 
@@ -23,6 +24,7 @@ class CreateBuildInfoTaskDelegate {
 
     CreateBuildInfoTaskDelegate(Project project) {
         this.project = project
+        gitPlus = GitPlusFactory.instance
     }
 
 /**
@@ -40,6 +42,11 @@ class CreateBuildInfoTaskDelegate {
  */
     void writeInfo() throws IOException {
         logLifecycle("creating build info file")
+        SimplyCDProjectExtension config = project.extensions.getByName("simplycd") as SimplyCDProjectExtension
+        gitPlus.local.localConfiguration = config.gitLocalConfiguration
+        gitPlus.wikiLocal.localConfiguration = config.wikiLocalConfiguration
+        gitPlus.remote.configuration = config.gitRemoteConfiguration
+
         final Properties properties = new Properties()
         final String baseVersion = project.property("baseVersion") as String
         properties.setProperty("baseVersion", baseVersion)
@@ -114,14 +121,16 @@ class CreateBuildInfoTaskDelegate {
      * @return the tag value, either created or confirmed
      */
     private String tag(String commitId) {
-
+        logLifecycle("tagging $commitId")
         final GitLocal gitLocal = gitPlus.getLocal()
         String version = getVersion()
 
         // look for existing tag with this version
         final List<Tag> tags = gitLocal.tags()
+        logLifecycle("Number of existing tags: ${tags.size()}")
         boolean tagFound = false
         for (Tag tag : tags) {
+            logLifecycle("checking tag with name: ${tag.tagName}")
             if (tag.tagName.equals(version)) {
                 logDebug("version tag already exists")
                 tagFound = true

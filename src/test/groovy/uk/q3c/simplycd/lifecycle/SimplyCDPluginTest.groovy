@@ -36,10 +36,11 @@ class SimplyCDPluginTest extends Specification {
 
     def "apply"() {
 
-//        when:
+        when:
 //        plugin.apply(project)
-//
-//        then:
+        true
+
+        then:
 //        1 * project.apply(plugin( JavaPlugin.class))
 //        1 * project.apply(plugin(GroovyPlugin.class))
 //        1 * project.apply(plugin('maven'))

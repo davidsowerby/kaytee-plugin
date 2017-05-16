@@ -5,6 +5,7 @@ import org.apache.commons.codec.digest.DigestUtils
 import org.eclipse.jgit.lib.PersonIdent
 import org.gradle.api.Project
 import org.gradle.api.logging.Logger
+import org.gradle.api.plugins.ExtensionContainer
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
@@ -33,6 +34,7 @@ class CreateBuildInfoTaskDelegateTest extends Specification {
     GitLocalConfiguration localConfiguration
     GitRemote gitRemote = Mock(GitRemote)
     GitRemoteConfiguration remoteConfiguration = Mock(GitRemoteConfiguration)
+    WikiLocal wikiLocal = Mock(WikiLocal)
     GitSHA gitSHA
     SimplyCDVersion versionObject = Mock(SimplyCDVersion)
     Project project = Mock(Project)
@@ -42,13 +44,18 @@ class CreateBuildInfoTaskDelegateTest extends Specification {
     File propertiesFile
     String version = '9.9.9.1000'
     String baseVersion = '9.9.9'
+    SimplyCDProjectExtension simplyCdConfig
+    ExtensionContainer projectExtensions = Mock(ExtensionContainer)
+
 
     def setup() {
+        simplyCdConfig = new SimplyCDProjectExtension()
         gitSHA = testSha()
         gitRemote.configuration >> remoteConfiguration
         localConfiguration = new DefaultGitLocalConfiguration()
         gitPlus.local >> gitLocal
         gitPlus.remote >> gitRemote
+        gitPlus.wikiLocal >> wikiLocal
         gitLocal.localConfiguration >> localConfiguration
 
         temp = temporaryFolder.getRoot()
@@ -64,11 +71,18 @@ class CreateBuildInfoTaskDelegateTest extends Specification {
         versionObject.toString() >> version
         project.version >> versionObject
         project.getLogger() >> logger
+        project.extensions >> projectExtensions
+        projectExtensions.getByName("simplycd") >> simplyCdConfig
         delegate = new CreateBuildInfoTaskDelegate(project)
         delegate.gitPlus = gitPlus
     }
 
     def "Write build info"() {
+        given:
+        PersonIdent person = new PersonIdent("a", "b")
+        GitCommit gitCommit = new GitCommit("x", testSha().sha, person, person)
+        Tag existingTag = new Tag('9.9.9.1000', ZonedDateTime.now(), ZonedDateTime.now(), person, "msg", gitCommit, Tag.TagType.ANNOTATED)
+
         when:
         delegate.writeInfo()
 
@@ -80,6 +94,7 @@ class CreateBuildInfoTaskDelegateTest extends Specification {
         1 * gitLocal.push(true, false)
         1 * gitLocal.currentBranch() >> new GitBranch('develop')
         1 * gitLocal.latestCommitSHA(_) >> gitSHA
+        1 * gitLocal.tags() >> ImmutableList.of()
         propertiesFile.exists()
 
         then:

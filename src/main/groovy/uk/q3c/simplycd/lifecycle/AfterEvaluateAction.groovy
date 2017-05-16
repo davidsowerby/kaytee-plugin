@@ -54,8 +54,17 @@ class AfterEvaluateAction implements Action<Project> {
         publish.dependsOn clog
         clog.dependsOn buildInfo
 
+        confirmConfiguration()
 
     }
 
-
+    /**
+     * Set any required config that has not already been set, or fail
+     */
+    private void confirmConfiguration() {
+        SimplyCDProjectExtension config = project.extensions.getByName("simplycd") as SimplyCDProjectExtension
+        if (config.gitRemoteConfiguration.repoUser == "not specified") {
+            throw new SimplyCDConfigurationException("'simplycd.gitRemoteConfiguration.repoUser' must be set to the user name of your remote repo")
+        }
+    }
 }
