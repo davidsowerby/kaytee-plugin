@@ -82,6 +82,7 @@ class CreateBuildInfoTaskDelegateTest extends Specification {
         PersonIdent person = new PersonIdent("a", "b")
         GitCommit gitCommit = new GitCommit("x", testSha().sha, person, person)
         Tag existingTag = new Tag('9.9.9.1000', ZonedDateTime.now(), ZonedDateTime.now(), person, "msg", gitCommit, Tag.TagType.ANNOTATED)
+        simplyCdConfig.baseVersion = '9.9.9'
 
         when:
         delegate.writeInfo()

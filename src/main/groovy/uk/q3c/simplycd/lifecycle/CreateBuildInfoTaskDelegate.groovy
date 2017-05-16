@@ -48,7 +48,7 @@ class CreateBuildInfoTaskDelegate {
         gitPlus.remote.configuration = config.gitRemoteConfiguration
 
         final Properties properties = new Properties()
-        final String baseVersion = project.property("baseVersion") as String
+        final String baseVersion = config.baseVersion
         properties.setProperty("baseVersion", baseVersion)
         properties.setProperty("date", OffsetDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME))
         String commitId = getCommitId()
