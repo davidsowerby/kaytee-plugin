@@ -80,9 +80,7 @@ class AfterEvaluateAction implements Action<Project> {
         config.changeLog.projectName = project.name
         config.changeLog.projectDirParent = project.projectDir.parentFile
         config.changeLog.autoTagLatestCommit = false
-        logger.debug("setting change log remote repo user to: " + config.remoteRepoUserName)
         config.changeLog.remoteRepoUser = config.remoteRepoUserName
-        logger.debug("change log remote repo user is set to: " + config.changeLog.remoteRepoUser)
 
         logConfig(project)
         config.changeLog.validate()
