@@ -63,18 +63,6 @@ class SimplyCDPlugin implements Plugin<Project> {
 
     void config(Project project) {
         project.extensions.create('simplycd', SimplyCDProjectExtension)
-        SimplyCDProjectExtension config = project.extensions.getByName("simplycd") as SimplyCDProjectExtension
-        config.wikiLocalConfiguration.active = true
-        config.wikiLocalConfiguration.cloneFromRemote = true
-        config.gitRemoteConfiguration.repoName = project.name
-        config.gitRemoteConfiguration.repoUser = config.remoteRepoUserName
-        config.gitLocalConfiguration.projectName = project.name
-        config.gitLocalConfiguration.projectDirParent = project.projectDir.parentFile
-
-        config.changeLog.projectName = project.name
-        config.changeLog.projectDirParent = project.projectDir.parentFile
-        config.changeLog.autoTagLatestCommit = false
-
         ThresholdsContainer thresholds = project.extensions.create('thresholds', ThresholdsContainer, instantiator)
         thresholds.add(new TestGroupThresholds('test'))
 

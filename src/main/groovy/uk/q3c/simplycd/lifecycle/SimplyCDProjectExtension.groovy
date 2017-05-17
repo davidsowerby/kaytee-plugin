@@ -87,6 +87,18 @@ class SimplyCDProjectExtension {
         ConfigureUtil.configure(closure, changeLog)
     }
 
+    def gitLocal(Closure closure) {
+        ConfigureUtil.configure(closure, gitLocalConfiguration)
+    }
+
+    def gitRemote(Closure closure) {
+        ConfigureUtil.configure(closure, gitRemoteConfiguration)
+    }
+
+    def wikiLocal(Closure closure) {
+        ConfigureUtil.configure(closure, wikiLocalConfiguration)
+    }
+
     /**
      * This seems unnecessary, but the extension is byte enhanced by Gradle, which causes Jackson to blow up (stack overflow)
      * This just copies out the data into an un-enhanced instance, so Jackson does not get upset.

@@ -43,9 +43,9 @@ class CreateBuildInfoTaskDelegate {
     void writeInfo() throws IOException {
         logLifecycle("creating build info file")
         SimplyCDProjectExtension config = project.extensions.getByName("simplycd") as SimplyCDProjectExtension
-        gitPlus.local.localConfiguration = config.gitLocalConfiguration
-        gitPlus.wikiLocal.localConfiguration = config.wikiLocalConfiguration
-        gitPlus.remote.configuration = config.gitRemoteConfiguration
+        gitPlus.local.localConfiguration.copyFrom(config.gitLocalConfiguration)
+        gitPlus.wikiLocal.localConfiguration.copyFrom(config.wikiLocalConfiguration)
+        gitPlus.remote.configuration.copyFrom(config.gitRemoteConfiguration)
 
         final Properties properties = new Properties()
         final String baseVersion = config.baseVersion

@@ -19,6 +19,7 @@ class CreateBuildInfoTask extends DefaultTask {
 
     @TaskAction
     void writeInfo() throws IOException {
+        project.logger.debug("writing build info")
         try {
             delegate.writeInfo()
         }
