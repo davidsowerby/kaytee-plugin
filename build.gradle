@@ -15,7 +15,7 @@ apply plugin: 'uk.q3c.simplycd'
 
 
 group 'uk.q3c.simplycd'
-version '0.7.16.32'
+version '0.7.17.33'
 
 ext.jacksonVersion = '2.8.6'
 
@@ -26,7 +26,7 @@ dependencies {
 
 
     //Changelog (also brings in GitPlus)
-    compile 'uk.q3c.build:changelog:0.4.6.26'
+    compile 'uk.q3c.build:changelog:0.4.8.28'
 
 
     compile 'com.google.code.findbugs:annotations:3.0.0'
