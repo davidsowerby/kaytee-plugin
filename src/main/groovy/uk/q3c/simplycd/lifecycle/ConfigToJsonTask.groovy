@@ -19,13 +19,13 @@ class ConfigToJsonTask extends DefaultTask {
     }
 
     @TaskAction
-    public void writeInfo() throws IOException {
+    void writeInfo() throws IOException {
         try {
             delegate.writeInfo()
         }
         catch (Exception e) {
-            final String msg = "Failed to create simplycd config json file";
-            getLogger().lifecycle(msg, e);
+            final String msg = "Failed to create simplycd config json file"
+            getLogger().lifecycle(msg, e)
             throw new GradleException(msg, e)
         }
     }

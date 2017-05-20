@@ -48,11 +48,13 @@ class SimplyCDPlugin implements Plugin<Project> {
         testSets(project)
 
         Task t = project.tasks.create(CREATE_BUILD_INFO_TASK_NAME, CreateBuildInfoTask)
-        project.logger.lifecycle("added task " + t.getName())
+        project.logger.debug("added task " + t.getName())
         t = project.tasks.create(GENERATE_CHANGE_LOG_TASK_NAME, GenerateChangeLogTask)
-        project.logger.lifecycle("added task " + t.getName())
+        project.logger.debug("added task " + t.getName())
         t = project.tasks.create(GENERATE_CONFIG_TASK_NAME, ConfigToJsonTask)
-        project.logger.lifecycle("added task " + t.getName())
+        project.logger.debug("added task " + t.getName())
+        t = project.tasks.create(MERGE_TO_MASTER, MergeToMasterTask)
+        project.logger.debug("added task " + t.getName())
 
         config(project)
 

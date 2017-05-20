@@ -26,4 +26,5 @@ class TaskNames {
     public final static String PRODUCTION_QUALITY_GATE = 'productionTestQualityGate'
 
     public final static String LOCAL_PUBLISH = 'publishToMavenLocal'
+    public final static String MERGE_TO_MASTER = 'mergeToMaster'
 }
