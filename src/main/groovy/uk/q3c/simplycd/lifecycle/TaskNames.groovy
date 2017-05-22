@@ -5,7 +5,7 @@ package uk.q3c.simplycd.lifecycle
  */
 class TaskNames {
 
-    public final static String CREATE_BUILD_INFO_TASK_NAME = 'createBuildInfo'
+    public final static String GENERATE_BUILD_INFO_TASK_NAME = 'generateBuildInfo'
     public final static String GENERATE_CHANGE_LOG_TASK_NAME = 'generateChangeLog'
     public final static String GENERATE_CONFIG_TASK_NAME = 'simplycdConfigToJson'
 

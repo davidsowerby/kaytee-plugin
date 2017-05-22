@@ -155,5 +155,7 @@
     "providerBaseUrl": "github.com",
     "repoUser": "not specified",
     "repoName": "not specified"
-  }
+  },
+  "generateBuildInfo": true,
+  "generateChangeLog": true
 }

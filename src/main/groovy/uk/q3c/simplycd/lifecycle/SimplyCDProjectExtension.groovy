@@ -27,6 +27,8 @@ class SimplyCDProjectExtension {
 
         this.remoteRepoUserName = other.remoteRepoUserName
         this.baseVersion = other.baseVersion
+        this.generateChangeLog = other.generateChangeLog
+        this.generateBuildInfo = other.generateBuildInfo
 
         unitTest = new UnitTestConfig(other.unitTest)
         integrationTest = new GroupConfig(other.integrationTest)
@@ -63,6 +65,9 @@ class SimplyCDProjectExtension {
     DefaultGitLocalConfiguration gitLocalConfiguration
     DefaultGitLocalConfiguration wikiLocalConfiguration
     DefaultGitRemoteConfiguration gitRemoteConfiguration
+
+    boolean generateBuildInfo = true
+    boolean generateChangeLog = true
 
     def release(Closure closure) {
         ConfigureUtil.configure(closure, release)

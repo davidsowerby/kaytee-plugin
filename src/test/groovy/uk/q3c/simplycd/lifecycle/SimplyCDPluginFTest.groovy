@@ -19,7 +19,7 @@ class SimplyCDPluginFTest extends Specification {
     File projectDir
     File buildDir
     GradleGroovyBuilder gradleFile
-    final String versionUnderTest = '0.7.2.18'
+    final String versionUnderTest = '0.9.1.43'
     String output
     BuildResult result
     Map<String, String> outputLines

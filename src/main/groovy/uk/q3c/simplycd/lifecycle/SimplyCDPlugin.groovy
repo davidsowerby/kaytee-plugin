@@ -48,7 +48,7 @@ class SimplyCDPlugin implements Plugin<Project> {
         defaultProperties(project)
         testSets(project)
 
-        Task t = project.tasks.create(CREATE_BUILD_INFO_TASK_NAME, CreateBuildInfoTask)
+        Task t = project.tasks.create(GENERATE_BUILD_INFO_TASK_NAME, CreateBuildInfoTask)
         project.logger.debug("added task " + t.getName())
         t = project.tasks.create(GENERATE_CHANGE_LOG_TASK_NAME, GenerateChangeLogTask)
         project.logger.debug("added task " + t.getName())

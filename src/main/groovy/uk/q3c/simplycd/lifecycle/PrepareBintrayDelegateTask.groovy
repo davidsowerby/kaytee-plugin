@@ -28,5 +28,14 @@ class PrepareBintrayDelegateTask {
             }
             key = project.bintrayKey
         }
+
+        logDebug("bintrayKey key length: " + project.bintray.key.length())
+        logDebug("website: " + project.bintray.pkg.websiteUrl)
+        logDebug("issues: " + project.bintray.pkg.issueTrackerUrl)
+        logDebug("git: " + project.bintray.pkg.vcsUrl)
+    }
+
+    void logDebug(String msg) {
+        project.getLogger().debug(msg)
     }
 }
