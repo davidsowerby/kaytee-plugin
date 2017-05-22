@@ -46,6 +46,9 @@
     "externalRepoUrl": "",
     "externalRepoTask": "test"
   },
+  "release": {
+    "toBintray": true
+  },
   "changeLog": {
     "remoteRepoUser": "not specified",
     "templateName": "markdown.vm",

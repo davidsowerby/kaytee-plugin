@@ -56,12 +56,17 @@ class SimplyCDProjectExtension {
     GroupConfig functionalTest = new GroupConfig()
     GroupConfig acceptanceTest = new GroupConfig()
     GroupConfig productionTest = new GroupConfig()
+    ReleaseConfig release = new ReleaseConfig()
 
     // Cannot use interface - Jackson does not know how to reconstruct it
     DefaultChangeLogConfiguration changeLog
     DefaultGitLocalConfiguration gitLocalConfiguration
     DefaultGitLocalConfiguration wikiLocalConfiguration
     DefaultGitRemoteConfiguration gitRemoteConfiguration
+
+    def release(Closure closure) {
+        ConfigureUtil.configure(closure, release)
+    }
 
     def unitTest(Closure closure) {
         ConfigureUtil.configure(closure, unitTest)

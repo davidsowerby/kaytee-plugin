@@ -46,6 +46,7 @@ class CreateBuildInfoTaskDelegateTest extends Specification {
     String baseVersion = '9.9.9'
     SimplyCDProjectExtension simplyCdConfig
     ExtensionContainer projectExtensions = Mock(ExtensionContainer)
+    GitLocalConfiguration wikiConfiguration
 
 
     def setup() {
@@ -53,10 +54,12 @@ class CreateBuildInfoTaskDelegateTest extends Specification {
         gitSHA = testSha()
         gitRemote.configuration >> remoteConfiguration
         localConfiguration = new DefaultGitLocalConfiguration()
+        wikiConfiguration = new DefaultGitLocalConfiguration()
         gitPlus.local >> gitLocal
         gitPlus.remote >> gitRemote
         gitPlus.wikiLocal >> wikiLocal
         gitLocal.localConfiguration >> localConfiguration
+        wikiLocal.localConfiguration >> wikiConfiguration
 
         temp = temporaryFolder.getRoot()
         projectDir = new File(temp, "projectDir")

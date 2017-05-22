@@ -42,6 +42,7 @@ class SimplyCDPlugin implements Plugin<Project> {
         project.apply plugin: 'idea'
         project.apply plugin: 'jacoco'
         project.apply plugin: TestSetsPlugin
+        project.apply plugin: 'com.jfrog.bintray'
 
         repositories(project)
         defaultProperties(project)
@@ -54,6 +55,9 @@ class SimplyCDPlugin implements Plugin<Project> {
         t = project.tasks.create(GENERATE_CONFIG_TASK_NAME, ConfigToJsonTask)
         project.logger.debug("added task " + t.getName())
         t = project.tasks.create(MERGE_TO_MASTER, MergeToMasterTask)
+        project.logger.debug("added task " + t.getName())
+
+        t = project.tasks.create(PREPARE_BINTRAY, PrepareBintrayTask)
         project.logger.debug("added task " + t.getName())
 
         config(project)
