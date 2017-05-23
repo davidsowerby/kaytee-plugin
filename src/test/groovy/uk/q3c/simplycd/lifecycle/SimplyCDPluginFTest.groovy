@@ -7,7 +7,6 @@ import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 import uk.q3c.build.creator.gradle.GradleGroovyBuilder
-
 /**
  * Created by David Sowerby on 23 Aug 2016
  */
@@ -19,7 +18,7 @@ class SimplyCDPluginFTest extends Specification {
     File projectDir
     File buildDir
     GradleGroovyBuilder gradleFile
-    final String versionUnderTest = '0.9.1.43'
+    final String versionUnderTest = '0.9.3.45'
     String output
     BuildResult result
     Map<String, String> outputLines

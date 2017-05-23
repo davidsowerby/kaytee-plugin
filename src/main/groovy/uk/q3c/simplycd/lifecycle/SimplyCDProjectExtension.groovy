@@ -29,6 +29,7 @@ class SimplyCDProjectExtension {
         this.baseVersion = other.baseVersion
         this.generateChangeLog = other.generateChangeLog
         this.generateBuildInfo = other.generateBuildInfo
+        this.publishToBintray = other.publishToBintray
 
         unitTest = new UnitTestConfig(other.unitTest)
         integrationTest = new GroupConfig(other.integrationTest)
@@ -51,6 +52,9 @@ class SimplyCDProjectExtension {
     }
     String remoteRepoUserName = "davidsowerby"
     String baseVersion = '0.0.0.0'
+    boolean generateBuildInfo = true
+    boolean generateChangeLog = true
+    boolean publishToBintray = true
 
 
     UnitTestConfig unitTest = new UnitTestConfig()
@@ -66,8 +70,6 @@ class SimplyCDProjectExtension {
     DefaultGitLocalConfiguration wikiLocalConfiguration
     DefaultGitRemoteConfiguration gitRemoteConfiguration
 
-    boolean generateBuildInfo = true
-    boolean generateChangeLog = true
 
     def release(Closure closure) {
         ConfigureUtil.configure(closure, release)

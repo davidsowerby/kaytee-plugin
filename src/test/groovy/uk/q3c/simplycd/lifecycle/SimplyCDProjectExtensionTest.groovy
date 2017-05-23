@@ -23,6 +23,9 @@ class SimplyCDProjectExtensionTest extends Specification {
         configuration.gitLocalConfiguration.projectName = "what?"
         configuration.gitRemoteConfiguration.repoUser = "bananarama"
         configuration.baseVersion = "2.3.4.5"
+        configuration.generateBuildInfo = false
+        configuration.generateChangeLog = false
+        configuration.publishToBintray = false
 
         when:
         objectMapper.writeValue(sw, configuration)
@@ -45,6 +48,10 @@ class SimplyCDProjectExtensionTest extends Specification {
         configuration.gitLocalConfiguration.projectName = "what?"
         configuration.gitRemoteConfiguration.repoUser = "bananarama"
         configuration.baseVersion = "2.3.4.5"
+        configuration.generateBuildInfo = false
+        configuration.generateChangeLog = false
+        configuration.publishToBintray = false
+
 
         when:
         SimplyCDProjectExtension configuration2 = new SimplyCDProjectExtension(configuration)

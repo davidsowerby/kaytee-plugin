@@ -1,6 +1,9 @@
 {
   "remoteRepoUserName": "davidsowerby",
   "baseVersion": "0.0.0.0",
+  "generateBuildInfo": true,
+  "generateChangeLog": true,
+  "publishToBintray": true,
   "unitTest": {
     "enabled": true,
     "qualityGate": false,
@@ -155,7 +158,5 @@
     "providerBaseUrl": "github.com",
     "repoUser": "not specified",
     "repoName": "not specified"
-  },
-  "generateBuildInfo": true,
-  "generateChangeLog": true
+  }
 }
