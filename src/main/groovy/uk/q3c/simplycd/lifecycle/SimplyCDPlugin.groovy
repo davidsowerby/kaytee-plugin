@@ -57,8 +57,11 @@ class SimplyCDPlugin implements Plugin<Project> {
         t = project.tasks.create(MERGE_TO_MASTER, MergeToMasterTask)
         project.logger.debug("added task " + t.getName())
 
-        t = project.tasks.create(PREPARE_BINTRAY, PrepareBintrayTask)
-        project.logger.debug("added task " + t.getName())
+        Task prepareBintray = project.tasks.create(PREPARE_BINTRAY, PrepareBintrayTask)
+        project.logger.debug("added task " + prepareBintray.getName())
+
+        Task bintrayUpload = project.tasks.getByName("bintrayUpload")
+        bintrayUpload.dependsOn(prepareBintray)
 
         config(project)
 
