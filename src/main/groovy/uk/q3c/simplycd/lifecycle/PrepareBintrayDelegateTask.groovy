@@ -12,25 +12,23 @@ import java.time.LocalDateTime
 /**
  * Created by David Sowerby on 20 May 2017
  */
-class PrepareBintrayDelegateTask {
+class PrepareBintrayDelegateTask extends DelegateWithConfig {
 
-    private Project project
 
     PrepareBintrayDelegateTask(Project project) {
-        this.project = project
+        super(project)
     }
 
     void prepare() {
-        SimplyCDProjectExtension simplyCdConfig = project.extensions.getByName("simplycd") as SimplyCDProjectExtension
         DefaultGitRemoteUrlMapper mapper = new DefaultGitRemoteUrlMapper()
-        mapper.parent = simplyCdConfig.gitRemoteConfiguration
+        mapper.parent = config.gitRemoteConfiguration
         BintrayExtension bintray = project.extensions.getByName("bintray") as BintrayExtension
 
         if (bintray.publications.length == null || bintray.publications.length == 0) {
             bintray.publications = ['mavenStuff']
         }
         if (StringUtils.isEmpty(bintray.pkg.name)) {
-            bintray.pkg.name = simplyCdConfig.gitLocalConfiguration.projectName
+            bintray.pkg.name = config.gitLocalConfiguration.projectName
         }
         if (StringUtils.isEmpty(bintray.pkg.websiteUrl)) {
             bintray.pkg.websiteUrl = mapper.repoBaselUrl()

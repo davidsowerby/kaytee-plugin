@@ -14,6 +14,7 @@ import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSetContainer
 import javax.inject.Inject
 
 import static uk.q3c.simplycd.lifecycle.TaskNames.*
+
 /**
  * Created by David Sowerby on 19 Dec 2016
  */
@@ -96,7 +97,9 @@ class SimplyCDPlugin implements Plugin<Project> {
     @SuppressWarnings("GrMethodMayBeStatic")
     private void defaultProperties(Project project) {
         project.sourceCompatibility = '1.8'
-        project.version = new SimplyCDVersion(project)
+        if (project.version == null) {
+            project.version == new SimplyCDVersion(project)
+        }
     }
 
     private void repositories(Project project) {

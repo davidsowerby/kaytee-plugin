@@ -21,11 +21,10 @@ class CreateBuildInfoTaskTest extends Specification {
 
     def setup() {
         Project project = ProjectBuilder.builder().build()
+        simplyCdConfig = new SimplyCDProjectExtension()
+        project.extensions.add("simplycd", simplyCdConfig)
         task = project.getTasks().create("buildInfo", CreateBuildInfoTask.class)
         task.delegate = delegate
-        simplyCdConfig = new SimplyCDProjectExtension()
-        project.extensions >> projectExtensions
-        projectExtensions.getByName("simplycd") >> simplyCdConfig
     }
 
     def "Write build info"() {

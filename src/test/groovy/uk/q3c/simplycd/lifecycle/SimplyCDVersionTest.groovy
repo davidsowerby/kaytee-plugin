@@ -1,79 +1,67 @@
 package uk.q3c.simplycd.lifecycle
 
 import org.apache.commons.codec.digest.DigestUtils
-import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
 import org.gradle.api.logging.Logger
 import org.gradle.api.plugins.ExtensionContainer
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 import uk.q3c.build.gitplus.GitSHA
+import uk.q3c.build.gitplus.gitplus.GitPlus
+import uk.q3c.build.gitplus.local.GitBranch
+import uk.q3c.build.gitplus.local.GitLocal
+import uk.q3c.build.gitplus.local.GitLocalConfiguration
+import uk.q3c.build.gitplus.local.WikiLocal
+import uk.q3c.build.gitplus.remote.GitRemote
+import uk.q3c.build.gitplus.remote.GitRemoteConfiguration
 
 /**
  * Created by David Sowerby on 10 May 2017
  */
 class SimplyCDVersionTest extends Specification {
 
-    @Rule
-    TemporaryFolder temporaryFolder
-    File temp
-    SimplyCDVersion version
-    Project project
-    File buildDir
-    Logger logger = Mock(Logger)
-    SimplyCDProjectExtension extension
-    ExtensionContainer extensions = Mock(ExtensionContainer)
+    GitPlus gitPlus = Mock(GitPlus)
 
+    SimplyCDVersion version
+    Project project = Mock(Project)
+    GitLocal gitLocal = Mock(GitLocal)
+    WikiLocal wikiLocal = Mock(WikiLocal)
+    GitRemote gitRemote = Mock(GitRemote)
+    ExtensionContainer extensions = Mock(ExtensionContainer)
+    SimplyCDProjectExtension config
+
+    GitLocalConfiguration localConfig = Mock(GitLocalConfiguration)
+    GitLocalConfiguration wikiConfig = Mock(GitLocalConfiguration)
+    GitRemoteConfiguration remoteConfig = Mock(GitRemoteConfiguration)
+    Logger logger = Mock()
 
     def setup() {
-        temp = temporaryFolder.getRoot()
-        buildDir = new File(temp, "build")
-        project = Mock(Project)
-        project.buildDir >> buildDir
-        version = new SimplyCDVersion(project)
+        config = new SimplyCDProjectExtension()
+        gitPlus.local >> gitLocal
+        gitPlus.wikiLocal >> wikiLocal
+        gitPlus.remote >> gitRemote
+        gitLocal.localConfiguration >> localConfig
+        gitRemote.configuration >> remoteConfig
+        wikiLocal.localConfiguration >> wikiConfig
+
+        GitBranch branch = new GitBranch("simplycd")
+        gitLocal.currentBranch() >> branch
+        gitLocal.latestCommitSHA(branch) >> testSha()
+        project.getExtensions() >> extensions
+        extensions.getByName("simplycd") >> config
+        version = new SimplyCDVersion(project, gitPlus)
         project.logger >> logger
-        extension = new SimplyCDProjectExtension()
-        project.extensions >> extensions
-        extensions.getByName("simplycd") >> extension
-
-
     }
-
 
     def "version"() {
         given:
-        Properties properties = new Properties()
-        properties.put(CreateBuildInfoTaskDelegate.PROPERTY_NAME_COMMIT_ID, testSha().sha)
-        FileUtils.forceMkdir(new File(buildDir, "resources/main"))
-        File f = new File(buildDir, CreateBuildInfoTaskDelegate.PATH_TO_BUILD_INFO_PROPS)
-        FileWriter fw = new FileWriter(f)
-        properties.store(fw, "any")
-        extension.setProperty("baseVersion", "0.9.8")
+        config.baseVersion = "1.2.3.4"
 
-        expect:
-        version.toString() == "0.9.8." + testSha().short()
-    }
+        when:
+        String v = version.toString()
 
-    def "no props file, uses 'dev' as build number"() {
-        given:
-        extension.setProperty("baseVersion", "0.9.8")
-
-        expect:
-        version.toString() == "0.9.8." + "dev"
-    }
-
-    def "no commit id in props file, uses 'dev' as build number"() {
-        given:
-        Properties properties = new Properties()
-        FileUtils.forceMkdir(new File(buildDir, "resources/main"))
-        File f = new File(buildDir, CreateBuildInfoTaskDelegate.PATH_TO_BUILD_INFO_PROPS)
-        FileWriter fw = new FileWriter(f)
-        properties.store(fw, "any")
-        extension.setProperty("baseVersion", "0.9.8")
-
-        expect:
-        version.toString() == "0.9.8." + "dev"
+        then:
+        v == "1.2.3.4." + testSha().short()
+        println version.toString()
     }
 
     private GitSHA testSha() {

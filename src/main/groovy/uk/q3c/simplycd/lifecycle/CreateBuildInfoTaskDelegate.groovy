@@ -2,8 +2,6 @@ package uk.q3c.simplycd.lifecycle
 
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
-import uk.q3c.build.gitplus.GitPlusFactory
-import uk.q3c.build.gitplus.gitplus.GitPlus
 import uk.q3c.build.gitplus.local.*
 
 import java.time.OffsetDateTime
@@ -14,17 +12,15 @@ import java.time.format.DateTimeFormatter
  * <p>
  * Created by David Sowerby on 05 Dec 2016
  */
-class CreateBuildInfoTaskDelegate {
+class CreateBuildInfoTaskDelegate extends DelegateWithGitPlus {
 
-    final Project project
-    GitPlus gitPlus
+
     static String PATH_TO_BUILD_INFO_PROPS = 'resources/main/buildInfo.properties'
     static String PROPERTY_NAME_COMMIT_ID = "commitId"
 
 
     CreateBuildInfoTaskDelegate(Project project) {
-        this.project = project
-        gitPlus = GitPlusFactory.instance
+        super(project)
     }
 
 /**
@@ -42,11 +38,7 @@ class CreateBuildInfoTaskDelegate {
  */
     void writeInfo() throws IOException {
         logLifecycle("creating build info file")
-        SimplyCDProjectExtension config = project.extensions.getByName("simplycd") as SimplyCDProjectExtension
-        gitPlus.local.localConfiguration.copyFrom(config.gitLocalConfiguration)
-        gitPlus.wikiLocal.localConfiguration.copyFrom(config.wikiLocalConfiguration)
-        gitPlus.remote.configuration.copyFrom(config.gitRemoteConfiguration)
-
+        prepare()
         final Properties properties = new Properties()
         final String baseVersion = config.baseVersion
         properties.setProperty("baseVersion", baseVersion)
