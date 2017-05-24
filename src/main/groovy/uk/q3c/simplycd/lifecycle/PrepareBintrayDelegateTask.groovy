@@ -26,7 +26,7 @@ class PrepareBintrayDelegateTask extends DelegateWithConfig {
         mapper.parent = config.gitRemoteConfiguration
         BintrayExtension bintray = project.extensions.getByName("bintray") as BintrayExtension
 
-        if (bintray.publications.length == null || bintray.publications.length == 0) {
+        if (bintray.publications == null || bintray.publications.length == 0) {
             bintray.publications = ['mavenStuff']
         }
         if (StringUtils.isEmpty(bintray.pkg.name)) {
