@@ -20,6 +20,8 @@ class PrepareBintrayDelegateTask extends DelegateWithConfig {
     }
 
     void prepare() {
+        super.prepare()
+        project.logger.debug("Checking existing bintray config values, and replacing nulls where possible")
         DefaultGitRemoteUrlMapper mapper = new DefaultGitRemoteUrlMapper()
         mapper.parent = config.gitRemoteConfiguration
         BintrayExtension bintray = project.extensions.getByName("bintray") as BintrayExtension
