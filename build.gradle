@@ -1,11 +1,12 @@
 //noinspection GrPackage
 buildscript {
+    ext.bintrayVersion = '1.7.3'
     repositories {
         mavenLocal()
         jcenter()
     }
     dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayVersion"
         classpath 'uk.q3c.simplycd:simplycd-lifecycle:0.9.3.45'
     }
 }
@@ -15,7 +16,7 @@ apply plugin: 'uk.q3c.simplycd'
 
 
 group 'uk.q3c.simplycd'
-version '0.9.3.45'
+version '0.9.4.46'
 
 ext.jacksonVersion = '2.8.6'
 
@@ -24,10 +25,10 @@ dependencies {
     // Gradle
     compile gradleApi()
 
-
     //Changelog (also brings in GitPlus)
     compile 'uk.q3c.build:changelog:0.4.12.32'
 
+    compile "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayVersion"
 
     compile 'com.google.code.findbugs:annotations:3.0.0'
     compile 'com.google.guava:guava:19.0'
