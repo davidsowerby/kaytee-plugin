@@ -32,13 +32,17 @@ class PrepareBintrayDelegateTask extends DelegateWithConfig {
         if (StringUtils.isEmpty(bintray.pkg.name)) {
             bintray.pkg.name = config.gitLocalConfiguration.projectName
         }
+        if (StringUtils.isEmpty(bintray.pkg.repo)) {
+            bintray.pkg.repo = 'maven'
+        }
+
         if (StringUtils.isEmpty(bintray.pkg.websiteUrl)) {
             bintray.pkg.websiteUrl = mapper.repoBaselUrl()
         }
         if (StringUtils.isEmpty(bintray.pkg.issueTrackerUrl)) {
             bintray.pkg.issueTrackerUrl = mapper.issuesUrl()
         }
-        if (StringUtils.isEmpty(bintray.pkg.issueTrackerUrl)) {
+        if (StringUtils.isEmpty(bintray.pkg.vcsUrl)) {
             bintray.pkg.vcsUrl = mapper.cloneUrl()
         }
         if (StringUtils.isEmpty(bintray.key)) {
@@ -50,6 +54,7 @@ class PrepareBintrayDelegateTask extends DelegateWithConfig {
         if (StringUtils.isEmpty(bintray.pkg.version.released)) {
             bintray.pkg.version.released = LocalDateTime.now().toString()
         }
+
 
         if (project.logger.isDebugEnabled()) {
             ObjectMapper objectMapper = new ObjectMapper()

@@ -28,7 +28,10 @@ class BintrayConfigWrapper {
     BintrayConfigWrapper(BintrayExtension extension) {
         apiUrl = extension.apiUrl
         user = extension.user
-        key = extension.key
+        if (extension.key != null) {
+            key = "key of ${extension.key.length()} length"
+        }
+
         configurations = extension.configurations
         publications = extension.publications
         publish = extension.publish
