@@ -55,7 +55,8 @@ class PrepareBintrayDelegateTask extends DelegateWithConfig {
             ObjectMapper objectMapper = new ObjectMapper()
             objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true)
             StringWriter sw = new StringWriter()
-            objectMapper.writeValue(sw, bintray)
+            BintrayConfigWrapper wrapper = new BintrayConfigWrapper(bintray)
+            objectMapper.writeValue(sw, wrapper)
             project.logger.debug("Bintray config is:\n")
             project.logger.debug(sw.toString())
         }
