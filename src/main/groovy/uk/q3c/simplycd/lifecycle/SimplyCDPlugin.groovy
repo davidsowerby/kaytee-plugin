@@ -6,7 +6,6 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
-import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.internal.reflect.Instantiator
 import org.unbrokendome.gradle.plugins.testsets.TestSetsPlugin
@@ -16,7 +15,6 @@ import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSetContainer
 import javax.inject.Inject
 
 import static uk.q3c.simplycd.lifecycle.TaskNames.*
-
 /**
  * Created by David Sowerby on 19 Dec 2016
  */
@@ -47,10 +45,11 @@ class SimplyCDPlugin implements Plugin<Project> {
         project.apply plugin: TestSetsPlugin
         project.apply plugin: 'com.jfrog.bintray'
         project.version = new SimplyCDVersion(project)
+        publishing(project)
         repositories(project)
         defaultProperties(project)
         testSets(project)
-        project.apply from: "publishing.gradle"
+
 
         Task t = project.tasks.create(GENERATE_BUILD_INFO_TASK_NAME, CreateBuildInfoTask)
         project.logger.debug("added task " + t.getName())
@@ -82,39 +81,6 @@ class SimplyCDPlugin implements Plugin<Project> {
         }
     }
 
-    void publishing(Project project) {
-        project.publishing {
-            publications {
-                mavenStuff(MavenPublication) {
-                    from components.java
-
-                    artifact sourcesJar {
-                        classifier "sources"
-                    }
-
-                    artifact javadocJar {
-                        classifier "javadoc"
-                    }
-                }
-            }
-        }
-
-
-        task sourcesJar(type: Jar, dependsOn: classes) {
-            classifier = 'sources'
-            from sourceSets.main.allSource
-        }
-
-        task javadocJar(type: Jar, dependsOn: javadoc) {
-            classifier = 'javadoc'
-            from javadoc.destinationDir
-        }
-
-        artifacts {
-            archives sourcesJar
-            archives javadocJar
-        }
-    }
 
     private void testSets(Project project) {
         // the default 'test' set will not trigger the listener, so we need to force it
@@ -144,8 +110,24 @@ class SimplyCDPlugin implements Plugin<Project> {
         }
     }
 
+    void publishing(Project project) {
+        Task t = project.tasks.create("sourcesJar", Jar.class)
+        t.dependsOn('classes')
+        t.classifier = 'sources'
+        t.from(project.sourceSets.main.allSource)
+    }
+
+//
+//        task javadocJar(type: Jar, dependsOn: javadoc) {
+//            classifier = 'javadoc'
+//            from javadoc.destinationDir
+//        }
+//
 
 }
+
+
+
 
 
 
