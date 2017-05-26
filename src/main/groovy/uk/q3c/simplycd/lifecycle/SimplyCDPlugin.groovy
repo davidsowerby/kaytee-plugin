@@ -139,7 +139,10 @@ class SimplyCDPlugin implements Plugin<Project> {
             }
         }
 
-
+        project.artifacts {
+            archives project.sourcesJar
+            archives project.javadocJar
+        }
     }
 
 //
