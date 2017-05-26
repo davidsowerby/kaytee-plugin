@@ -115,6 +115,11 @@ class SimplyCDPlugin implements Plugin<Project> {
         t.dependsOn('classes')
         t.classifier = 'sources'
         t.from(project.sourceSets.main.allSource)
+
+        t = project.tasks.create("javadocJar", Jar.class)
+        t.dependsOn('classes')
+        t.classifier = 'javadoc'
+        t.from(project.javadoc.destinationDir)
     }
 
 //
