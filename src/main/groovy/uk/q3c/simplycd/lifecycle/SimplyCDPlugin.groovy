@@ -6,6 +6,7 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
+import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.internal.reflect.Instantiator
 import org.unbrokendome.gradle.plugins.testsets.TestSetsPlugin
@@ -44,7 +45,7 @@ class SimplyCDPlugin implements Plugin<Project> {
         project.apply plugin: 'jacoco'
         project.apply plugin: TestSetsPlugin
         project.apply plugin: 'com.jfrog.bintray'
-        project.version = new SimplyCDVersion(project)
+
         publishing(project)
         repositories(project)
         defaultProperties(project)
@@ -67,7 +68,7 @@ class SimplyCDPlugin implements Plugin<Project> {
 //        bintrayUpload.dependsOn(prepareBintray)
 
         config(project)
-
+        project.version = new SimplyCDVersion(project)
         project.afterEvaluate(new AfterEvaluateAction(project))
     }
 
@@ -111,15 +112,34 @@ class SimplyCDPlugin implements Plugin<Project> {
     }
 
     void publishing(Project project) {
-        Task t = project.tasks.create("sourcesJar", Jar.class)
-        t.dependsOn('classes')
-        t.classifier = 'sources'
-        t.from(project.sourceSets.main.allSource)
+        Task sourcesJarTask = project.tasks.create("sourcesJar", Jar.class)
+        sourcesJarTask.dependsOn('classes')
+        sourcesJarTask.classifier = 'sources'
+        sourcesJarTask.from(project.sourceSets.main.allSource)
 
-        t = project.tasks.create("javadocJar", Jar.class)
-        t.dependsOn('classes')
-        t.classifier = 'javadoc'
-        t.from(project.javadoc.destinationDir)
+        Task javadocJarTask = project.tasks.create("javadocJar", Jar.class)
+        javadocJarTask.dependsOn('classes')
+        javadocJarTask.classifier = 'javadoc'
+        javadocJarTask.from(project.javadoc.destinationDir)
+
+        project.logger.debug("pub block")
+        project.publishing {
+            publications {
+                mavenStuff(MavenPublication) {
+                    from project.components.java
+
+                    artifact project.sourcesJar {
+                        classifier "sources"
+                    }
+
+                    artifact project.javadocJar {
+                        classifier "javadoc"
+                    }
+                }
+            }
+        }
+
+
     }
 
 //
