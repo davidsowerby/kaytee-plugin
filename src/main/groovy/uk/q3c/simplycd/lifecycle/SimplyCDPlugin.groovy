@@ -6,6 +6,8 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
+import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.api.tasks.bundling.Jar
 import org.gradle.internal.reflect.Instantiator
 import org.unbrokendome.gradle.plugins.testsets.TestSetsPlugin
 import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSet
@@ -44,10 +46,11 @@ class SimplyCDPlugin implements Plugin<Project> {
         project.apply plugin: 'jacoco'
         project.apply plugin: TestSetsPlugin
         project.apply plugin: 'com.jfrog.bintray'
-
+        project.version = new SimplyCDVersion(project)
         repositories(project)
         defaultProperties(project)
         testSets(project)
+        project.apply from: "publishing.gradle"
 
         Task t = project.tasks.create(GENERATE_BUILD_INFO_TASK_NAME, CreateBuildInfoTask)
         project.logger.debug("added task " + t.getName())
@@ -58,17 +61,15 @@ class SimplyCDPlugin implements Plugin<Project> {
         t = project.tasks.create(MERGE_TO_MASTER, MergeToMasterTask)
         project.logger.debug("added task " + t.getName())
 
-        Task prepareBintray = project.tasks.create(PREPARE_BINTRAY, PrepareBintrayTask)
-        project.logger.debug("added task " + prepareBintray.getName())
+//        Task prepareBintray = project.tasks.create(PREPARE_BINTRAY, PrepareBintrayTask)
+//        project.logger.debug("added task " + prepareBintray.getName())
 
-        Task bintrayUpload = project.tasks.getByName("bintrayUpload")
-        bintrayUpload.dependsOn(prepareBintray)
+//        Task bintrayUpload = project.tasks.getByName("bintrayUpload")
+//        bintrayUpload.dependsOn(prepareBintray)
 
         config(project)
 
-        // actions required after evaluation, notably publishing
         project.afterEvaluate(new AfterEvaluateAction(project))
-
     }
 
     void config(Project project) {
@@ -81,6 +82,39 @@ class SimplyCDPlugin implements Plugin<Project> {
         }
     }
 
+    void publishing(Project project) {
+        project.publishing {
+            publications {
+                mavenStuff(MavenPublication) {
+                    from components.java
+
+                    artifact sourcesJar {
+                        classifier "sources"
+                    }
+
+                    artifact javadocJar {
+                        classifier "javadoc"
+                    }
+                }
+            }
+        }
+
+
+        task sourcesJar(type: Jar, dependsOn: classes) {
+            classifier = 'sources'
+            from sourceSets.main.allSource
+        }
+
+        task javadocJar(type: Jar, dependsOn: javadoc) {
+            classifier = 'javadoc'
+            from javadoc.destinationDir
+        }
+
+        artifacts {
+            archives sourcesJar
+            archives javadocJar
+        }
+    }
 
     private void testSets(Project project) {
         // the default 'test' set will not trigger the listener, so we need to force it
@@ -97,9 +131,9 @@ class SimplyCDPlugin implements Plugin<Project> {
     @SuppressWarnings("GrMethodMayBeStatic")
     private void defaultProperties(Project project) {
         project.sourceCompatibility = '1.8'
-        if (project.version == null) {
-            project.version == new SimplyCDVersion(project)
-        }
+//        if (project.version == null) {
+//        project.version = new SimplyCDVersion(project)
+//        }
     }
 
     private void repositories(Project project) {

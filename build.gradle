@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayVersion"
-        classpath 'uk.q3c.simplycd:simplycd-lifecycle:0.9.10.52'
+        classpath 'uk.q3c.simplycd:simplycd-lifecycle:0.9.9.51'
     }
 }
 
@@ -16,7 +16,7 @@ apply plugin: 'uk.q3c.simplycd'
 
 
 group 'uk.q3c.simplycd'
-version '0.9.10.52'
+version '0.9.14.58'
 
 ext.jacksonVersion = '2.8.6'
 
@@ -26,7 +26,7 @@ dependencies {
     compile gradleApi()
 
     //Changelog (also brings in GitPlus)
-    compile 'uk.q3c.build:changelog:0.4.12.32'
+    compile 'uk.q3c.build:changelog:0.4.15.35'
 
     compile "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayVersion"
 

@@ -14,7 +14,11 @@ class DelegateWithConfig {
     }
 
     protected void prepare() {
-        project.logger.debug("retrieving config")
+        project.logger.debug("retrieving config for ${this.getClass().getName()}")
         config = project.extensions.getByName("simplycd") as SimplyCDProjectExtension
+    }
+
+    protected void logDebug(String msg) {
+        project.logger.debug(msg)
     }
 }

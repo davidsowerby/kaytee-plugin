@@ -27,9 +27,10 @@ class DelegateWithGitPlus extends DelegateWithConfig {
     @Override
     protected void prepare() {
         super.prepare()
-        project.logger.debug("configuring GitPlus")
+        project.logger.debug("configuring GitPlus for ${this.getClass().getName()}")
         gitPlus.local.localConfiguration.copyFrom(config.gitLocalConfiguration)
         gitPlus.wikiLocal.localConfiguration.copyFrom(config.wikiLocalConfiguration)
         gitPlus.remote.configuration.copyFrom(config.gitRemoteConfiguration)
+
     }
 }

@@ -9,6 +9,7 @@ import uk.q3c.build.gitplus.local.GitBranch
  */
 class SimplyCDVersion extends DelegateWithGitPlus {
 
+
     SimplyCDVersion(Project project) {
         super(project)
     }
@@ -20,7 +21,13 @@ class SimplyCDVersion extends DelegateWithGitPlus {
     @Override
     String toString() {
         prepare()
+        // this may be called before evaluation complete
+        gitPlus.local.projectName = project.name
+        gitPlus.local.projectDirParent = project.projectDir.parentFile
+        gitPlus.local.prepare(gitPlus.remote) // init checker needs this
         GitBranch currentBranch = gitPlus.local.currentBranch()
+        logDebug("Base version is ${config.baseVersion}")
+        logDebug("Retrieving latest commit for version from repo at ${gitPlus.local.projectDir()}, ${currentBranch.name} branch")
         return config.baseVersion + "." + gitPlus.local.latestCommitSHA(currentBranch).short()
     }
 }

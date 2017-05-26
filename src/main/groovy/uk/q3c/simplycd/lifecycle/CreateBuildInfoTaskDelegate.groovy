@@ -150,7 +150,4 @@ class CreateBuildInfoTaskDelegate extends DelegateWithGitPlus {
     }
 
 
-    private void logDebug(String msg) {
-        project.getLogger().debug(msg)
-    }
 }

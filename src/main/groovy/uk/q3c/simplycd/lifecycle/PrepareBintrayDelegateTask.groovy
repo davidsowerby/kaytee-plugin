@@ -48,9 +48,9 @@ class PrepareBintrayDelegateTask extends DelegateWithConfig {
         if (StringUtils.isEmpty(bintray.key)) {
             bintray.key = project.bintrayKey
         }
-        if (StringUtils.isEmpty(bintray.pkg.version.name)) {
-            bintray.pkg.version.name = project.version.toString()
-        }
+
+        bintray.pkg.version.name = project.version.toString()
+
         if (StringUtils.isEmpty(bintray.pkg.version.released)) {
             bintray.pkg.version.released = LocalDateTime.now().toString()
         }
@@ -64,6 +64,9 @@ class PrepareBintrayDelegateTask extends DelegateWithConfig {
             objectMapper.writeValue(sw, wrapper)
             project.logger.debug("Bintray config is:\n")
             project.logger.debug(sw.toString())
+
+
+            project.logger.debug("project version is: " + project.version.toString())
         }
     }
 
