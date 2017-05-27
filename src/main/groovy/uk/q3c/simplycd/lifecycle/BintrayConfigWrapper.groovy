@@ -3,6 +3,9 @@ package uk.q3c.simplycd.lifecycle
 import com.jfrog.bintray.gradle.BintrayExtension
 
 /**
+ *
+ * The BintrayExtension has non-data properties which mess up Jackson.  This class just extracts the data
+ *
  * Created by David Sowerby on 24 May 2017
  */
 class BintrayConfigWrapper {

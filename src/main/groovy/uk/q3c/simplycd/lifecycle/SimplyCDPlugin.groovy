@@ -46,7 +46,7 @@ class SimplyCDPlugin implements Plugin<Project> {
         project.apply plugin: 'jacoco'
         project.apply plugin: TestSetsPlugin
         project.apply plugin: 'com.jfrog.bintray'
-        project.extensions.create('simplycd', SimplyCDProjectExtension)
+        SimplyCDProjectExtension simplycd = extensionWithBasicSettings(project)
         publishing(project)
         repositories(project)
         defaultProperties(project)
@@ -72,6 +72,13 @@ class SimplyCDPlugin implements Plugin<Project> {
         project.version = new SimplyCDVersion(project)
         bintray(project)
         project.afterEvaluate(new AfterEvaluateAction(project))
+    }
+
+    SimplyCDProjectExtension extensionWithBasicSettings(Project project) {
+        SimplyCDProjectExtension extension = project.extensions.create('simplycd', SimplyCDProjectExtension)
+        extension.gitLocalConfiguration.projectName = project.name
+        extension.gitLocalConfiguration.projectDirParent = project.projectDir.parentFile
+        return extension
     }
 
     void config(Project project) {
