@@ -3,13 +3,11 @@ package uk.q3c.simplycd.lifecycle
 import org.apache.commons.io.FileUtils
 import org.gradle.api.GradleException
 import org.gradle.api.Project
-import org.gradle.internal.reflect.Instantiator
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 import uk.q3c.util.testutil.TestResource
-
 /**
  *
  *
@@ -25,22 +23,17 @@ class QualityGateTaskTest extends Specification {
 
     File temp
     File projectDir
-    ThresholdsContainer thresholds
     SimplyCDProjectExtension simplycd
-    TestGroupThresholds testConfiguration
+    TestGroupThresholds thresholds
 
     def setup() {
         temp = temporaryFolder.getRoot()
         project = ProjectBuilder.builder().build()
         projectDir = project.getProjectDir()
-        Instantiator instantiator = Mock(Instantiator)
-        thresholds = project.extensions.create('thresholds', ThresholdsContainer.class, instantiator)
         simplycd = project.extensions.create('simplycd', SimplyCDProjectExtension.class)
 
-        testConfiguration = new TestGroupThresholds('integrationTest')
-        testConfiguration.instruction = 100
-        thresholds.add(testConfiguration)
-        task = project.getTasks().create("qg", QualityGateTask.class);
+
+        task = project.getTasks().create("qg", QualityGateTask.class)
         task.setTestGroup('integrationTest')
     }
 
@@ -49,6 +42,7 @@ class QualityGateTaskTest extends Specification {
         given:
         setupFile()
         simplycd.integrationTest.qualityGate = true
+        simplycd.integrationTest.thresholds.instruction = 100
 
         when:
         task.evaluate()
@@ -73,8 +67,9 @@ class QualityGateTaskTest extends Specification {
 
     def "check still fails when disabled - disabled refers only to SimplyCD server"() {
         given:
-
         setupFile()
+        simplycd.integrationTest.qualityGate = true
+        simplycd.integrationTest.thresholds.instruction = 100
 
         when:
         task.evaluate()
@@ -88,12 +83,13 @@ class QualityGateTaskTest extends Specification {
         given:
 
         simplycd.integrationTest.qualityGate = true
-        testConfiguration.instruction = 50
-        testConfiguration.branch = 70
-        testConfiguration.complexity = 66
-        testConfiguration.line = 66
-        testConfiguration.method = 66
-        testConfiguration.clazz = 90
+        thresholds = simplycd.testConfigs.get(TaskNames.INTEGRATION_TEST).thresholds
+        thresholds.instruction = 50
+        thresholds.branch = 70
+        thresholds.complexity = 66
+        thresholds.line = 66
+        thresholds.method = 66
+        thresholds.clazz = 90
 
 
         setupFile()

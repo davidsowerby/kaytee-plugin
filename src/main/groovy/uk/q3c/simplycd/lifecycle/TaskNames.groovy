@@ -27,5 +27,4 @@ class TaskNames {
 
     public final static String LOCAL_PUBLISH = 'publishToMavenLocal'
     public final static String MERGE_TO_MASTER = 'mergeToMaster'
-    public final static String PREPARE_BINTRAY = 'prepareBintray'
 }

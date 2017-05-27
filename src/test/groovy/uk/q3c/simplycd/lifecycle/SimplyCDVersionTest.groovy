@@ -4,6 +4,8 @@ import org.apache.commons.codec.digest.DigestUtils
 import org.gradle.api.Project
 import org.gradle.api.logging.Logger
 import org.gradle.api.plugins.ExtensionContainer
+import org.junit.Rule
+import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 import uk.q3c.build.gitplus.GitSHA
 import uk.q3c.build.gitplus.gitplus.GitPlus
@@ -19,6 +21,10 @@ import uk.q3c.build.gitplus.remote.GitRemoteConfiguration
  */
 class SimplyCDVersionTest extends Specification {
 
+    @Rule
+    TemporaryFolder temporaryFolder
+    File temp
+
     GitPlus gitPlus = Mock(GitPlus)
 
     SimplyCDVersion version
@@ -33,8 +39,10 @@ class SimplyCDVersionTest extends Specification {
     GitLocalConfiguration wikiConfig = Mock(GitLocalConfiguration)
     GitRemoteConfiguration remoteConfig = Mock(GitRemoteConfiguration)
     Logger logger = Mock()
+    File projectDir
 
     def setup() {
+        temp = temporaryFolder.getRoot()
         config = new SimplyCDProjectExtension()
         gitPlus.local >> gitLocal
         gitPlus.wikiLocal >> wikiLocal
@@ -50,6 +58,8 @@ class SimplyCDVersionTest extends Specification {
         extensions.getByName("simplycd") >> config
         version = new SimplyCDVersion(project, gitPlus)
         project.logger >> logger
+        projectDir = new File(temp, "wiggly")
+        project.projectDir >> projectDir
     }
 
     def "version"() {

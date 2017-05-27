@@ -83,7 +83,6 @@ class SimplyCDPlugin implements Plugin<Project> {
 
     void config(Project project) {
 
-        ThresholdsContainer thresholds = project.extensions.create('thresholds', ThresholdsContainer, instantiator)
         thresholds.add(new TestGroupThresholds('test'))
 
         for (String name : defaultTestSets) {

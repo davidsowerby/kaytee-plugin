@@ -65,4 +65,19 @@ class SimplyCDProjectExtensionTest extends Specification {
 
         configuration == configuration2
     }
+
+    def "testConfig"() {
+
+        when:
+        configuration.testConfig(TaskNames.INTEGRATION_TEST).thresholds.method = 33
+
+        then:
+        configuration.testConfig(TaskNames.INTEGRATION_TEST).thresholds.method == 33
+
+        when:
+        configuration.testConfig("rubbish")
+
+        then:
+        thrown IllegalArgumentException
+    }
 }

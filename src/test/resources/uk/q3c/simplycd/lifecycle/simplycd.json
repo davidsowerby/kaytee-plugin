@@ -11,7 +11,15 @@
     "manual": false,
     "external": false,
     "externalRepoUrl": "",
-    "externalRepoTask": "test"
+    "externalRepoTask": "test",
+    "thresholds": {
+      "instruction": 81.0,
+      "branch": 70.0,
+      "line": 90.0,
+      "complexity": 90.0,
+      "method": 90.0,
+      "clazz": 90.0
+    }
   },
   "integrationTest": {
     "enabled": false,
@@ -20,7 +28,15 @@
     "manual": false,
     "external": false,
     "externalRepoUrl": "",
-    "externalRepoTask": "test"
+    "externalRepoTask": "test",
+    "thresholds": {
+      "instruction": 81.0,
+      "branch": 70.0,
+      "line": 90.0,
+      "complexity": 90.0,
+      "method": 90.0,
+      "clazz": 90.0
+    }
   },
   "functionalTest": {
     "enabled": false,
@@ -29,7 +45,15 @@
     "manual": false,
     "external": false,
     "externalRepoUrl": "",
-    "externalRepoTask": "test"
+    "externalRepoTask": "test",
+    "thresholds": {
+      "instruction": 81.0,
+      "branch": 70.0,
+      "line": 90.0,
+      "complexity": 90.0,
+      "method": 90.0,
+      "clazz": 90.0
+    }
   },
   "acceptanceTest": {
     "enabled": false,
@@ -38,7 +62,15 @@
     "manual": false,
     "external": false,
     "externalRepoUrl": "",
-    "externalRepoTask": "test"
+    "externalRepoTask": "test",
+    "thresholds": {
+      "instruction": 81.0,
+      "branch": 70.0,
+      "line": 90.0,
+      "complexity": 90.0,
+      "method": 90.0,
+      "clazz": 90.0
+    }
   },
   "productionTest": {
     "enabled": false,
@@ -47,7 +79,15 @@
     "manual": false,
     "external": false,
     "externalRepoUrl": "",
-    "externalRepoTask": "test"
+    "externalRepoTask": "test",
+    "thresholds": {
+      "instruction": 81.0,
+      "branch": 70.0,
+      "line": 90.0,
+      "complexity": 90.0,
+      "method": 90.0,
+      "clazz": 90.0
+    }
   },
   "release": {
     "toBintray": true

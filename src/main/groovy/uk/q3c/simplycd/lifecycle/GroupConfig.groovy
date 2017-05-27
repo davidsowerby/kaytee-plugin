@@ -12,6 +12,7 @@ class GroupConfig {
     boolean external = false
     String externalRepoUrl = ""
     String externalRepoTask = "test"
+    TestGroupThresholds thresholds = new TestGroupThresholds()
 
     GroupConfig() {
     }
@@ -25,6 +26,7 @@ class GroupConfig {
         external = other.external
         externalRepoUrl = other.externalRepoUrl
         externalRepoTask = other.externalRepoTask
+        thresholds = new TestGroupThresholds(other.thresholds)
     }
 
     boolean equals(o) {
@@ -40,6 +42,7 @@ class GroupConfig {
         if (qualityGate != that.qualityGate) return false
         if (externalRepoTask != that.externalRepoTask) return false
         if (externalRepoUrl != that.externalRepoUrl) return false
+        if (thresholds != that.thresholds) return false
 
         return true
     }
@@ -53,6 +56,7 @@ class GroupConfig {
         result = 31 * result + (external ? 1 : 0)
         result = 31 * result + externalRepoUrl.hashCode()
         result = 31 * result + externalRepoTask.hashCode()
+        result = 31 * result + thresholds.hashCode()
         return result
     }
 }

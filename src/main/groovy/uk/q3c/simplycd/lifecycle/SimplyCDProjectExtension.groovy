@@ -1,5 +1,6 @@
 package uk.q3c.simplycd.lifecycle
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.gradle.util.ConfigureUtil
 import uk.q3c.build.changelog.DefaultChangeLogConfiguration
 import uk.q3c.build.gitplus.local.DefaultGitLocalConfiguration
@@ -15,12 +16,15 @@ import uk.q3c.build.gitplus.remote.DefaultGitRemoteConfiguration
  */
 
 class SimplyCDProjectExtension {
+    @JsonIgnore
+    Map<String, GroupConfig> testConfigs = new HashMap<>()
 
     SimplyCDProjectExtension() {
         changeLog = new DefaultChangeLogConfiguration()
         gitLocalConfiguration = new DefaultGitLocalConfiguration()
         wikiLocalConfiguration = new DefaultGitLocalConfiguration()
         gitRemoteConfiguration = new DefaultGitRemoteConfiguration()
+        populateTestMap()
     }
 
     SimplyCDProjectExtension(SimplyCDProjectExtension other) {
@@ -49,6 +53,7 @@ class SimplyCDProjectExtension {
 
         projectName = other.wikiLocalConfiguration.projectName
         wikiLocalConfiguration = other.wikiLocalConfiguration.copy(projectName)
+        populateTestMap()
     }
     String remoteRepoUserName = "davidsowerby"
     String baseVersion = '0.0.0.0'
@@ -70,6 +75,12 @@ class SimplyCDProjectExtension {
     DefaultGitLocalConfiguration wikiLocalConfiguration
     DefaultGitRemoteConfiguration gitRemoteConfiguration
 
+    void populateTestMap() {
+        testConfigs.put(TaskNames.ACCEPTANCE_TEST, acceptanceTest)
+        testConfigs.put(TaskNames.FUNCTIONAL_TEST, functionalTest)
+        testConfigs.put(TaskNames.INTEGRATION_TEST, integrationTest)
+        testConfigs.put(TaskNames.PRODUCTION_TEST, productionTest)
+    }
 
     def release(Closure closure) {
         ConfigureUtil.configure(closure, release)
@@ -150,4 +161,14 @@ class SimplyCDProjectExtension {
         result = 31 * result + productionTest.hashCode()
         return result
     }
+
+
+    GroupConfig testConfig(String testGroupName) {
+        if (SimplyCDPlugin.defaultTestSets.contains(testGroupName)) {
+            return testConfigs.get(testGroupName)
+        }
+        throw new IllegalArgumentException("'$testGroupName' is not a valid test group name")
+    }
+
+
 }

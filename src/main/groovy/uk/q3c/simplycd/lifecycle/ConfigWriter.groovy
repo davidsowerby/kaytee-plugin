@@ -26,11 +26,6 @@ class ConfigWriter {
         File simplycdFile = new File(project.buildDir, configFileName)
         objectMapper.writeValue(simplycdFile, jsonConfig)
         logger.debug("Configuration written to " + simplycdFile)
-
-        ThresholdsContainer thresholdsContainer = project.extensions.getByName('thresholds') as ThresholdsContainer
-        File thresholdsFile = new File(project.buildDir, thresholdsFileName)
-        objectMapper.writeValue(thresholdsFile, thresholdsContainer)
-        logger.debug("Thresholds written to " + thresholdsFile)
     }
 
     @SuppressWarnings("GrMethodMayBeStatic")
