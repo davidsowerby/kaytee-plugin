@@ -154,9 +154,21 @@ class SimplyCDPlugin implements Plugin<Project> {
         }
     }
 
+    /**
+     * Changes bintray defaults - other changes may be made in {@Link AfterEvaluateAction}
+     *
+     * @param project
+     */
     void bintray(Project project) {
         project.bintray {
             publications = ['mavenStuff'] //When uploading Maven-based publication files
+            publish = true
+            dryRun = false
+            pkg {
+                version {
+                    publicDownloadNumbers = true
+                }
+            }
         }
     }
 
