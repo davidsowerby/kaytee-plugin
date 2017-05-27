@@ -16,6 +16,7 @@ import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSetContainer
 import javax.inject.Inject
 
 import static uk.q3c.simplycd.lifecycle.TaskNames.*
+
 /**
  * Created by David Sowerby on 19 Dec 2016
  */
@@ -45,7 +46,7 @@ class SimplyCDPlugin implements Plugin<Project> {
         project.apply plugin: 'jacoco'
         project.apply plugin: TestSetsPlugin
         project.apply plugin: 'com.jfrog.bintray'
-
+        project.extensions.create('simplycd', SimplyCDProjectExtension)
         publishing(project)
         repositories(project)
         defaultProperties(project)
@@ -69,11 +70,12 @@ class SimplyCDPlugin implements Plugin<Project> {
 
         config(project)
         project.version = new SimplyCDVersion(project)
+        bintray(project)
         project.afterEvaluate(new AfterEvaluateAction(project))
     }
 
     void config(Project project) {
-        project.extensions.create('simplycd', SimplyCDProjectExtension)
+
         ThresholdsContainer thresholds = project.extensions.create('thresholds', ThresholdsContainer, instantiator)
         thresholds.add(new TestGroupThresholds('test'))
 
@@ -142,6 +144,12 @@ class SimplyCDPlugin implements Plugin<Project> {
         project.artifacts {
             archives project.sourcesJar
             archives project.javadocJar
+        }
+    }
+
+    void bintray(Project project) {
+        project.bintray {
+            publications = ['mavenStuff'] //When uploading Maven-based publication files
         }
     }
 
