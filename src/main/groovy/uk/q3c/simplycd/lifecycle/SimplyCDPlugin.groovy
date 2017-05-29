@@ -62,13 +62,7 @@ class SimplyCDPlugin implements Plugin<Project> {
         t = project.tasks.create(MERGE_TO_MASTER, MergeToMasterTask)
         project.logger.debug("added task " + t.getName())
 
-//        Task prepareBintray = project.tasks.create(PREPARE_BINTRAY, PrepareBintrayTask)
-//        project.logger.debug("added task " + prepareBintray.getName())
 
-//        Task bintrayUpload = project.tasks.getByName("bintrayUpload")
-//        bintrayUpload.dependsOn(prepareBintray)
-
-        config(project)
         project.version = new SimplyCDVersion(project)
         bintray(project)
         project.afterEvaluate(new AfterEvaluateAction(project))
@@ -81,14 +75,7 @@ class SimplyCDPlugin implements Plugin<Project> {
         return extension
     }
 
-    void config(Project project) {
 
-        thresholds.add(new TestGroupThresholds('test'))
-
-        for (String name : defaultTestSets) {
-            thresholds.add(new TestGroupThresholds(name))
-        }
-    }
 
 
     private void testSets(Project project) {
@@ -106,9 +93,6 @@ class SimplyCDPlugin implements Plugin<Project> {
     @SuppressWarnings("GrMethodMayBeStatic")
     private void defaultProperties(Project project) {
         project.sourceCompatibility = '1.8'
-//        if (project.version == null) {
-//        project.version = new SimplyCDVersion(project)
-//        }
     }
 
     private void repositories(Project project) {
@@ -171,12 +155,6 @@ class SimplyCDPlugin implements Plugin<Project> {
         }
     }
 
-//
-//        task javadocJar(type: Jar, dependsOn: javadoc) {
-//            classifier = 'javadoc'
-//            from javadoc.destinationDir
-//        }
-//
 
 }
 
