@@ -7,17 +7,17 @@ buildscript {
     }
     dependencies {
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayVersion"
-        classpath 'uk.q3c.simplycd:simplycd-lifecycle:0.9.9.51'
+        classpath 'uk.q3c.kaytee:kaytee-plugin:0.9.16.60'
     }
 }
 
 
-apply plugin: 'uk.q3c.simplycd'
+apply plugin: 'uk.q3c.kaytee'
 
 
 
-group 'uk.q3c.simplycd'
-version '0.9.15.59'
+group 'uk.q3c.kaytee'
+version '0.9.16.60'
 
 ext.jacksonVersion = '2.8.6'
 
