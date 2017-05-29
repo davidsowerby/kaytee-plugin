@@ -1,6 +1,6 @@
-*.iml
 .classpath
 .idea
 .project
 build/*
 out
+classes
