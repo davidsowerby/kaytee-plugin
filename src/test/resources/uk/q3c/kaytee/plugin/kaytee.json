@@ -3,7 +3,6 @@
   "baseVersion": "0.0.0.0",
   "generateBuildInfo": true,
   "generateChangeLog": true,
-  "publishToBintray": true,
   "unitTest": {
     "enabled": true,
     "qualityGate": false,
@@ -90,7 +89,8 @@
     }
   },
   "release": {
-    "toBintray": true
+    "toBintray": true,
+    "mergeToMaster": true
   },
   "changeLog": {
     "remoteRepoUser": "not specified",

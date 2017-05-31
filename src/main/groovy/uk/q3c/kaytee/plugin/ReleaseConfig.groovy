@@ -6,4 +6,13 @@ package uk.q3c.kaytee.plugin
 class ReleaseConfig {
 
     boolean toBintray = true
+    boolean mergeToMaster = true
+
+    ReleaseConfig(ReleaseConfig other) {
+        this.toBintray = other.toBintray
+        this.mergeToMaster = other.mergeToMaster
+    }
+
+    ReleaseConfig() {
+    }
 }

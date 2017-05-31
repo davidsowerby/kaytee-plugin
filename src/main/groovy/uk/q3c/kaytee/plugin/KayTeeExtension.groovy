@@ -25,6 +25,9 @@ class KayTeeExtension {
         wikiLocalConfiguration = new DefaultGitLocalConfiguration()
         gitRemoteConfiguration = new DefaultGitRemoteConfiguration()
         populateTestMap()
+
+        // The only one enabled by default
+        testConfigs.get("test").enabled = true
     }
 
     KayTeeExtension(KayTeeExtension other) {
@@ -33,9 +36,8 @@ class KayTeeExtension {
         this.baseVersion = other.baseVersion
         this.generateChangeLog = other.generateChangeLog
         this.generateBuildInfo = other.generateBuildInfo
-        this.publishToBintray = other.publishToBintray
 
-        unitTest = new UnitTestConfig(other.unitTest)
+        unitTest = new GroupConfig(other.unitTest)
         integrationTest = new GroupConfig(other.integrationTest)
         functionalTest = new GroupConfig(other.functionalTest)
         acceptanceTest = new GroupConfig(other.acceptanceTest)
@@ -53,16 +55,16 @@ class KayTeeExtension {
 
         projectName = other.wikiLocalConfiguration.projectName
         wikiLocalConfiguration = other.wikiLocalConfiguration.copy(projectName)
+        release = new ReleaseConfig(other.release)
         populateTestMap()
     }
     String remoteRepoUserName = "davidsowerby"
     String baseVersion = '0.0.0.0'
     boolean generateBuildInfo = true
     boolean generateChangeLog = true
-    boolean publishToBintray = true
 
 
-    UnitTestConfig unitTest = new UnitTestConfig()
+    GroupConfig unitTest = new GroupConfig()
     GroupConfig integrationTest = new GroupConfig()
     GroupConfig functionalTest = new GroupConfig()
     GroupConfig acceptanceTest = new GroupConfig()
@@ -77,6 +79,7 @@ class KayTeeExtension {
 
     void populateTestMap() {
         testConfigs.put(TaskNames.ACCEPTANCE_TEST, acceptanceTest)
+        testConfigs.put(TaskNames.UNIT_TEST, unitTest)
         testConfigs.put(TaskNames.FUNCTIONAL_TEST, functionalTest)
         testConfigs.put(TaskNames.INTEGRATION_TEST, integrationTest)
         testConfigs.put(TaskNames.PRODUCTION_TEST, productionTest)
@@ -122,6 +125,13 @@ class KayTeeExtension {
         ConfigureUtil.configure(closure, wikiLocalConfiguration)
     }
 
+    GroupConfig testConfig(String testGroupName) {
+        if (testConfigs.containsKey(testGroupName)) {
+            return testConfigs.get(testGroupName)
+        }
+        throw new IllegalArgumentException("'$testGroupName' is not a valid test group name")
+    }
+
     /**
      * This seems unnecessary, but the extension is byte enhanced by Gradle, which causes Jackson to blow up (stack overflow)
      * This just copies out the data into an un-enhanced instance, so Jackson does not get upset.
@@ -160,14 +170,6 @@ class KayTeeExtension {
         result = 31 * result + acceptanceTest.hashCode()
         result = 31 * result + productionTest.hashCode()
         return result
-    }
-
-
-    GroupConfig testConfig(String testGroupName) {
-        if (KayTeePlugin.defaultTestSets.contains(testGroupName)) {
-            return testConfigs.get(testGroupName)
-        }
-        throw new IllegalArgumentException("'$testGroupName' is not a valid test group name")
     }
 
 

@@ -25,7 +25,7 @@ class KayTeeExtensionTest extends Specification {
         configuration.baseVersion = "2.3.4.5"
         configuration.generateBuildInfo = false
         configuration.generateChangeLog = false
-        configuration.publishToBintray = false
+        configuration.release.toBintray = false
 
         when:
         objectMapper.writeValue(sw, configuration)
@@ -50,7 +50,7 @@ class KayTeeExtensionTest extends Specification {
         configuration.baseVersion = "2.3.4.5"
         configuration.generateBuildInfo = false
         configuration.generateChangeLog = false
-        configuration.publishToBintray = false
+        configuration.release.mergeToMaster = false
 
 
         when:
@@ -62,8 +62,19 @@ class KayTeeExtensionTest extends Specification {
         configuration2.gitLocalConfiguration.projectName == "what?"
         configuration2.gitRemoteConfiguration.repoUser == "bananarama"
         configuration2.baseVersion == "2.3.4.5"
+        !configuration2.release.mergeToMaster
 
         configuration == configuration2
+    }
+
+    def "test config for all groups, only unit test enabled by default"() {
+
+        expect:
+        configuration.testConfig("test").enabled
+        !configuration.testConfig("acceptanceTest").enabled
+        !configuration.testConfig("functionalTest").enabled
+        !configuration.testConfig("integrationTest").enabled
+        !configuration.testConfig("productionTest").enabled
     }
 
     def "testConfig"() {

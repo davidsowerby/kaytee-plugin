@@ -24,7 +24,7 @@ class KayTeePlugin implements Plugin<Project> {
 
 
     public final
-    static List<String> defaultTestSets = ImmutableList.of(INTEGRATION_TEST, FUNCTIONAL_TEST, ACCEPTANCE_TEST, PRODUCTION_TEST)
+    static List<String> testSetNames = ImmutableList.of(UNIT_TEST, INTEGRATION_TEST, FUNCTIONAL_TEST, ACCEPTANCE_TEST, PRODUCTION_TEST)
 
     private final Instantiator instantiator
 
@@ -62,7 +62,7 @@ class KayTeePlugin implements Plugin<Project> {
         t = project.tasks.create(MERGE_TO_MASTER, MergeToMasterTask)
         project.logger.debug("added task " + t.getName())
 
-
+        config(project)
         project.version = new KayTeeVersion(project)
         bintray(project)
         project.afterEvaluate(new AfterEvaluateAction(project))
@@ -75,18 +75,29 @@ class KayTeePlugin implements Plugin<Project> {
         return extension
     }
 
+    void config(Project project) {
 
+//        ThresholdsContainer thresholds = project.extensions.create('thresholds', ThresholdsContainer, instantiator)
+//        thresholds.add(new TestGroupThresholds('test'))
+//
+//        for (String name : defaultTestSets) {
+//            thresholds.add(new TestGroupThresholds(name))
+//        }
+    }
 
 
     private void testSets(Project project) {
-        // the default 'test' set will not trigger the listener, so we need to force it
+        // a test set for 'test' is automatically created by gradle-testsets-plugin
+        // but does not trigger the listener, so we need to force it
         TestSetListener testSetListener = instantiator.newInstance TestSetListener, project
         testSetListener.addQualityGateTaskName('test')
 
-
+// create the other test sets
         DefaultTestSetContainer container = project.testSets
-        for (String ts : defaultTestSets) {
-            container.add(new DefaultTestSet(ts))
+        for (String ts : testSetNames) {
+            if (ts != UNIT_TEST) {
+                container.add(new DefaultTestSet(ts))
+            }
         }
     }
 

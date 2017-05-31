@@ -69,6 +69,7 @@ class ConfigToJsonTaskDelegateTest extends JsonTest {
         ktConfig.acceptanceTest.external = true
         ktConfig.acceptanceTest.externalRepoUrl = "https://example.com"
         ktConfig.acceptanceTest.externalRepoTask = "acceptance-test"
+        ktConfig.release.mergeToMaster = false
 
         resource = ktConfig
 
