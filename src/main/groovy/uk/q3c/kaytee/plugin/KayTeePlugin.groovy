@@ -10,13 +10,10 @@ import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.internal.reflect.Instantiator
 import org.unbrokendome.gradle.plugins.testsets.TestSetsPlugin
-import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSet
-import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSetContainer
 
 import javax.inject.Inject
 
 import static uk.q3c.kaytee.plugin.TaskNames.*
-
 /**
  * Created by David Sowerby on 19 Dec 2016
  */
@@ -50,7 +47,7 @@ class KayTeePlugin implements Plugin<Project> {
         publishing(project)
         repositories(project)
         defaultProperties(project)
-        testSets(project)
+        defaultTestSet(project)
 
 
         Task t = project.tasks.create(GENERATE_BUILD_INFO_TASK_NAME, CreateBuildInfoTask)
@@ -62,7 +59,6 @@ class KayTeePlugin implements Plugin<Project> {
         t = project.tasks.create(MERGE_TO_MASTER, MergeToMasterTask)
         project.logger.debug("added task " + t.getName())
 
-        config(project)
         project.version = new KayTeeVersion(project)
         bintray(project)
         project.afterEvaluate(new AfterEvaluateAction(project))
@@ -75,30 +71,11 @@ class KayTeePlugin implements Plugin<Project> {
         return extension
     }
 
-    void config(Project project) {
-
-//        ThresholdsContainer thresholds = project.extensions.create('thresholds', ThresholdsContainer, instantiator)
-//        thresholds.add(new TestGroupThresholds('test'))
-//
-//        for (String name : defaultTestSets) {
-//            thresholds.add(new TestGroupThresholds(name))
-//        }
-    }
-
-
-    private void testSets(Project project) {
+    private void defaultTestSet(Project project) {
         // a test set for 'test' is automatically created by gradle-testsets-plugin
         // but does not trigger the listener, so we need to force it
         TestSetListener testSetListener = instantiator.newInstance TestSetListener, project
         testSetListener.addQualityGateTaskName('test')
-
-// create the other test sets
-        DefaultTestSetContainer container = project.testSets
-        for (String ts : testSetNames) {
-            if (ts != UNIT_TEST) {
-                container.add(new DefaultTestSet(ts))
-            }
-        }
     }
 
     @SuppressWarnings("GrMethodMayBeStatic")

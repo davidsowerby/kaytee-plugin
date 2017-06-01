@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayVersion"
-        classpath 'uk.q3c.kaytee:kaytee-plugin:0.9.21.65'
+        classpath 'uk.q3c.kaytee:kaytee-plugin:0.9.22.66'
     }
 }
 
@@ -16,7 +16,7 @@ apply plugin: 'uk.q3c.kaytee'
 
 
 
-version '0.9.22.66'
+version '0.9.23.67'
 group 'uk.q3c.kaytee'
 
 ext.jacksonVersion = '2.8.6'

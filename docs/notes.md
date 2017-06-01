@@ -21,3 +21,9 @@ Changes to Bintray defaults:
                 }
             }
         }
+        
+        
+QualityGate task is added even if quality gate is disabled in kaytee configuration - this allows you to run the quality gate
+ directly from Gradle.
+ 
+ TestSets are only added where test set is enabled

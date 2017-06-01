@@ -20,6 +20,7 @@ class TestSetListener {
     }
 
     void testSetAdded(TestSet testSet) {
+        project.logger.lifecycle("Adding test set for: " + testSet.testTaskName)
         addQualityGateTask(testSet)
     }
 

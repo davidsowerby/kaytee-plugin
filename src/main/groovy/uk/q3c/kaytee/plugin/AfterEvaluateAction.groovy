@@ -7,7 +7,11 @@ import org.apache.commons.lang.StringUtils
 import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.logging.Logger
+import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSet
+import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSetContainer
 import uk.q3c.build.gitplus.remote.DefaultGitRemoteUrlMapper
+
+import static uk.q3c.kaytee.plugin.TaskNames.UNIT_TEST
 
 /**
  * Created by David Sowerby on 24 Dec 2016
@@ -25,6 +29,7 @@ class AfterEvaluateAction implements Action<Project> {
         project.getLogger().debug('after evaluate')
         KayTeeExtension config = confirmConfiguration()
         bintrayConfig(config)
+        createTestSets(config)
     }
 
     /**
@@ -56,6 +61,18 @@ class AfterEvaluateAction implements Action<Project> {
         config.wikiLocalConfiguration.validate(config.gitRemoteConfiguration)
         config.changeLog.validate()
         return config
+    }
+
+    private void createTestSets(KayTeeExtension config) {
+        // create the other test sets
+        DefaultTestSetContainer container = project.testSets
+        for (String ts : KayTeePlugin.testSetNames) {
+            if (ts != UNIT_TEST) {
+                if (config.testConfig(ts).enabled) {
+                    container.add(new DefaultTestSet(ts))
+                }
+            }
+        }
     }
 
 
