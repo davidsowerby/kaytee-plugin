@@ -91,4 +91,5 @@ class KayTeeExtensionTest extends Specification {
         then:
         thrown IllegalArgumentException
     }
+
 }

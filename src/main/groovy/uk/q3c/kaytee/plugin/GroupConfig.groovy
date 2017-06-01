@@ -1,5 +1,7 @@
 package uk.q3c.kaytee.plugin
 
+import org.gradle.util.ConfigureUtil
+
 /**
  * Created by David Sowerby on 23 Apr 2017
  */
@@ -17,6 +19,10 @@ class GroupConfig {
     GroupConfig() {
     }
 
+
+    def thresholds(Closure closure) {
+        ConfigureUtil.configure(closure, thresholds)
+    }
 
     GroupConfig(GroupConfig other) {
         enabled = other.enabled
