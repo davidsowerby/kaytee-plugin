@@ -51,6 +51,9 @@ class AfterEvaluateAction implements Action<Project> {
 
         logConfig(project)
 
+        config.gitRemoteConfiguration.validate(config.gitLocalConfiguration)
+        config.gitLocalConfiguration.validate(config.gitRemoteConfiguration)
+        config.wikiLocalConfiguration.validate(config.gitRemoteConfiguration)
         config.changeLog.validate()
         return config
     }

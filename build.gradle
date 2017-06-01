@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayVersion"
-        classpath 'uk.q3c.kaytee:kaytee-plugin:0.9.18.62'
+        classpath 'uk.q3c.kaytee:kaytee-plugin:0.9.19.63'
     }
 }
 
@@ -16,7 +16,7 @@ apply plugin: 'uk.q3c.kaytee'
 
 
 
-version '0.9.19.63'
+version '0.9.20.64'
 group 'uk.q3c.kaytee'
 
 ext.jacksonVersion = '2.8.6'
@@ -27,7 +27,7 @@ dependencies {
     compile gradleApi()
 
     //Changelog (also brings in GitPlus)
-    compile 'uk.q3c.build:changelog:0.4.15.35'
+    compile 'uk.q3c.build:changelog:0.4.16.36'
 
     compile "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayVersion"
 

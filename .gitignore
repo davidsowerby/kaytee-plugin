@@ -6,3 +6,8 @@ out
 classes
 .gradle/
 
+
+kaytee-plugin.iml
+kaytee-plugin.ipr
+kaytee-plugin.iws
+out.txt
