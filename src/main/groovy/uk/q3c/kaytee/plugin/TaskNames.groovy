@@ -7,7 +7,7 @@ class TaskNames {
 
     public final static String GENERATE_BUILD_INFO_TASK_NAME = 'generateBuildInfo'
     public final static String GENERATE_CHANGE_LOG_TASK_NAME = 'generateChangeLog'
-    public final static String GENERATE_CONFIG_TASK_NAME = 'kayteeConfigToJson'
+    public final static String EXTRACT_CONFIG_TASK_NAME = 'kayteeConfigToJson'
 
     public final static String UNIT_TEST = 'test'
     public final static String UNIT_TEST_QUALITY_GATE = 'testQualityGate'
@@ -27,4 +27,6 @@ class TaskNames {
 
     public final static String LOCAL_PUBLISH = 'publishToMavenLocal'
     public final static String MERGE_TO_MASTER = 'mergeToMaster'
+    public final static String BINTRAY_UPLOAD = 'bintrayUpload'
+
 }

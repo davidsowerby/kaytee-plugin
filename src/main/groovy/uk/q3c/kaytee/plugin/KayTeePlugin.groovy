@@ -54,7 +54,7 @@ class KayTeePlugin implements Plugin<Project> {
         project.logger.debug("added task " + t.getName())
         t = project.tasks.create(GENERATE_CHANGE_LOG_TASK_NAME, GenerateChangeLogTask)
         project.logger.debug("added task " + t.getName())
-        t = project.tasks.create(GENERATE_CONFIG_TASK_NAME, ConfigToJsonTask)
+        t = project.tasks.create(EXTRACT_CONFIG_TASK_NAME, ConfigToJsonTask)
         project.logger.debug("added task " + t.getName())
         t = project.tasks.create(MERGE_TO_MASTER, MergeToMasterTask)
         project.logger.debug("added task " + t.getName())
