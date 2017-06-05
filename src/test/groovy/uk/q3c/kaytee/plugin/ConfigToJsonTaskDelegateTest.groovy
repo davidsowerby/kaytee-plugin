@@ -65,10 +65,9 @@ class ConfigToJsonTaskDelegateTest extends JsonTest {
         ktConfig.acceptanceTest.enabled = true
         ktConfig.acceptanceTest.auto = false
         ktConfig.acceptanceTest.manual = true
-        ktConfig.acceptanceTest.external = false
-        ktConfig.acceptanceTest.external = true
-        ktConfig.acceptanceTest.externalRepoUrl = "https://example.com"
-        ktConfig.acceptanceTest.externalRepoTask = "acceptance-test"
+        ktConfig.acceptanceTest.delegated = true
+        ktConfig.acceptanceTest.delegate.repoName = 'wiggly'
+        ktConfig.acceptanceTest.delegate.branch = 'master'
         ktConfig.release.mergeToMaster = false
 
         resource = ktConfig

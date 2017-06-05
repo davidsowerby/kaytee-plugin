@@ -11,10 +11,9 @@ class GroupConfig {
     boolean qualityGate = false
     boolean auto = true
     boolean manual = false
-    boolean external = false
-    String externalRepoUrl = ""
-    String externalRepoTask = "test"
+    boolean delegated = false
     TestGroupThresholds thresholds = new TestGroupThresholds()
+    DelegateProjectConfig delegate = new DelegateProjectConfig()
 
     GroupConfig() {
     }
@@ -24,15 +23,18 @@ class GroupConfig {
         ConfigureUtil.configure(closure, thresholds)
     }
 
+    def delegate(Closure closure) {
+        ConfigureUtil.configure(closure, delegate)
+    }
+
     GroupConfig(GroupConfig other) {
         enabled = other.enabled
         qualityGate = other.qualityGate
         auto = other.auto
         manual = other.manual
-        external = other.external
-        externalRepoUrl = other.externalRepoUrl
-        externalRepoTask = other.externalRepoTask
+        delegated = other.delegated
         thresholds = new TestGroupThresholds(other.thresholds)
+        delegate = new DelegateProjectConfig(other.delegate)
     }
 
     boolean equals(o) {
@@ -43,12 +45,12 @@ class GroupConfig {
 
         if (auto != that.auto) return false
         if (enabled != that.enabled) return false
-        if (external != that.external) return false
+        if (delegated != that.delegated) return false
         if (manual != that.manual) return false
         if (qualityGate != that.qualityGate) return false
-        if (externalRepoTask != that.externalRepoTask) return false
-        if (externalRepoUrl != that.externalRepoUrl) return false
         if (thresholds != that.thresholds) return false
+        if (delegate != that.delegate) return false
+
 
         return true
     }
@@ -59,10 +61,9 @@ class GroupConfig {
         result = 31 * result + (qualityGate ? 1 : 0)
         result = 31 * result + (auto ? 1 : 0)
         result = 31 * result + (manual ? 1 : 0)
-        result = 31 * result + (external ? 1 : 0)
-        result = 31 * result + externalRepoUrl.hashCode()
-        result = 31 * result + externalRepoTask.hashCode()
+        result = 31 * result + (delegated ? 1 : 0)
         result = 31 * result + thresholds.hashCode()
+        result = 31 * result + delegate.hashCode()
         return result
     }
 }
