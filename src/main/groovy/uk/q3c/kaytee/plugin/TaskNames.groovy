@@ -28,5 +28,6 @@ class TaskNames {
     public final static String LOCAL_PUBLISH = 'publishToMavenLocal'
     public final static String MERGE_TO_MASTER = 'mergeToMaster'
     public final static String BINTRAY_UPLOAD = 'bintrayUpload'
+    public final static String CUSTOM = 'custom'
 
 }
