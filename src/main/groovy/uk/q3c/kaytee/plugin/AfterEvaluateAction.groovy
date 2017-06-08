@@ -66,10 +66,10 @@ class AfterEvaluateAction implements Action<Project> {
     private void createTestSets(KayTeeExtension config) {
         // create the other test sets
         DefaultTestSetContainer container = project.testSets
-        for (String ts : KayTeePlugin.testSetNames) {
+        for (TaskKey ts : TaskKey.testTasks()) {
             if (ts != UNIT_TEST) {
                 if (config.testConfig(ts).enabled) {
-                    container.add(new DefaultTestSet(ts))
+                    container.add(new DefaultTestSet(ts.gradleTask()))
                 }
             }
         }

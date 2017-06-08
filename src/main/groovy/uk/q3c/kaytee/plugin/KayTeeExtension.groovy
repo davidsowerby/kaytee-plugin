@@ -1,11 +1,9 @@
 package uk.q3c.kaytee.plugin
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import org.gradle.util.ConfigureUtil
 import uk.q3c.build.changelog.DefaultChangeLogConfiguration
 import uk.q3c.build.gitplus.local.DefaultGitLocalConfiguration
 import uk.q3c.build.gitplus.remote.DefaultGitRemoteConfiguration
-
 /**
  *
  * Properties relating to the project from a KayTee perspective.
@@ -16,18 +14,14 @@ import uk.q3c.build.gitplus.remote.DefaultGitRemoteConfiguration
  */
 
 class KayTeeExtension {
-    @JsonIgnore
-    Map<String, GroupConfig> testConfigs = new HashMap<>()
 
     KayTeeExtension() {
         changeLog = new DefaultChangeLogConfiguration()
         gitLocalConfiguration = new DefaultGitLocalConfiguration()
         wikiLocalConfiguration = new DefaultGitLocalConfiguration()
         gitRemoteConfiguration = new DefaultGitRemoteConfiguration()
-        populateTestMap()
+        unitTest.enabled = true
 
-        // The only one enabled by default
-        testConfigs.get("test").enabled = true
     }
 
     KayTeeExtension(KayTeeExtension other) {
@@ -56,7 +50,6 @@ class KayTeeExtension {
         projectName = other.wikiLocalConfiguration.projectName
         wikiLocalConfiguration = other.wikiLocalConfiguration.copy(projectName)
         release = new ReleaseConfig(other.release)
-        populateTestMap()
     }
     String remoteRepoUserName = "davidsowerby"
     String baseVersion = '0.0.0.0'
@@ -76,14 +69,6 @@ class KayTeeExtension {
     DefaultGitLocalConfiguration gitLocalConfiguration
     DefaultGitLocalConfiguration wikiLocalConfiguration
     DefaultGitRemoteConfiguration gitRemoteConfiguration
-
-    void populateTestMap() {
-        testConfigs.put(TaskNames.ACCEPTANCE_TEST, acceptanceTest)
-        testConfigs.put(TaskNames.UNIT_TEST, unitTest)
-        testConfigs.put(TaskNames.FUNCTIONAL_TEST, functionalTest)
-        testConfigs.put(TaskNames.INTEGRATION_TEST, integrationTest)
-        testConfigs.put(TaskNames.PRODUCTION_TEST, productionTest)
-    }
 
     def release(Closure closure) {
         ConfigureUtil.configure(closure, release)
@@ -125,14 +110,19 @@ class KayTeeExtension {
         ConfigureUtil.configure(closure, wikiLocalConfiguration)
     }
 
-    GroupConfig testConfig(String testGroupName) {
-        if (testConfigs.containsKey(testGroupName)) {
-            return testConfigs.get(testGroupName)
+    GroupConfig testConfig(TaskKey taskKey) {
+        if (TaskKey.testTasks().contains(taskKey)) {
+            switch (taskKey) {
+                case TaskKey.Unit_Test: return unitTest
+                case TaskKey.Integration_Test: return integrationTest
+                case TaskKey.Functional_Test: return functionalTest
+                case TaskKey.Acceptance_Test: return acceptanceTest
+                case TaskKey.Production_Test: return productionTest
+            }
         }
-        throw new IllegalArgumentException("'$testGroupName' is not a valid test group name")
+        throw new IllegalArgumentException("'$taskKey' is not a valid test group key")
     }
 
-    GroupConfig testConfig(TaskKey testGroupName) {}
 
     /**
      * This seems unnecessary, but the extension is byte enhanced by Gradle, which causes Jackson to blow up (stack overflow)

@@ -1,6 +1,5 @@
 package uk.q3c.kaytee.plugin
 
-import com.google.common.collect.ImmutableList
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -20,8 +19,6 @@ import static uk.q3c.kaytee.plugin.TaskNames.*
 class KayTeePlugin implements Plugin<Project> {
 
 
-    public final
-    static List<String> testSetNames = ImmutableList.of(UNIT_TEST, INTEGRATION_TEST, FUNCTIONAL_TEST, ACCEPTANCE_TEST, PRODUCTION_TEST)
 
     private final Instantiator instantiator
 

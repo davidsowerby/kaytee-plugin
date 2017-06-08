@@ -8,6 +8,7 @@ import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 import uk.q3c.util.testutil.TestResource
+
 /**
  *
  *
@@ -34,7 +35,7 @@ class QualityGateTaskTest extends Specification {
 
 
         task = project.getTasks().create("qg", QualityGateTask.class)
-        task.setTestGroup('integrationTest')
+        task.setTestGroup(TaskKey.Integration_Test)
     }
 
     def "check fails thresholds"() {
@@ -83,7 +84,7 @@ class QualityGateTaskTest extends Specification {
         given:
 
         kt.integrationTest.qualityGate = true
-        thresholds = kt.testConfigs.get(TaskNames.INTEGRATION_TEST).thresholds
+        thresholds = kt.testConfig(TaskKey.Integration_Test).thresholds
         thresholds.instruction = 50
         thresholds.branch = 70
         thresholds.complexity = 66
@@ -100,9 +101,16 @@ class QualityGateTaskTest extends Specification {
         then:
         noExceptionThrown()
         task.getThresholds().get("instruction") == new Double(50)
-        task.testGroup == 'integrationTest'
+        task.testGroup.gradleTask() == 'integrationTest'
     }
 
+    def "setting invalid test group throws exception"() {
+        when:
+        task.setTestGroup(TaskKey.Custom)
+
+        then:
+        thrown IllegalArgumentException
+    }
 
     def setupFile() {
         File reportDir = new File(projectDir, 'build/reports/jacoco/integrationTestReport')

@@ -6,6 +6,7 @@ import org.gradle.api.logging.Logger
 import org.gradle.api.plugins.ExtensionContainer
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
+import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSetContainer
 import spock.lang.Specification
 
 /**
@@ -23,6 +24,7 @@ class AfterEvaluateActionTest extends Specification {
     KayTeeExtension config = new KayTeeExtension()
     BintrayExtension bintrayExtension
     KayTeeVersion version = Mock(KayTeeVersion)
+    DefaultTestSetContainer testSets = Mock(DefaultTestSetContainer)
 
     def setup() {
         temp = temporaryFolder.getRoot()
@@ -37,6 +39,7 @@ class AfterEvaluateActionTest extends Specification {
         project.version >> version
         bintrayExtension = new BintrayExtension(project)
         extensions.getByName('bintray') >> bintrayExtension
+        project.testSets >> testSets
 
         // These are normally set during Plugin execute
         config.gitLocalConfiguration.projectName = project.name

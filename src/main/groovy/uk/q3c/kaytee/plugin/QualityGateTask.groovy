@@ -10,20 +10,24 @@ import java.text.DecimalFormat
  * Created by David Sowerby on 27 Dec 2016
  */
 class QualityGateTask extends DefaultTask {
-    private String testGroup = "unspecified"
+    private TaskKey testGroup = TaskKey.Custom
     private final Map<String, Double> thresholds = new HashMap<>(10)
 
     Map<String, Double> getThresholds() {
         return thresholds
     }
 
-    String getTestGroup() {
+    TaskKey getTestGroup() {
 
         return testGroup
     }
 
-    void setTestGroup(String testGroup) {
-        this.testGroup = testGroup
+    void setTestGroup(TaskKey testGroup) {
+        if (TaskKey.testTasks().contains(testGroup)) {
+            this.testGroup = testGroup
+        } else {
+            throw new IllegalArgumentException("${testGroup.gradleTask()} is not a valid test group")
+        }
     }
 
     /**
@@ -31,7 +35,7 @@ class QualityGateTask extends DefaultTask {
      */
     @TaskAction
     void evaluate() {
-        getLogger().debug("evaluating '" + testGroup + "' results against required thresholds")
+        getLogger().debug("evaluating '" + testGroup.gradleTask() + "' results against required thresholds")
 
         final KayTeeExtension config = getProject().getExtensions().findByName("kaytee") as KayTeeExtension
         final TestGroupThresholds thresholds = config.testConfig(testGroup).thresholds
@@ -40,7 +44,7 @@ class QualityGateTask extends DefaultTask {
 
         final File baseReportsDir = new File(getProject().getBuildDir(), "reports/jacoco")
         getLogger().debug(baseReportsDir.getAbsolutePath())
-        final String reportFolderName = testGroup + "Report"
+        final String reportFolderName = testGroup.gradleTask() + "Report"
         final String reportFileName = reportFolderName + ".xml"
         final File reportDir = new File(baseReportsDir, reportFolderName)
         final File reportFile = new File(reportDir, reportFileName)
@@ -69,7 +73,7 @@ class QualityGateTask extends DefaultTask {
 
     private void presentFailures(Map<String, Double> failures) {
         if (failures.isEmpty()) {
-            getLogger().quiet("'" + testGroup + "' passed quality gate (code coverage met required thresholds)")
+            getLogger().quiet("'" + testGroup.gradleTask() + "' passed quality gate (code coverage met required thresholds)")
         } else {
             getLogger().quiet("------------------ Code Coverage Failed -----------------------")
             final DecimalFormat df = new DecimalFormat("#.0")
@@ -95,7 +99,7 @@ class QualityGateTask extends DefaultTask {
 
         } catch (Exception e) {
             throw new GradleException(e.getClass()
-                    .getSimpleName() + " occurred in QualityGateTask for " + testGroup, e)
+                    .getSimpleName() + " occurred in QualityGateTask for " + testGroup.gradleTask(), e)
         }
     }
 
@@ -111,7 +115,7 @@ class QualityGateTask extends DefaultTask {
     }
 
     private Map<String, Double> identifyFailures(Map<String, Node> resultsMap) {
-        getLogger().debug('Examining thresholds for ' + testGroup)
+        getLogger().debug('Examining thresholds for ' + testGroup.gradleTask())
         for (String s : thresholds.keySet()) {
             getLogger().debug(s + ' = ' + thresholds.get(s))
         }
