@@ -10,9 +10,6 @@ import org.gradle.api.logging.Logger
 import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSet
 import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSetContainer
 import uk.q3c.build.gitplus.remote.DefaultGitRemoteUrlMapper
-
-import static uk.q3c.kaytee.plugin.TaskNames.UNIT_TEST
-
 /**
  * Created by David Sowerby on 24 Dec 2016
  */
@@ -65,9 +62,11 @@ class AfterEvaluateAction implements Action<Project> {
 
     private void createTestSets(KayTeeExtension config) {
         // create the other test sets
+        logDebug("Creating test sets for enabled test groups")
         DefaultTestSetContainer container = project.testSets
         for (TaskKey ts : TaskKey.testTasks()) {
-            if (ts != UNIT_TEST) {
+            if (TaskKey.Unit_Test != ts) {
+                logDebug("TaskKey is $ts, adding test set for ${ts.gradleTask()}")
                 if (config.testConfig(ts).enabled) {
                     container.add(new DefaultTestSet(ts.gradleTask()))
                 }
@@ -75,6 +74,9 @@ class AfterEvaluateAction implements Action<Project> {
         }
     }
 
+    private void logDebug(String msg) {
+        project.logger.debug(msg)
+    }
 
     private void logConfig(Project project) {
         Logger logger = project.getLogger()

@@ -57,4 +57,11 @@ class TaskKeyTest extends Specification {
         obj2.key2 == Functional_Test_Quality_Gate
         obj2.s == "random"
     }
+
+    def "TaskKey from gradle task"() {
+        expect:
+        fromGradleTask("test") == Unit_Test
+        fromGradleTask("integrationTest") == Integration_Test
+        fromGradleTask("functionalTest") == Functional_Test
+    }
 }

@@ -54,5 +54,14 @@ enum TaskKey implements I18NKey {
         return gradleTask
     }
 
+    static TaskKey fromGradleTask(String gradleTask) {
+        for (TaskKey key : values()) {
+            if (gradleTask == key.gradleTask()) {
+                return key
+            }
+        }
+        throw new IllegalArgumentException("'$gradleTask' is not a defined Gradle task")
+    }
+
 
 }
