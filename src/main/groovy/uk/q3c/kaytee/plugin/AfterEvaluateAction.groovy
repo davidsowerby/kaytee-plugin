@@ -64,7 +64,7 @@ class AfterEvaluateAction implements Action<Project> {
         // create the other test sets
         logDebug("Creating test sets for enabled test groups")
         DefaultTestSetContainer container = project.testSets
-        for (TaskKey ts : TaskKey.testTasks()) {
+        for (TaskKey ts : TaskKey.testTasks) {
             if (TaskKey.Unit_Test != ts) {
                 logDebug("TaskKey is $ts, adding test set for ${ts.gradleTask()}")
                 if (config.testConfig(ts).enabled) {

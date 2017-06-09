@@ -111,7 +111,7 @@ class KayTeeExtension {
     }
 
     GroupConfig testConfig(TaskKey taskKey) {
-        if (TaskKey.testTasks().contains(taskKey)) {
+        if (taskKey.isTestKey()) {
             switch (taskKey) {
                 case TaskKey.Unit_Test: return unitTest
                 case TaskKey.Integration_Test: return integrationTest

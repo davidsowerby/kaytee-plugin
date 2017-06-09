@@ -28,12 +28,10 @@ enum TaskKey implements I18NKey {
         this.gradleTask = gradleTask
     }
 
-    static List<TaskKey> testTasks() {
-        return ImmutableList.of(Unit_Test, Integration_Test, Functional_Test, Acceptance_Test, Production_Test)
-    }
+    static List<TaskKey> testTasks = ImmutableList.of(Unit_Test, Integration_Test, Functional_Test, Acceptance_Test, Production_Test)
 
     QualityGateTaskKey qualityGateTaskKey() {
-        if (!testTasks().contains(this)) {
+        if (!testTasks.contains(this)) {
             throw new IllegalArgumentException("Only test tasks have a quality gate")
         }
         switch (this) {
@@ -61,6 +59,10 @@ enum TaskKey implements I18NKey {
             }
         }
         throw new IllegalArgumentException("'$gradleTask' is not a defined Gradle task")
+    }
+
+    boolean isTestKey() {
+        return testTasks.contains(this)
     }
 
 

@@ -23,7 +23,7 @@ class QualityGateTask extends DefaultTask {
     }
 
     void setTestGroup(TaskKey testGroup) {
-        if (TaskKey.testTasks().contains(testGroup)) {
+        if (testGroup.isTestKey()) {
             this.testGroup = testGroup
         } else {
             throw new IllegalArgumentException("${testGroup.gradleTask()} is not a valid test group")

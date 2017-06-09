@@ -22,7 +22,7 @@ class TaskKeyTest extends Specification {
     def "lookups"() {
         expect:
         Generate_Change_Log.gradleTask() == TaskNames.GENERATE_CHANGE_LOG_TASK_NAME
-        testTasks() == ImmutableList.of(Unit_Test, Integration_Test, Functional_Test, Acceptance_Test, Production_Test)
+        testTasks == ImmutableList.of(Unit_Test, Integration_Test, Functional_Test, Acceptance_Test, Production_Test)
         Unit_Test.qualityGateTaskKey() == Unit_Test_Quality_Gate
         Integration_Test.qualityGateTaskKey() == Integration_Test_Quality_Gate
         Functional_Test.qualityGateTaskKey() == Functional_Test_Quality_Gate
