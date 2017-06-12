@@ -10,6 +10,7 @@ import org.gradle.api.logging.Logger
 import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSet
 import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSetContainer
 import uk.q3c.build.gitplus.remote.DefaultGitRemoteUrlMapper
+
 /**
  * Created by David Sowerby on 24 Dec 2016
  */
@@ -122,6 +123,10 @@ class AfterEvaluateAction implements Action<Project> {
 
         if (StringUtils.isEmpty(bintray.pkg.version.released)) {
             bintray.pkg.version.released = new Date()
+        }
+
+        if (bintray.pkg.licenses == null || bintray.pkg.licenses.length == 0) {
+            bintray.pkg.setLicenses('Apache 2.0')
         }
 
 
