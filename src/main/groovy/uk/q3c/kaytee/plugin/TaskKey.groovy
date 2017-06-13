@@ -15,7 +15,7 @@ enum TaskKey implements I18NKey {
     Integration_Test(INTEGRATION_TEST),
     Generate_Build_Info(GENERATE_BUILD_INFO_TASK_NAME),
     Generate_Change_Log(GENERATE_CHANGE_LOG_TASK_NAME),
-    Local_Publish(LOCAL_PUBLISH),
+    Publish_to_Local(PUBLISH_TO_LOCAL),
     Functional_Test(FUNCTIONAL_TEST),
     Acceptance_Test(ACCEPTANCE_TEST),
     Merge_to_Master(MERGE_TO_MASTER),
