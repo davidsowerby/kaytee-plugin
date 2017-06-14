@@ -3,6 +3,7 @@ package uk.q3c.kaytee.plugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.publish.maven.MavenPublication
@@ -21,6 +22,7 @@ class KayTeePlugin implements Plugin<Project> {
 
 
     private final Instantiator instantiator
+    final static String KAYTEE_CONFIG_FLAG = "_kaytee_configured_"
 
 
     @Inject
@@ -31,6 +33,9 @@ class KayTeePlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
+        // we want to stop the KayTee from attempting to read Git before config has been evaluated
+        ExtraPropertiesExtension ext = project.getExtensions().getExtraProperties()
+        ext.set(KAYTEE_CONFIG_FLAG, false)
         project.apply plugin: JavaPlugin
         project.apply plugin: GroovyPlugin
         project.apply plugin: 'maven'

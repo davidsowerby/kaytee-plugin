@@ -16,7 +16,7 @@ apply plugin: 'uk.q3c.kaytee'
 
 
 
-version '0.11.3.0'
+version '0.11.4.0'
 group 'uk.q3c.kaytee'
 
 ext.jacksonVersion = '2.8.6'

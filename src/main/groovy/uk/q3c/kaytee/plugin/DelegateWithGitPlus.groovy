@@ -1,5 +1,7 @@
 package uk.q3c.kaytee.plugin
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
 import org.gradle.api.Project
 import uk.q3c.build.gitplus.GitPlusFactory
 import uk.q3c.build.gitplus.gitplus.GitPlus
@@ -31,6 +33,17 @@ class DelegateWithGitPlus extends DelegateWithConfig {
         gitPlus.local.localConfiguration.copyFrom(config.gitLocalConfiguration)
         gitPlus.wikiLocal.localConfiguration.copyFrom(config.wikiLocalConfiguration)
         gitPlus.remote.configuration.copyFrom(config.gitRemoteConfiguration)
+        ObjectMapper mapper = getObjectMapper()
+        StringWriter sw = new StringWriter()
+        mapper.writeValue(sw, gitPlus.remote.configuration)
+        project.logger.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>\n" + sw.toString())
+        gitPlus.execute()
 
+    }
+
+    private ObjectMapper getObjectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper()
+        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true)
+        return objectMapper
     }
 }

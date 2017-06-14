@@ -7,10 +7,10 @@ import org.apache.commons.lang.StringUtils
 import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.logging.Logger
+import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSet
 import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSetContainer
 import uk.q3c.build.gitplus.remote.DefaultGitRemoteUrlMapper
-
 /**
  * Created by David Sowerby on 24 Dec 2016
  */
@@ -129,6 +129,9 @@ class AfterEvaluateAction implements Action<Project> {
             bintray.pkg.setLicenses('Apache 2.0')
         }
 
+
+        ExtraPropertiesExtension ext = project.getExtensions().getExtraProperties()
+        ext.set(KayTeePlugin.KAYTEE_CONFIG_FLAG, true)
 
         if (project.logger.isDebugEnabled()) {
             ObjectMapper objectMapper = new ObjectMapper()
