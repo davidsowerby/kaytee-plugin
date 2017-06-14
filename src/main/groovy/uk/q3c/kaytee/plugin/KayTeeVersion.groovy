@@ -61,6 +61,9 @@ class KayTeeVersion extends DelegateWithGitPlus {
  * @return base version
  */
     static String baseVersionFromFullVersion(String fullVersion) {
+        if (!fullVersion.contains(".")) {
+            return fullVersion
+        }
         int index = fullVersion.lastIndexOf('.')
         return fullVersion.substring(0, index)
 

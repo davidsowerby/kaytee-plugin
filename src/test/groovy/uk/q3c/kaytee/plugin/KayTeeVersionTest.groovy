@@ -74,12 +74,17 @@ class KayTeeVersionTest extends Specification {
     }
 
     def "baseVersionFromFullVersion"() {
-        given:
+        when:
         String fullVersion = config.baseVersion + ".55"
 
-        expect:
+        then:
         version.baseVersionFromFullVersion(fullVersion) == "1.2.3.4"
 
+        when:
+        fullVersion = "unspecified"
+
+        then:
+        version.baseVersionFromFullVersion(fullVersion) == "unspecified"
 
     }
 
