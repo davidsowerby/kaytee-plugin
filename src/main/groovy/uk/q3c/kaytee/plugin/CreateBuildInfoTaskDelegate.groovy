@@ -2,10 +2,13 @@ package uk.q3c.kaytee.plugin
 
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
-import uk.q3c.build.gitplus.local.*
+import uk.q3c.build.gitplus.local.GitBranch
+import uk.q3c.build.gitplus.local.GitLocal
+import uk.q3c.build.gitplus.local.GitLocalConfiguration
 
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
+
 /**
  * Carries out most of the work for {@link uk.q3c.kaytee.plugin.CreateBuildInfoTask}, to enable testing
 
@@ -14,13 +17,14 @@ import java.time.format.DateTimeFormatter
  */
 class CreateBuildInfoTaskDelegate extends DelegateWithGitPlus {
 
-
+    VersionCheckTaskDelegate versionCheck
     static String PATH_TO_BUILD_INFO_PROPS = 'resources/main/buildInfo.properties'
     static String PROPERTY_NAME_COMMIT_ID = "commitId"
 
 
-    CreateBuildInfoTaskDelegate(Project project) {
+    CreateBuildInfoTaskDelegate(Project project, VersionCheckTaskDelegate versionCheck) {
         super(project)
+        this.versionCheck = versionCheck
     }
 
 /**
@@ -103,7 +107,7 @@ class CreateBuildInfoTaskDelegate extends DelegateWithGitPlus {
         gitPlus.getRemote().getConfiguration().active(false)
         gitPlus.execute()
         final GitBranch currentBranch = gitLocal.currentBranch()
-        return gitLocal.latestCommitSHA(currentBranch).getSha()
+        return gitLocal.headCommitSHA(currentBranch).getSha()
     }
 
     /**
@@ -116,37 +120,13 @@ class CreateBuildInfoTaskDelegate extends DelegateWithGitPlus {
         logLifecycle("tagging $commitId")
         final GitLocal gitLocal = gitPlus.getLocal()
         String version = getVersion()
-
-        // look for existing tag with this version
-        final List<Tag> tags = gitLocal.tags()
-        logLifecycle("Number of existing tags: ${tags.size()}")
-        boolean tagFound = false
-        for (Tag tag : tags) {
-            logLifecycle("checking tag with name: ${tag.tagName}")
-            if (tag.tagName.equals(version)) {
-                logDebug("version tag already exists")
-                tagFound = true
-                if (tag.commit.hash != commitId) {
-                    throw new GitLocalException("A duplicate tag '$version' has been found, but is attached to commit $commitId, instead of the current commit ${tag.commit.hash}")
-                }
-                break
-            }
-        }
-        if (tagFound) {
+        if (versionCheck.check()) {
             return version
         }
         gitLocal.tag(version, 'version ' + version)
         gitLocal.push(true, false)
         logLifecycle("Git tagged as version " + version)
         return version
-    }
-
-    private void logLifecycle(String msg) {
-        project.getLogger().lifecycle(msg)
-    }
-
-    private void logLifecycle(String msg, Throwable e) {
-        project.getLogger().lifecycle(msg, e)
     }
 
 

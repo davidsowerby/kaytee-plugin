@@ -14,7 +14,7 @@ class CreateBuildInfoTask extends DefaultTask {
     CreateBuildInfoTaskDelegate delegate
 
     CreateBuildInfoTask() {
-        delegate = new CreateBuildInfoTaskDelegate(project)
+        delegate = new CreateBuildInfoTaskDelegate(project, new VersionCheckTaskDelegate(project))
     }
 
     @TaskAction

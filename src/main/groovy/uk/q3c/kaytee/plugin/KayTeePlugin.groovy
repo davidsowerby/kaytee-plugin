@@ -55,6 +55,8 @@ class KayTeePlugin implements Plugin<Project> {
         project.logger.debug("added task " + t.getName())
         t = project.tasks.create(MERGE_TO_MASTER, MergeToMasterTask)
         project.logger.debug("added task " + t.getName())
+        t = project.tasks.create(VERSION_CHECK, VersionCheckTask)
+        project.logger.debug("added task " + t.getName())
 
         project.version = new KayTeeVersion(project)
         bintray(project)

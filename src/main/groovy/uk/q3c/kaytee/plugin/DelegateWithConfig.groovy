@@ -21,4 +21,12 @@ class DelegateWithConfig {
     protected void logDebug(String msg) {
         project.logger.debug(msg)
     }
+
+    protected void logLifecycle(String msg) {
+        project.logger.debug(msg)
+    }
+
+    protected void logLifecycle(String msg, Exception e) {
+        project.logger.debug(msg, e)
+    }
 }

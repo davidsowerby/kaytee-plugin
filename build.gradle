@@ -27,7 +27,7 @@ dependencies {
     compile gradleApi()
 
     //Changelog (also brings in GitPlus)
-    compile 'uk.q3c.build:changelog:0.4.16.36'
+    compile 'uk.q3c.build:changelog:0.4.17.37'
 
     compile "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayVersion"
 

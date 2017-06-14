@@ -1,6 +1,5 @@
 package uk.q3c.kaytee.plugin
 
-import com.google.common.collect.ImmutableList
 import org.apache.commons.codec.digest.DigestUtils
 import org.eclipse.jgit.lib.PersonIdent
 import org.gradle.api.Project
@@ -17,7 +16,6 @@ import uk.q3c.build.gitplus.remote.GitRemoteConfiguration
 
 import java.time.OffsetDateTime
 import java.time.ZonedDateTime
-
 /**
  * Created by David Sowerby on 06 Dec 2016
  */
@@ -45,7 +43,7 @@ class CreateBuildInfoTaskDelegateTest extends Specification {
     KayTeeExtension ktConfig
     ExtensionContainer projectExtensions = Mock(ExtensionContainer)
     GitLocalConfiguration wikiConfiguration
-
+    VersionCheckTaskDelegate versionCheck = Mock(VersionCheckTaskDelegate)
 
     def setup() {
         ktConfig = new KayTeeExtension()
@@ -74,7 +72,7 @@ class CreateBuildInfoTaskDelegateTest extends Specification {
         project.getLogger() >> logger
         project.extensions >> projectExtensions
         projectExtensions.getByName("kaytee") >> ktConfig
-        delegate = new CreateBuildInfoTaskDelegate(project)
+        delegate = new CreateBuildInfoTaskDelegate(project, versionCheck)
         delegate.gitPlus = gitPlus
     }
 
@@ -95,8 +93,7 @@ class CreateBuildInfoTaskDelegateTest extends Specification {
         1 * gitLocal.tag('9.9.9.1000', 'version 9.9.9.1000')
         1 * gitLocal.push(true, false)
         1 * gitLocal.currentBranch() >> new GitBranch('develop')
-        1 * gitLocal.latestCommitSHA(_) >> gitSHA
-        1 * gitLocal.tags() >> ImmutableList.of()
+        1 * gitLocal.headCommitSHA(_) >> gitSHA
         propertiesFile.exists()
 
         then:
@@ -109,45 +106,6 @@ class CreateBuildInfoTaskDelegateTest extends Specification {
         String dateAsString = properties.get("date")
         OffsetDateTime.parse(dateAsString).isBefore(OffsetDateTime.now())
         OffsetDateTime.parse(dateAsString).isAfter(OffsetDateTime.now().minusSeconds(1))
-    }
-
-    def "Tag exists, tag not added and no failure"() {
-        given:
-        PersonIdent person = new PersonIdent("a", "b")
-        GitCommit gitCommit = new GitCommit("x", testSha().sha, person, person)
-        Tag existingTag = new Tag('9.9.9.1000', ZonedDateTime.now(), ZonedDateTime.now(), person, "msg", gitCommit, Tag.TagType.ANNOTATED)
-
-        when:
-        delegate.writeInfo()
-
-
-        then:
-        1 * remoteConfiguration.active(false)
-        1 * gitPlus.execute()
-        1 * gitLocal.tags() >> ImmutableList.of(existingTag)
-        0 * gitLocal.tag(_)
-        0 * gitLocal.push(true, false)
-        1 * gitLocal.currentBranch() >> new GitBranch('develop')
-        1 * gitLocal.latestCommitSHA(_) >> gitSHA
-    }
-
-    def "Tag exists, but with different commit id"() {
-        given:
-        PersonIdent person = new PersonIdent("a", "b")
-        GitCommit gitCommit = new GitCommit("x", testSha1().sha, person, person)
-        Tag existingTag = new Tag('9.9.9.1000', ZonedDateTime.now(), ZonedDateTime.now(), person, "msg", gitCommit, Tag.TagType.ANNOTATED)
-
-        when:
-        delegate.writeInfo()
-
-
-        then:
-        1 * remoteConfiguration.active(false)
-        1 * gitPlus.execute()
-        1 * gitLocal.tags() >> ImmutableList.of(existingTag)
-        1 * gitLocal.currentBranch() >> new GitBranch('develop')
-        1 * gitLocal.latestCommitSHA(_) >> gitSHA
-        thrown GitLocalException
     }
 
 

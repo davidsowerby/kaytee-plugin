@@ -53,9 +53,10 @@ class KayTeeVersionTest extends Specification {
 
         GitBranch branch = new GitBranch("kaytee")
         gitLocal.currentBranch() >> branch
-        gitLocal.latestCommitSHA(branch) >> testSha()
+        gitLocal.headCommitSHA(branch) >> testSha()
         project.getExtensions() >> extensions
         extensions.getByName("kaytee") >> config
+        config.baseVersion = "1.2.3.4"
         version = new KayTeeVersion(project, gitPlus)
         project.logger >> logger
         projectDir = new File(temp, "wiggly")
@@ -63,8 +64,6 @@ class KayTeeVersionTest extends Specification {
     }
 
     def "version"() {
-        given:
-        config.baseVersion = "1.2.3.4"
 
         when:
         String v = version.toString()
@@ -72,6 +71,16 @@ class KayTeeVersionTest extends Specification {
         then:
         v == "1.2.3.4." + testSha().short()
         println version.toString()
+    }
+
+    def "baseVersionFromFullVersion"() {
+        given:
+        String fullVersion = config.baseVersion + ".55"
+
+        expect:
+        version.baseVersionFromFullVersion(fullVersion) == "1.2.3.4"
+
+
     }
 
     private GitSHA testSha() {
