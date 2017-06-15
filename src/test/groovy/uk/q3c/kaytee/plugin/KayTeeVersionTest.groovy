@@ -4,18 +4,13 @@ import org.apache.commons.codec.digest.DigestUtils
 import org.gradle.api.Project
 import org.gradle.api.logging.Logger
 import org.gradle.api.plugins.ExtensionContainer
+import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 import uk.q3c.build.gitplus.GitSHA
-import uk.q3c.build.gitplus.gitplus.GitPlus
-import uk.q3c.build.gitplus.local.GitBranch
-import uk.q3c.build.gitplus.local.GitLocal
 import uk.q3c.build.gitplus.local.GitLocalConfiguration
-import uk.q3c.build.gitplus.local.WikiLocal
-import uk.q3c.build.gitplus.remote.GitRemote
 import uk.q3c.build.gitplus.remote.GitRemoteConfiguration
-
 /**
  * Created by David Sowerby on 10 May 2017
  */
@@ -25,13 +20,8 @@ class KayTeeVersionTest extends Specification {
     TemporaryFolder temporaryFolder
     File temp
 
-    GitPlus gitPlus = Mock(GitPlus)
-
     KayTeeVersion version
     Project project = Mock(Project)
-    GitLocal gitLocal = Mock(GitLocal)
-    WikiLocal wikiLocal = Mock(WikiLocal)
-    GitRemote gitRemote = Mock(GitRemote)
     ExtensionContainer extensions = Mock(ExtensionContainer)
     KayTeeExtension config
 
@@ -40,37 +30,41 @@ class KayTeeVersionTest extends Specification {
     GitRemoteConfiguration remoteConfig = Mock(GitRemoteConfiguration)
     Logger logger = Mock(Logger)
     File projectDir
+    ExtraPropertiesExtension ext = Mock(ExtraPropertiesExtension)
 
     def setup() {
         temp = temporaryFolder.getRoot()
         config = new KayTeeExtension()
-        gitPlus.local >> gitLocal
-        gitPlus.wikiLocal >> wikiLocal
-        gitPlus.remote >> gitRemote
-        gitLocal.localConfiguration >> localConfig
-        gitRemote.configuration >> remoteConfig
-        wikiLocal.localConfiguration >> wikiConfig
 
-        GitBranch branch = new GitBranch("kaytee")
-        gitLocal.currentBranch() >> branch
-        gitLocal.headCommitSHA(branch) >> testSha()
         project.getExtensions() >> extensions
         extensions.getByName("kaytee") >> config
+        extensions.extraProperties >> ext
         config.baseVersion = "1.2.3.4"
-        version = new KayTeeVersion(project, gitPlus)
+        version = new KayTeeVersion(project)
         project.logger >> logger
         projectDir = new File(temp, "wiggly")
         project.projectDir >> projectDir
     }
 
     def "version"() {
+        given:
+        ext.get(KayTeePlugin.KAYTEE_CONFIG_FLAG) >> true
+        ext.get(KayTeePlugin.KAYTEE_COMMIT_ID) >> testSha().sha
 
         when:
         String v = version.toString()
 
         then:
         v == "1.2.3.4." + testSha().short()
-        println version.toString()
+    }
+
+    def "version not available until evaluation complete"() {
+
+        when:
+        String v = version.toString()
+
+        then:
+        v == "version not available until evaluation complete"
     }
 
     def "baseVersionFromFullVersion"() {

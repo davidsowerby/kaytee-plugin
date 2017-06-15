@@ -10,19 +10,24 @@ import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.internal.reflect.Instantiator
 import org.unbrokendome.gradle.plugins.testsets.TestSetsPlugin
+import uk.q3c.build.gitplus.GitPlusFactory
+import uk.q3c.build.gitplus.GitSHA
+import uk.q3c.build.gitplus.gitplus.GitPlus
+import uk.q3c.build.gitplus.local.GitBranch
 
 import javax.inject.Inject
 
 import static uk.q3c.kaytee.plugin.TaskNames.*
+
 /**
  * Created by David Sowerby on 19 Dec 2016
  */
 class KayTeePlugin implements Plugin<Project> {
 
 
-
     private final Instantiator instantiator
-    final static String KAYTEE_CONFIG_FLAG = "_kaytee_configured_"
+    public final static String KAYTEE_CONFIG_FLAG = "_kaytee_configured_"
+    public final static String KAYTEE_COMMIT_ID = "_kaytee_commitid_"
 
 
     @Inject
@@ -34,8 +39,21 @@ class KayTeePlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         // we want to stop the KayTee from attempting to read Git before config has been evaluated
+        // so we create a flag here
         ExtraPropertiesExtension ext = project.getExtensions().getExtraProperties()
         ext.set(KAYTEE_CONFIG_FLAG, false)
+        // We will want the commit id for a number of things, so get it here once.  The only other thing we need Git for
+        // is tags, in VersionCheckTask
+        GitPlus gitPlus = GitPlusFactory.instance
+        gitPlus.remote.active = false
+        gitPlus.local.projectDirParent = project.projectDir.parentFile
+        gitPlus.local.projectName = project.name
+        gitPlus.execute()
+        GitSHA headSha = gitPlus.local.headCommitSHA(new GitBranch("kaytee"))
+        String headCommitId = headSha.sha
+        ext.set(KAYTEE_COMMIT_ID, headCommitId)
+        project.logger.lifecycle("Building commit: $headCommitId")
+
         project.apply plugin: JavaPlugin
         project.apply plugin: GroovyPlugin
         project.apply plugin: 'maven'

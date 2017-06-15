@@ -4,6 +4,7 @@ import com.jfrog.bintray.gradle.BintrayExtension
 import org.gradle.api.Project
 import org.gradle.api.logging.Logger
 import org.gradle.api.plugins.ExtensionContainer
+import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSetContainer
@@ -25,6 +26,7 @@ class AfterEvaluateActionTest extends Specification {
     BintrayExtension bintrayExtension
     KayTeeVersion version = Mock(KayTeeVersion)
     DefaultTestSetContainer testSets = Mock(DefaultTestSetContainer)
+    ExtraPropertiesExtension ext = Mock(ExtraPropertiesExtension)
 
     def setup() {
         temp = temporaryFolder.getRoot()
@@ -33,6 +35,7 @@ class AfterEvaluateActionTest extends Specification {
         project.logger >> logger
         project.extensions >> extensions
         extensions.getByName('kaytee') >> config
+        extensions.extraProperties >> ext
         project.name >> 'wiggly'
         project.projectDir >> new File(temp, "wiggly")
         project.bintrayKey >> "xxyy55"
@@ -51,6 +54,8 @@ class AfterEvaluateActionTest extends Specification {
 
     @SuppressWarnings("GroovyPointlessBoolean")
     def "execute"() {
+        given:
+        ext.get(KayTeePlugin.KAYTEE_CONFIG_FLAG) >> true
 
         when:
         action.execute(project)

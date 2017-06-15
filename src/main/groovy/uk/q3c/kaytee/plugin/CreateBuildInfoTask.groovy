@@ -31,10 +31,6 @@ class CreateBuildInfoTask extends DefaultTask {
             final String msg = "Failed to create build info file, reason: $detailMsg"
             getLogger().lifecycle(msg, e)
             throw new GradleException(msg, e)
-        } finally {
-            if (delegate.gitPlus != null) {
-                delegate.gitPlus.close()
-            }
         }
 
     }

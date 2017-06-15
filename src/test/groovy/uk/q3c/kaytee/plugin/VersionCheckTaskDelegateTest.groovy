@@ -5,6 +5,7 @@ import org.eclipse.jgit.lib.PersonIdent
 import org.gradle.api.Project
 import org.gradle.api.logging.Logger
 import org.gradle.api.plugins.ExtensionContainer
+import org.gradle.api.plugins.ExtraPropertiesExtension
 import spock.lang.Specification
 import uk.q3c.build.gitplus.GitSHA
 import uk.q3c.build.gitplus.gitplus.GitPlus
@@ -41,6 +42,7 @@ class VersionCheckTaskDelegateTest extends Specification {
     GitCommit commit1
     GitCommit commit2
     GitCommit commit3
+    ExtraPropertiesExtension ext = Mock(ExtraPropertiesExtension)
 
 
     def setup() {
@@ -62,11 +64,14 @@ class VersionCheckTaskDelegateTest extends Specification {
         project.getExtensions() >> extensions
         project.logger >> logger
         extensions.getByName("kaytee") >> config
+        extensions.extraProperties >> ext
         config.baseVersion = "1.2.3.4"
     }
 
     def "Check throws no exception when base version not in use already"() {
         given:
+        ext.get(KayTeePlugin.KAYTEE_CONFIG_FLAG) >> true
+        ext.get(KayTeePlugin.KAYTEE_COMMIT_ID) >> sha0
         List<Tag> tags = ImmutableList.of(newTag("2.2.2.2", commit1))
         gitLocal.tags() >> tags
 

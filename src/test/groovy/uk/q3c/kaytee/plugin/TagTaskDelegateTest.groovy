@@ -1,6 +1,7 @@
 package uk.q3c.kaytee.plugin
 
 import org.apache.commons.codec.digest.DigestUtils
+import org.eclipse.jgit.lib.PersonIdent
 import org.gradle.api.Project
 import org.gradle.api.logging.Logger
 import org.gradle.api.plugins.ExtensionContainer
@@ -9,13 +10,18 @@ import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 import uk.q3c.build.gitplus.GitSHA
+import uk.q3c.build.gitplus.local.GitBranch
+import uk.q3c.build.gitplus.local.GitCommit
 import uk.q3c.build.gitplus.local.GitLocalConfiguration
+import uk.q3c.build.gitplus.local.Tag
 
 import java.time.OffsetDateTime
+import java.time.ZonedDateTime
+
 /**
  * Created by David Sowerby on 06 Dec 2016
  */
-class CreateBuildInfoTaskDelegateTest extends Specification {
+class TagTaskDelegateTest extends Specification {
 
     @Rule
     TemporaryFolder temporaryFolder
@@ -61,14 +67,22 @@ class CreateBuildInfoTaskDelegateTest extends Specification {
 
     def "Write build info"() {
         given:
-        ktConfig.baseVersion = baseVersion
-        ext.get(KayTeePlugin.KAYTEE_COMMIT_ID) >> testSha().sha
+        PersonIdent person = new PersonIdent("a", "b")
+        GitCommit gitCommit = new GitCommit("x", testSha().sha, person, person)
+        Tag existingTag = new Tag('9.9.9.1000', ZonedDateTime.now(), ZonedDateTime.now(), person, "msg", gitCommit, Tag.TagType.ANNOTATED)
+        ktConfig.baseVersion = '9.9.9'
 
         when:
         delegate.writeInfo()
 
 
         then:
+        1 * remoteConfiguration.active(false)
+        1 * gitPlus.execute()
+        1 * gitLocal.tag('9.9.9.1000', 'version 9.9.9.1000')
+        1 * gitLocal.push(true, false)
+        1 * gitLocal.currentBranch() >> new GitBranch('develop')
+        1 * gitLocal.headCommitSHA(_) >> gitSHA
         propertiesFile.exists()
 
         then:

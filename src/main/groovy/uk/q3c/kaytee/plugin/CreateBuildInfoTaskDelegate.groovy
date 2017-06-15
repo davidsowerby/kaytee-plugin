@@ -2,20 +2,17 @@ package uk.q3c.kaytee.plugin
 
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
-import uk.q3c.build.gitplus.local.GitBranch
-import uk.q3c.build.gitplus.local.GitLocal
-import uk.q3c.build.gitplus.local.GitLocalConfiguration
+import org.gradle.api.plugins.ExtraPropertiesExtension
 
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
-
 /**
  * Carries out most of the work for {@link uk.q3c.kaytee.plugin.CreateBuildInfoTask}, to enable testing
 
  * <p>
  * Created by David Sowerby on 05 Dec 2016
  */
-class CreateBuildInfoTaskDelegate extends DelegateWithGitPlus {
+class CreateBuildInfoTaskDelegate extends DelegateWithConfig {
 
     VersionCheckTaskDelegate versionCheck
     static String PATH_TO_BUILD_INFO_PROPS = 'resources/main/buildInfo.properties'
@@ -55,7 +52,7 @@ class CreateBuildInfoTaskDelegate extends DelegateWithGitPlus {
         writeFile(properties, buildInfoFile)
         properties.setProperty("version", getVersion())
         writeFile(properties, buildInfoFile)
-        tag(commitId)
+//        tag(commitId)
     }
 
     void writeFile(Properties properties, File buildInfoFile) {
@@ -92,15 +89,9 @@ class CreateBuildInfoTaskDelegate extends DelegateWithGitPlus {
 
 
     private String getCommitId() {
-        final GitLocal gitLocal = gitPlus.getLocal()
-        final GitLocalConfiguration localConfig = gitLocal.getLocalConfiguration()
-        localConfig.projectName(getProject().getName())
-        localConfig.projectDirParent(getProject().getProjectDir().getParentFile())
-        logDebug("GitLocal config set with project directory = " + localConfig.projectDir())
-        gitPlus.getRemote().getConfiguration().active(false)
-        gitPlus.execute()
-        final GitBranch currentBranch = gitLocal.currentBranch()
-        return gitLocal.headCommitSHA(currentBranch).getSha()
+        ExtraPropertiesExtension ext = project.getExtensions().getExtraProperties()
+        String commitId = ext.get(KayTeePlugin.KAYTEE_COMMIT_ID)
+        return commitId
     }
 
     /**
@@ -109,18 +100,18 @@ class CreateBuildInfoTaskDelegate extends DelegateWithGitPlus {
      *
      * @return the tag value, either created or confirmed
      */
-    private String tag(String commitId) {
-        logLifecycle("tagging $commitId")
-        final GitLocal gitLocal = gitPlus.getLocal()
-        String version = getVersion()
-        if (versionCheck.check()) {
-            return version
-        }
-        gitLocal.tag(version, 'version ' + version)
-        gitLocal.push(true, false)
-        logLifecycle("Git tagged as version " + version)
-        return version
-    }
+//    private String tag(String commitId) {
+//        logLifecycle("tagging $commitId")
+//        final GitLocal gitLocal = gitPlus.getLocal()
+//        String version = getVersion()
+//        if (versionCheck.check()) {
+//            return version
+//        }
+//        gitLocal.tag(version, 'version ' + version)
+//        gitLocal.push(true, false)
+//        logLifecycle("Git tagged as version " + version)
+//        return version
+//    }
 
 
 }
