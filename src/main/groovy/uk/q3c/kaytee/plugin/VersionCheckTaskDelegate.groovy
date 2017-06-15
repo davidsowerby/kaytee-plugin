@@ -6,7 +6,6 @@ import uk.q3c.build.gitplus.gitplus.GitPlus
 import uk.q3c.build.gitplus.local.GitBranch
 import uk.q3c.build.gitplus.local.GitLocalException
 import uk.q3c.build.gitplus.local.Tag
-
 /**
  * Created by David Sowerby on 13 Jun 2017
  */
@@ -39,6 +38,7 @@ class VersionCheckTaskDelegate extends DelegateWithGitPlus {
         final List<Tag> tags = gitPlus.local.tags()
         logDebug("Number of existing tags: ${tags.size()}")
         boolean tagFound = false
+        def fullVersion = new KayTeeVersion(project).toString()
         GitBranch currentBranch = gitPlus.local.currentBranch()
         GitSHA currentSha = gitPlus.local.headCommitSHA(currentBranch)
         String currentHash = currentSha.sha
@@ -49,10 +49,12 @@ class VersionCheckTaskDelegate extends DelegateWithGitPlus {
                 if (tag.commit.hash != currentHash) {
                     throw new GitLocalException("A duplicate tag '$baseVersion' has been found, but is attached to commit ${tag.commit.hash}, instead of the current commit ${currentHash}")
                 } else {
+                    logLifecycle("Existing tag ${tag.tagName} is valid, version check complete")
                     return true
                 }
             }
         }
+        logLifecycle("Version check complete, using new version '$fullVersion'")
         return false
     }
 

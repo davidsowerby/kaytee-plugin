@@ -24,7 +24,11 @@ class CreateBuildInfoTask extends DefaultTask {
             delegate.writeInfo()
         }
         catch (Exception e) {
-            final String msg = "Failed to create build info file or failed to tag the version (or both)"
+            String detailMsg = "not known"
+            if (e.message != null) {
+                detailMsg = e.message
+            }
+            final String msg = "Failed to create build info file, reason: $detailMsg"
             getLogger().lifecycle(msg, e)
             throw new GradleException(msg, e)
         } finally {

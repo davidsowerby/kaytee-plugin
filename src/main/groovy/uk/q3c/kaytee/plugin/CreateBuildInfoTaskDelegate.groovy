@@ -28,14 +28,7 @@ class CreateBuildInfoTaskDelegate extends DelegateWithGitPlus {
     }
 
 /**
- * Writes build information into the build directory (therefore not making changes to source).  Writing is done in two stages,
- * because the commit id may be used as the build number part of the version (this assumes the default {@link KayTeeVersion}
- * is used - it can be overridden.
- *
- * The first pass writes the commit id and other information to file, which {@link KayTeeVersion} then uses to generate the full
- * version number.  The full version number is then added to the properties file.
- *
- * This approach allows the end user to use a different version numbering strategy if they wish, by replacing {@link KayTeeVersion}
+ * Writes build information into file 'buildInfo.properties' in the build directory (therefore not making changes to source).
  *
  *
  * @throws IOException
