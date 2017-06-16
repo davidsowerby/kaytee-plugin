@@ -29,6 +29,7 @@ class KayTeeExtensionTest extends Specification {
         configuration.generateChangeLog = false
         configuration.release.toBintray = false
         configuration.unitTest.enabled = false
+        configuration.versionTag = false
 
         when:
         objectMapper.writeValue(sw, configuration)
@@ -56,6 +57,7 @@ class KayTeeExtensionTest extends Specification {
         configuration.generateChangeLog = false
         configuration.release.mergeToMaster = false
         configuration.unitTest.enabled = false
+        configuration.versionTag = false
 
 
         when:

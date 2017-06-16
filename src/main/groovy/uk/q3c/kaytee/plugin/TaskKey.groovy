@@ -21,7 +21,8 @@ enum TaskKey implements I18NKey {
     Acceptance_Test(ACCEPTANCE_TEST),
     Merge_to_Master(MERGE_TO_MASTER),
     Bintray_Upload(BINTRAY_UPLOAD),
-    Production_Test(PRODUCTION_TEST)
+    Production_Test(PRODUCTION_TEST),
+    Tag(TAG)
 
     private String gradleTask
 

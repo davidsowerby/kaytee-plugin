@@ -36,7 +36,6 @@ class DelegateWithGitPlus extends DelegateWithConfig {
         ObjectMapper mapper = getObjectMapper()
         StringWriter sw = new StringWriter()
         mapper.writeValue(sw, gitPlus.remote.configuration)
-        project.logger.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>\n" + sw.toString())
         gitPlus.execute()
 
     }

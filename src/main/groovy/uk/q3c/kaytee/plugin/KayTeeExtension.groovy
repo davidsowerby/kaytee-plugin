@@ -30,6 +30,7 @@ class KayTeeExtension {
         this.baseVersion = other.baseVersion
         this.generateChangeLog = other.generateChangeLog
         this.generateBuildInfo = other.generateBuildInfo
+        this.versionTag = other.versionTag
 
         unitTest = new GroupConfig(other.unitTest)
         integrationTest = new GroupConfig(other.integrationTest)
@@ -53,8 +54,10 @@ class KayTeeExtension {
     }
     String remoteRepoUserName = "davidsowerby"
     String baseVersion = '0.0.0.0'
+
     boolean generateBuildInfo = true
     boolean generateChangeLog = true
+    boolean versionTag = true
 
 
     GroupConfig unitTest = new GroupConfig()
@@ -149,6 +152,9 @@ class KayTeeExtension {
         if (productionTest != that.productionTest) return false
         if (remoteRepoUserName != that.remoteRepoUserName) return false
         if (unitTest != that.unitTest) return false
+        if (versionTag != that.versionTag) return false
+        if (generateChangeLog != that.generateChangeLog) return false
+        if (generateBuildInfo != that.generateBuildInfo) return false
 
         return true
     }
@@ -161,6 +167,9 @@ class KayTeeExtension {
         result = 31 * result + functionalTest.hashCode()
         result = 31 * result + acceptanceTest.hashCode()
         result = 31 * result + productionTest.hashCode()
+        result = 31 * result + new Boolean(versionTag).hashCode()
+        result = 31 * result + new Boolean(generateBuildInfo).hashCode()
+        result = 31 * result + new Boolean(generateChangeLog).hashCode()
         return result
     }
 

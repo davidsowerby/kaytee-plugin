@@ -28,6 +28,7 @@ class KayTeePlugin implements Plugin<Project> {
     private final Instantiator instantiator
     public final static String KAYTEE_CONFIG_FLAG = "_kaytee_configured_"
     public final static String KAYTEE_COMMIT_ID = "_kaytee_commitid_"
+    public final static String KAYTEE_RERUN = "_kaytee_commitid_"
 
 
     @Inject
@@ -79,6 +80,8 @@ class KayTeePlugin implements Plugin<Project> {
         t = project.tasks.create(MERGE_TO_MASTER, MergeToMasterTask)
         project.logger.debug("added task " + t.getName())
         t = project.tasks.create(VERSION_CHECK, VersionCheckTask)
+        project.logger.debug("added task " + t.getName())
+        t = project.tasks.create(TAG, TagTask)
         project.logger.debug("added task " + t.getName())
 
         project.version = new KayTeeVersion(project)
