@@ -50,6 +50,7 @@ class VersionCheckTaskDelegate extends DelegateWithGitPlus {
                     throw new GitLocalException("A duplicate tag '$baseVersion' has been found, but is attached to commit ${tag.commit.hash}, instead of the current commit ${currentHash}")
                 } else {
                     logLifecycle("Existing tag ${tag.tagName} is valid, version check complete")
+                    ext.set(KayTeePlugin.KAYTEE_RERUN, true)
                     return true
                 }
             }

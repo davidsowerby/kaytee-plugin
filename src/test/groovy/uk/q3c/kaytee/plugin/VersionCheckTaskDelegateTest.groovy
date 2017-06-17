@@ -62,6 +62,7 @@ class VersionCheckTaskDelegateTest extends TestWithGitPlus {
 
         then:
         noExceptionThrown()
+        0 * ext.set(KayTeePlugin.KAYTEE_RERUN, _)
     }
 
     def "Check throws no exception when there are no existing tags"() {
@@ -74,9 +75,10 @@ class VersionCheckTaskDelegateTest extends TestWithGitPlus {
 
         then:
         noExceptionThrown()
+        0 * ext.set(KayTeePlugin.KAYTEE_RERUN, _)
     }
 
-    def "Check throws no exception when base version is in use, but on current HEAD commit"() {
+    def "Check throws no exception when base version is in use, but on current HEAD commit, RERUN set"() {
 
         given:
         List<Tag> tags = ImmutableList.of(newTag("1.2.3.4.aaaa", headCommit))
@@ -87,6 +89,7 @@ class VersionCheckTaskDelegateTest extends TestWithGitPlus {
 
         then:
         noExceptionThrown()
+        1 * ext.set(KayTeePlugin.KAYTEE_RERUN, _)
     }
 
     def "Check throws exception when base version found on a commit other than current HEAD"() {
