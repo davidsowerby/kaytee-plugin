@@ -4,6 +4,7 @@ import org.gradle.util.ConfigureUtil
 import uk.q3c.build.changelog.DefaultChangeLogConfiguration
 import uk.q3c.build.gitplus.local.DefaultGitLocalConfiguration
 import uk.q3c.build.gitplus.remote.DefaultGitRemoteConfiguration
+
 /**
  *
  * Properties relating to the project from a KayTee perspective.
@@ -73,6 +74,21 @@ class KayTeeExtension {
     DefaultGitLocalConfiguration wikiLocalConfiguration
     DefaultGitRemoteConfiguration gitRemoteConfiguration
 
+    /**
+     * Validates property settings
+     */
+    def validate() {
+        List<String> errors = new ArrayList<>()
+        unitTest.validate(TaskKey.Unit_Test, errors)
+        integrationTest.validate(TaskKey.Integration_Test, errors)
+        functionalTest.validate(TaskKey.Functional_Test, errors)
+        acceptanceTest.validate(TaskKey.Acceptance_Test, errors)
+        productionTest.validate(TaskKey.Production_Test, errors)
+        if (!errors.isEmpty()) {
+            throw new KayTeeConfigurationException("Errors in KayTee configuration:\n$errors")
+        }
+    }
+
     def release(Closure closure) {
         ConfigureUtil.configure(closure, release)
     }
@@ -125,7 +141,6 @@ class KayTeeExtension {
         }
         throw new IllegalArgumentException("'$taskKey' is not a valid test group key")
     }
-
 
     /**
      * This seems unnecessary, but the extension is byte enhanced by Gradle, which causes Jackson to blow up (stack overflow)

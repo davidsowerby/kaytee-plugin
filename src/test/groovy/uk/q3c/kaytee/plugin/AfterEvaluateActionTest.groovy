@@ -54,8 +54,6 @@ class AfterEvaluateActionTest extends Specification {
 
     @SuppressWarnings("GroovyPointlessBoolean")
     def "execute"() {
-        given:
-        ext.get(KayTeePlugin.KAYTEE_CONFIG_FLAG) >> true
 
         when:
         action.execute(project)
@@ -83,6 +81,20 @@ class AfterEvaluateActionTest extends Specification {
         bintrayExtension.pkg.vcsUrl == "https://github.com/davidsowerby/wiggly.git"
         bintrayExtension.pkg.version.released != null
         bintrayExtension.pkg.version.name == "1.2.3.4.aaaaa"
+        1 * ext.set(KayTeePlugin.KAYTEE_CONFIG_FLAG, true)
+
+    }
+
+    def "validate called on KayTeeExtension"() {
+        given:
+        config.integrationTest.delegated = true
+
+        when:
+        action.execute(project)
+
+        then:
+        thrown KayTeeConfigurationException
+
 
     }
 }

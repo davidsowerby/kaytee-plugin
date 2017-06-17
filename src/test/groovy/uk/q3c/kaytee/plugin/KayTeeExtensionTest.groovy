@@ -101,4 +101,24 @@ class KayTeeExtensionTest extends Specification {
         thrown IllegalArgumentException
     }
 
+    def "validation"() {
+        when:
+        configuration.unitTest.delegated = true
+        configuration.validate()
+
+        then:
+        Exception ex = thrown KayTeeConfigurationException
+        ex.message.contains("commitId")
+        ex.message.contains("repoUserName")
+        ex.message.contains("repoName")
+
+        when:
+        configuration.unitTest.delegated = false
+        configuration.validate()
+
+        then:
+        noExceptionThrown()
+
+
+    }
 }

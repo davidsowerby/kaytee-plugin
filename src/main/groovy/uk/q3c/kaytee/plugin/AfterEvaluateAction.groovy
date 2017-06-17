@@ -28,6 +28,10 @@ class AfterEvaluateAction implements Action<Project> {
         KayTeeExtension config = confirmConfiguration()
         bintrayConfig(config)
         createTestSets(config)
+        config.validate() // will throw exception if invalid
+
+        ExtraPropertiesExtension ext = project.getExtensions().getExtraProperties()
+        ext.set(KayTeePlugin.KAYTEE_CONFIG_FLAG, true)
     }
 
     /**
@@ -129,10 +133,6 @@ class AfterEvaluateAction implements Action<Project> {
             bintray.pkg.setLicenses('Apache 2.0')
         }
 
-
-        ExtraPropertiesExtension ext = project.getExtensions().getExtraProperties()
-        ext.set(KayTeePlugin.KAYTEE_CONFIG_FLAG, true)
-
         if (project.logger.isDebugEnabled()) {
             ObjectMapper objectMapper = new ObjectMapper()
             objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true)
@@ -141,8 +141,6 @@ class AfterEvaluateAction implements Action<Project> {
             objectMapper.writeValue(sw, wrapper)
             project.logger.debug("Bintray config is:\n")
             project.logger.debug(sw.toString())
-
-
             project.logger.debug("project version is: " + project.version.toString())
         }
     }

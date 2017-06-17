@@ -1,5 +1,7 @@
 package uk.q3c.kaytee.plugin
 
+import org.apache.commons.lang.StringUtils
+
 /**
  * Created by David Sowerby on 05 Jun 2017
  */
@@ -21,6 +23,28 @@ class DelegateProjectConfig {
         taskToRun = other.taskToRun
         branch = other.branch
         commitId = other.commitId
+    }
+
+    def validate(TaskKey group, List<String> errors) {
+        String groupLog = "Test group '${group.name()}'"
+        if (StringUtils.isEmpty(commitId)) {
+            errors.add("$groupLog: commitId cannot be null or empty for a delegated task")
+        }
+        if (StringUtils.isEmpty(baseUrl)) {
+            errors.add("$groupLog: baseUrl cannot be null or empty for a delegated task")
+        }
+        if (StringUtils.isEmpty(repoUserName)) {
+            errors.add("$groupLog: repoUserName cannot be null or empty for a delegated task")
+        }
+        if (StringUtils.isEmpty(taskToRun)) {
+            errors.add("$groupLog: taskToRun cannot be null or empty for a delegated task")
+        }
+        if (StringUtils.isEmpty(branch)) {
+            errors.add("$groupLog: branch cannot be null or empty for a delegated task")
+        }
+        if (StringUtils.isEmpty(repoName)) {
+            errors.add("$groupLog: repoName cannot be null or empty for a delegated task")
+        }
     }
 
     boolean equals(o) {

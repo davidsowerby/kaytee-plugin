@@ -37,6 +37,12 @@ class GroupConfig {
         delegate = new DelegateProjectConfig(other.delegate)
     }
 
+    def validate(TaskKey group, List<String> errors) {
+        if (delegated) {
+            delegate.validate(group, errors)
+        }
+    }
+
     boolean equals(o) {
         if (this.is(o)) return true
         if (getClass() != o.class) return false
