@@ -1,12 +1,12 @@
 package uk.q3c.kaytee.plugin
 
 class TestGroupThresholds {
-    double instruction = 81
+    double instruction = 70
     double branch = 70
-    double line = 90
-    double complexity = 90
-    double method = 90
-    double clazz = 90
+    double line = 70
+    double complexity = 70
+    double method = 70
+    double clazz = 70
 
     TestGroupThresholds() {
     }

@@ -11,12 +11,12 @@
     "manual": false,
     "delegated": false,
     "thresholds": {
-      "instruction": 81.0,
+      "instruction": 70,
       "branch": 70.0,
-      "line": 90.0,
-      "complexity": 90.0,
-      "method": 90.0,
-      "clazz": 90.0
+      "line": 70.0,
+      "complexity": 70.0,
+      "method": 70.0,
+      "clazz": 70.0
     },
     "delegate": {
       "baseUrl": "https://github.com",
@@ -34,12 +34,12 @@
     "manual": false,
     "delegated": false,
     "thresholds": {
-      "instruction": 81.0,
+      "instruction": 70,
       "branch": 70.0,
-      "line": 90.0,
-      "complexity": 90.0,
-      "method": 90.0,
-      "clazz": 90.0
+      "line": 70.0,
+      "complexity": 70.0,
+      "method": 70.0,
+      "clazz": 70.0
     },
     "delegate": {
       "baseUrl": "https://github.com",
@@ -57,12 +57,12 @@
     "manual": false,
     "delegated": false,
     "thresholds": {
-      "instruction": 81.0,
+      "instruction": 70,
       "branch": 70.0,
-      "line": 90.0,
-      "complexity": 90.0,
-      "method": 90.0,
-      "clazz": 90.0
+      "line": 70.0,
+      "complexity": 70.0,
+      "method": 70.0,
+      "clazz": 70.0
     },
     "delegate": {
       "baseUrl": "https://github.com",
@@ -80,12 +80,12 @@
     "manual": false,
     "delegated": false,
     "thresholds": {
-      "instruction": 81.0,
+      "instruction": 70,
       "branch": 70.0,
-      "line": 90.0,
-      "complexity": 90.0,
-      "method": 90.0,
-      "clazz": 90.0
+      "line": 70.0,
+      "complexity": 70.0,
+      "method": 70.0,
+      "clazz": 70.0
     },
     "delegate": {
       "baseUrl": "https://github.com",
@@ -103,12 +103,12 @@
     "manual": false,
     "delegated": false,
     "thresholds": {
-      "instruction": 81.0,
+      "instruction": 70,
       "branch": 70.0,
-      "line": 90.0,
-      "complexity": 90.0,
-      "method": 90.0,
-      "clazz": 90.0
+      "line": 70.0,
+      "complexity": 70.0,
+      "method": 70.0,
+      "clazz": 70.0
     },
     "delegate": {
       "baseUrl": "https://github.com",
