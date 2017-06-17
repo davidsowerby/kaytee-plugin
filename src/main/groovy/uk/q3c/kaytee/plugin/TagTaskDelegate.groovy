@@ -10,15 +10,14 @@ class TagTaskDelegate extends DelegateWithGitPlus {
 
     TagTaskDelegate(Project project) {
         super(project)
-        prepare()
     }
 
     TagTaskDelegate(Project project, GitPlus gitPlus) {
         super(project, gitPlus)
-        prepare()
     }
 
     String tagHead() {
+        prepare()
         boolean rerun = ext.get(KayTeePlugin.KAYTEE_RERUN) as boolean
         if (!rerun) {
             KayTeeVersion version = new KayTeeVersion(project)

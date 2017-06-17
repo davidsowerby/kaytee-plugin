@@ -13,7 +13,6 @@ class TagTask extends DefaultTask {
 
     TagTask() {
         delegate = new TagTaskDelegate(project)
-        delegate.prepare()
     }
 
     @TaskAction
