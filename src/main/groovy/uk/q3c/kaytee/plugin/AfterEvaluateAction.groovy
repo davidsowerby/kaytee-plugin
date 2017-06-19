@@ -130,7 +130,7 @@ class AfterEvaluateAction implements Action<Project> {
         }
 
         if (bintray.pkg.licenses == null || bintray.pkg.licenses.length == 0) {
-            bintray.pkg.setLicenses('Apache 2.0')
+            bintray.pkg.setLicenses('Apache-2.0')
         }
 
         if (project.logger.isDebugEnabled()) {
