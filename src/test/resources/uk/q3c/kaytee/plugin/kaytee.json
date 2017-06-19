@@ -4,6 +4,7 @@
   "generateBuildInfo": true,
   "generateChangeLog": true,
   "versionTag": true,
+  "raiseIssueOnFail": true,
   "unitTest": {
     "enabled": true,
     "qualityGate": false,
@@ -11,7 +12,7 @@
     "manual": false,
     "delegated": false,
     "thresholds": {
-      "instruction": 70,
+      "instruction": 70.0,
       "branch": 70.0,
       "line": 70.0,
       "complexity": 70.0,
@@ -34,7 +35,7 @@
     "manual": false,
     "delegated": false,
     "thresholds": {
-      "instruction": 70,
+      "instruction": 70.0,
       "branch": 70.0,
       "line": 70.0,
       "complexity": 70.0,
@@ -57,7 +58,7 @@
     "manual": false,
     "delegated": false,
     "thresholds": {
-      "instruction": 70,
+      "instruction": 70.0,
       "branch": 70.0,
       "line": 70.0,
       "complexity": 70.0,
@@ -80,7 +81,7 @@
     "manual": false,
     "delegated": false,
     "thresholds": {
-      "instruction": 70,
+      "instruction": 70.0,
       "branch": 70.0,
       "line": 70.0,
       "complexity": 70.0,
@@ -103,7 +104,7 @@
     "manual": false,
     "delegated": false,
     "thresholds": {
-      "instruction": 70,
+      "instruction": 70.0,
       "branch": 70.0,
       "line": 70.0,
       "complexity": 70.0,

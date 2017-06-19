@@ -58,6 +58,7 @@ class KayTeeExtensionTest extends Specification {
         configuration.release.mergeToMaster = false
         configuration.unitTest.enabled = false
         configuration.versionTag = false
+        configuration.raiseIssueOnFail = false
 
 
         when:
@@ -70,6 +71,7 @@ class KayTeeExtensionTest extends Specification {
         configuration2.gitRemoteConfiguration.repoUser == "bananarama"
         configuration2.baseVersion == "2.3.4.5"
         !configuration2.release.mergeToMaster
+        !configuration2.raiseIssueOnFail
 
         configuration == configuration2
         configuration.integrationTest == configuration2.testConfig(Integration_Test)
