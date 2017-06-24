@@ -19,6 +19,7 @@ class TagTaskDelegate extends DelegateWithGitPlus {
     String tagHead() {
         prepare()
         boolean rerun = ext.get(KayTeePlugin.KAYTEE_RERUN) as boolean
+        logDebug("Property ${KayTeePlugin.KAYTEE_RERUN} is present and has value of: $rerun")
         if (!rerun) {
             KayTeeVersion version = new KayTeeVersion(project)
             String v = version.toString()

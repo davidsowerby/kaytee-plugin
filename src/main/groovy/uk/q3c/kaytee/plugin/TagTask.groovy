@@ -18,6 +18,7 @@ class TagTask extends DefaultTask {
     @TaskAction
     String tagHead() {
         try {
+            logger.debug("Running tag task")
             return delegate.tagHead()
         }
         catch (Exception e) {

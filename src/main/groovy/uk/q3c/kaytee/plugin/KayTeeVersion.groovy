@@ -3,6 +3,7 @@ package uk.q3c.kaytee.plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ExtraPropertiesExtension
 import uk.q3c.build.gitplus.GitSHA
+
 /**
  * Created by David Sowerby on 20 Dec 2016
  */
@@ -35,8 +36,10 @@ class KayTeeVersion extends DelegateWithConfig {
 
 
     private GitSHA getCurrentCommit() {
+        logDebug("Retrieving commit id  from 'ext'")
         ExtraPropertiesExtension ext = project.getExtensions().getExtraProperties()
         String commitId = ext.get(KayTeePlugin.KAYTEE_COMMIT_ID)
+        logDebug("CommitId is $commitId")
         return new GitSHA(commitId)
     }
 

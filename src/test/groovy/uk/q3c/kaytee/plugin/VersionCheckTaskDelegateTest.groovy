@@ -62,7 +62,7 @@ class VersionCheckTaskDelegateTest extends TestWithGitPlus {
 
         then:
         noExceptionThrown()
-        0 * ext.set(KayTeePlugin.KAYTEE_RERUN, _)
+        1 * ext.set(KayTeePlugin.KAYTEE_RERUN, false)
     }
 
     def "Check throws no exception when there are no existing tags"() {
@@ -75,7 +75,7 @@ class VersionCheckTaskDelegateTest extends TestWithGitPlus {
 
         then:
         noExceptionThrown()
-        0 * ext.set(KayTeePlugin.KAYTEE_RERUN, _)
+        1 * ext.set(KayTeePlugin.KAYTEE_RERUN, false)
     }
 
     def "Check throws no exception when base version is in use, but on current HEAD commit, RERUN set"() {

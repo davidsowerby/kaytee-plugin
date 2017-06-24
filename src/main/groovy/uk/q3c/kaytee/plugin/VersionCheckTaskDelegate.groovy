@@ -22,12 +22,12 @@ class VersionCheckTaskDelegate extends DelegateWithGitPlus {
 
     /**
      * Throws GitLocalException if the proposed baseVersion is found in another tag (unless that tag is attached to the
-     * current HEAD, in which case it is ignored, anf true is returned)
+     * current HEAD, in which case it is ignored, and true is returned)
      *
      * @return true if the version has been used before but ONLY on the HEAD commit - in other words, this commit has already been tagged with this version,
-     * a situation that is valid for a build re-run.  This is used by the CreateBuildInfoTaskDelegate, which actually applies the new tag
+     * a situation that is valid for a build re-run.
      *
-     * @throws GitLocalException if the baseVersion is in a tag pointing to a different commit
+     * @throws GitLocalException if the baseVersion is in a tag pointing to a different commit, that is, an attempt is being made to re-use a version
      */
     boolean check() {
         prepare()
@@ -55,6 +55,7 @@ class VersionCheckTaskDelegate extends DelegateWithGitPlus {
                 }
             }
         }
+        ext.set(KayTeePlugin.KAYTEE_RERUN, false)
         logLifecycle("Version check complete, using new version '$fullVersion'")
         return false
     }
