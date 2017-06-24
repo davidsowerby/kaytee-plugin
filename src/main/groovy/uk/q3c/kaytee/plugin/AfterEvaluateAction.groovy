@@ -1,7 +1,5 @@
 package uk.q3c.kaytee.plugin
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
 import com.jfrog.bintray.gradle.BintrayExtension
 import org.apache.commons.lang.StringUtils
 import org.gradle.api.Action
@@ -26,12 +24,12 @@ class AfterEvaluateAction implements Action<Project> {
     void execute(Project project) {
         project.getLogger().debug('after evaluate')
         KayTeeExtension config = confirmConfiguration()
-        bintrayConfig(config)
         createTestSets(config)
         config.validate() // will throw exception if invalid
 
         ExtraPropertiesExtension ext = project.getExtensions().getExtraProperties()
         ext.set(KayTeePlugin.KAYTEE_CONFIG_FLAG, true)
+        bintrayConfig(config)
     }
 
     /**
@@ -109,6 +107,9 @@ class AfterEvaluateAction implements Action<Project> {
         if (StringUtils.isEmpty(bintray.pkg.repo)) {
             bintray.pkg.repo = 'maven'
         }
+        if (StringUtils.isEmpty(bintray.pkg.githubRepo)) {
+            bintray.pkg.githubRepo = config.gitRemoteConfiguration.remoteRepoFullName()
+        }
 
         if (StringUtils.isEmpty(bintray.pkg.websiteUrl)) {
             bintray.pkg.websiteUrl = mapper.repoBaselUrl()
@@ -122,11 +123,14 @@ class AfterEvaluateAction implements Action<Project> {
         if (StringUtils.isEmpty(bintray.key)) {
             bintray.key = project.bintrayKey
         }
-
         bintray.pkg.version.name = project.version.toString()
 
         if (StringUtils.isEmpty(bintray.pkg.version.released)) {
             bintray.pkg.version.released = new Date()
+        }
+
+        if (StringUtils.isEmpty(bintray.pkg.version.vcsTag)) {
+            bintray.pkg.version.vcsTag = project.version.toString()
         }
 
         if (bintray.pkg.licenses == null || bintray.pkg.licenses.length == 0) {
@@ -134,13 +138,9 @@ class AfterEvaluateAction implements Action<Project> {
         }
 
         if (project.logger.isDebugEnabled()) {
-            ObjectMapper objectMapper = new ObjectMapper()
-            objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true)
-            StringWriter sw = new StringWriter()
             BintrayConfigWrapper wrapper = new BintrayConfigWrapper(bintray)
-            objectMapper.writeValue(sw, wrapper)
             project.logger.debug("Bintray config is:\n")
-            project.logger.debug(sw.toString())
+            project.logger.debug(wrapper.toString())
             project.logger.debug("project version is: " + project.version.toString())
         }
     }

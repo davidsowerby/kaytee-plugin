@@ -84,6 +84,8 @@ class KayTeePlugin implements Plugin<Project> {
         t = project.tasks.create(TAG, TagTask)
         t.dependsOn(versionCheckTask)
         project.logger.debug("added task " + t.getName())
+        Task bintrayConfigToJson = project.tasks.create(BINTRAY_CONFIG_TO_JSON, BintrayConfigToJsonTask)
+        project.logger.debug("added task " + bintrayConfigToJson.getName())
 
         project.version = new KayTeeVersion(project)
         bintray(project)

@@ -1,5 +1,7 @@
 package uk.q3c.kaytee.plugin
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
 import com.jfrog.bintray.gradle.BintrayExtension
 
 /**
@@ -41,5 +43,15 @@ class BintrayConfigWrapper {
         override = extension.override
         dryRun = extension.dryRun
         pkg = extension.pkg
+    }
+
+
+    @Override
+    String toString() {
+        ObjectMapper objectMapper = new ObjectMapper()
+        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true)
+        StringWriter sw = new StringWriter()
+        objectMapper.writeValue(sw, this)
+        return sw.toString()
     }
 }
