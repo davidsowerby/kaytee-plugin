@@ -29,7 +29,7 @@ class KayTeeExtensionTest extends Specification {
         configuration.generateChangeLog = false
         configuration.release.toBintray = false
         configuration.unitTest.enabled = false
-        configuration.versionTag = false
+        configuration.release.versionTag = false
 
         when:
         objectMapper.writeValue(sw, configuration)
@@ -41,6 +41,7 @@ class KayTeeExtensionTest extends Specification {
         configuration2.gitLocalConfiguration.projectName == "what?"
         configuration2.gitRemoteConfiguration.repoUser == "bananarama"
         configuration2.baseVersion == "2.3.4.5"
+        !configuration2.release.versionTag
 
         configuration == configuration2
         configuration.integrationTest == configuration2.testConfig(Integration_Test)
@@ -57,7 +58,7 @@ class KayTeeExtensionTest extends Specification {
         configuration.generateChangeLog = false
         configuration.release.mergeToMaster = false
         configuration.unitTest.enabled = false
-        configuration.versionTag = false
+        configuration.release.versionTag = false
         configuration.raiseIssueOnFail = false
 
 

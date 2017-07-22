@@ -31,7 +31,6 @@ class KayTeeExtension {
         this.baseVersion = other.baseVersion
         this.generateChangeLog = other.generateChangeLog
         this.generateBuildInfo = other.generateBuildInfo
-        this.versionTag = other.versionTag
         this.raiseIssueOnFail = other.raiseIssueOnFail
 
         unitTest = new GroupConfig(other.unitTest)
@@ -59,7 +58,7 @@ class KayTeeExtension {
 
     boolean generateBuildInfo = true
     boolean generateChangeLog = true
-    boolean versionTag = true
+
     boolean raiseIssueOnFail = true
 
 
@@ -169,7 +168,6 @@ class KayTeeExtension {
         if (productionTest != that.productionTest) return false
         if (remoteRepoUserName != that.remoteRepoUserName) return false
         if (unitTest != that.unitTest) return false
-        if (versionTag != that.versionTag) return false
         if (generateChangeLog != that.generateChangeLog) return false
         if (generateBuildInfo != that.generateBuildInfo) return false
         if (raiseIssueOnFail != that.raiseIssueOnFail) return false
@@ -185,7 +183,6 @@ class KayTeeExtension {
         result = 31 * result + functionalTest.hashCode()
         result = 31 * result + acceptanceTest.hashCode()
         result = 31 * result + productionTest.hashCode()
-        result = 31 * result + new Boolean(versionTag).hashCode()
         result = 31 * result + new Boolean(generateBuildInfo).hashCode()
         result = 31 * result + new Boolean(generateChangeLog).hashCode()
         result = 31 * result + new Boolean(raiseIssueOnFail).hashCode()

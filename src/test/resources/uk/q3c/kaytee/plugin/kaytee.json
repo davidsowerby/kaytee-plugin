@@ -3,7 +3,6 @@
   "baseVersion": "0.0.0.0",
   "generateBuildInfo": true,
   "generateChangeLog": true,
-  "versionTag": true,
   "raiseIssueOnFail": true,
   "unitTest": {
     "enabled": true,
@@ -122,7 +121,8 @@
   },
   "release": {
     "toBintray": true,
-    "mergeToMaster": true
+    "mergeToMaster": true,
+    "versionTag": true
   },
   "changeLog": {
     "remoteRepoUser": "not specified",
