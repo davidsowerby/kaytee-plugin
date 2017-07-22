@@ -26,6 +26,7 @@ class TagTaskDelegate extends DelegateWithGitPlus {
             String desc = "version $v"
             logDebug("applying tag with name $v to HEAD")
             gitPlus.local.tag(v, desc)
+            gitPlus.local.push(true, false)
         } else {
             logDebug("This is a rerun, no tag applied")
         }

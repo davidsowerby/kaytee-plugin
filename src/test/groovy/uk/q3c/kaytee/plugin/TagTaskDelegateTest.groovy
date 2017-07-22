@@ -32,7 +32,8 @@ class TagTaskDelegateTest extends TestWithGitPlus {
         delegate.tagHead()
 
         then:
-        1 * gitLocal.tag(_, _)
+        1 * gitLocal.tag("version not available until evaluation complete", _)
+        1 * gitLocal.push(true, false)
 
     }
 
