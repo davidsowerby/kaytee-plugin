@@ -87,7 +87,7 @@ class AfterEvaluateActionTest extends Specification {
 
     def "validate called on KayTeeExtension"() {
         given:
-        config.integrationTest.delegated = true
+        config.integrationTest.taskType = TaskType.DELEGATED
 
         when:
         action.execute(project)

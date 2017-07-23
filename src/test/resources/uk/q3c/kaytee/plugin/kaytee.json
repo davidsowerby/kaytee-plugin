@@ -8,9 +8,7 @@
   "unitTest": {
     "enabled": true,
     "qualityGate": false,
-    "auto": true,
-    "manual": false,
-    "delegated": false,
+    "taskType": "GRADLE",
     "thresholds": {
       "instruction": 70.0,
       "branch": 70.0,
@@ -31,9 +29,7 @@
   "integrationTest": {
     "enabled": false,
     "qualityGate": false,
-    "auto": true,
-    "manual": false,
-    "delegated": false,
+    "taskType": "GRADLE",
     "thresholds": {
       "instruction": 70.0,
       "branch": 70.0,
@@ -54,9 +50,7 @@
   "functionalTest": {
     "enabled": false,
     "qualityGate": false,
-    "auto": true,
-    "manual": false,
-    "delegated": false,
+    "taskType": "GRADLE",
     "thresholds": {
       "instruction": 70.0,
       "branch": 70.0,
@@ -77,9 +71,7 @@
   "acceptanceTest": {
     "enabled": false,
     "qualityGate": false,
-    "auto": true,
-    "manual": false,
-    "delegated": false,
+    "taskType": "GRADLE",
     "thresholds": {
       "instruction": 70.0,
       "branch": 70.0,
@@ -100,9 +92,7 @@
   "productionTest": {
     "enabled": false,
     "qualityGate": false,
-    "auto": true,
-    "manual": false,
-    "delegated": false,
+    "taskType": "GRADLE",
     "thresholds": {
       "instruction": 70.0,
       "branch": 70.0,

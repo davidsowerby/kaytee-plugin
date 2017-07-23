@@ -63,9 +63,7 @@ class ConfigToJsonTaskDelegateTest extends JsonTest {
         ktConfig.integrationTest.thresholds.complexity = 44
         ktConfig.integrationTest.thresholds.method = 73
         ktConfig.acceptanceTest.enabled = true
-        ktConfig.acceptanceTest.auto = false
-        ktConfig.acceptanceTest.manual = true
-        ktConfig.acceptanceTest.delegated = true
+        ktConfig.acceptanceTest.taskType = TaskType.DELEGATED
         ktConfig.acceptanceTest.delegate.repoName = 'wiggly'
         ktConfig.acceptanceTest.delegate.branch = 'master'
         ktConfig.release.mergeToMaster = false

@@ -108,7 +108,7 @@ class KayTeeExtensionTest extends Specification {
 
     def "validation"() {
         when:
-        configuration.unitTest.delegated = true
+        configuration.unitTest.taskType = TaskType.DELEGATED
         configuration.validate()
 
         then:
@@ -118,7 +118,7 @@ class KayTeeExtensionTest extends Specification {
         ex.message.contains("repoName")
 
         when:
-        configuration.unitTest.delegated = false
+        configuration.unitTest.taskType = TaskType.GRADLE
         configuration.validate()
 
         then:
