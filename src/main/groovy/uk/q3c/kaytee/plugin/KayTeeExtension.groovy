@@ -32,6 +32,7 @@ class KayTeeExtension {
         this.generateChangeLog = other.generateChangeLog
         this.generateBuildInfo = other.generateBuildInfo
         this.raiseIssueOnFail = other.raiseIssueOnFail
+        this.publishToMavenLocal = other.publishToMavenLocal
 
         unitTest = new GroupConfig(other.unitTest)
         integrationTest = new GroupConfig(other.integrationTest)
@@ -58,6 +59,7 @@ class KayTeeExtension {
 
     boolean generateBuildInfo = true
     boolean generateChangeLog = true
+    boolean publishToMavenLocal = true
 
     boolean raiseIssueOnFail = true
 
@@ -171,6 +173,7 @@ class KayTeeExtension {
         if (generateChangeLog != that.generateChangeLog) return false
         if (generateBuildInfo != that.generateBuildInfo) return false
         if (raiseIssueOnFail != that.raiseIssueOnFail) return false
+        if (publishToMavenLocal != that.publishToMavenLocal) return false
 
         return true
     }
@@ -186,6 +189,7 @@ class KayTeeExtension {
         result = 31 * result + new Boolean(generateBuildInfo).hashCode()
         result = 31 * result + new Boolean(generateChangeLog).hashCode()
         result = 31 * result + new Boolean(raiseIssueOnFail).hashCode()
+        result = 31 * result + new Boolean(publishToMavenLocal).hashCode()
         return result
     }
 

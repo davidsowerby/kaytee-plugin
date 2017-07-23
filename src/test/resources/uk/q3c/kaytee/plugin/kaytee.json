@@ -3,6 +3,7 @@
   "baseVersion": "0.0.0.0",
   "generateBuildInfo": true,
   "generateChangeLog": true,
+  "publishToMavenLocal": true,
   "raiseIssueOnFail": true,
   "unitTest": {
     "enabled": true,

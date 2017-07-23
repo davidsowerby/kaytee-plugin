@@ -30,6 +30,7 @@ class KayTeeExtensionTest extends Specification {
         configuration.release.toBintray = false
         configuration.unitTest.enabled = false
         configuration.release.versionTag = false
+        configuration.publishToMavenLocal = false
 
         when:
         objectMapper.writeValue(sw, configuration)
@@ -41,6 +42,7 @@ class KayTeeExtensionTest extends Specification {
         configuration2.gitLocalConfiguration.projectName == "what?"
         configuration2.gitRemoteConfiguration.repoUser == "bananarama"
         configuration2.baseVersion == "2.3.4.5"
+        !configuration2.publishToMavenLocal
         !configuration2.release.versionTag
 
         configuration == configuration2
