@@ -50,10 +50,20 @@ class KayTeePlugin implements Plugin<Project> {
         gitPlus.local.projectDirParent = project.projectDir.parentFile
         gitPlus.local.projectName = project.name
         gitPlus.execute()
-        GitSHA headSha = gitPlus.local.headCommitSHA(new GitBranch("kaytee"))
+
+        // when using CI server we expect the 'kaytee' branch to be there, but if Gradle is executed locally we just accept
+        // the current branch
+        GitBranch branch = new GitBranch("kaytee")
+        if (gitPlus.local.branches().contains("kaytee")) {
+            gitPlus.local.checkoutBranch(branch)
+        } else {
+            branch = gitPlus.local.currentBranch()
+        }
+
+        GitSHA headSha = gitPlus.local.headCommitSHA(branch)
         String headCommitId = headSha.sha
         ext.set(KAYTEE_COMMIT_ID, headCommitId)
-        project.logger.lifecycle("Building commit: $headCommitId")
+        project.logger.lifecycle("Building commit: $headCommitId for branch: ${branch.name}")
 
         project.apply plugin: JavaPlugin
         project.apply plugin: GroovyPlugin
