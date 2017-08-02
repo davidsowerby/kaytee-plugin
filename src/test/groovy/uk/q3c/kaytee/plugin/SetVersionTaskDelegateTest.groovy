@@ -29,6 +29,7 @@ class VersionCheckTaskDelegateTest extends TestWithGitPlus {
     GitCommit commit1
     GitCommit commit2
     GitCommit commit3
+    VersionConfig versionConfig=new VersionConfig()
 
 
 
@@ -47,7 +48,8 @@ class VersionCheckTaskDelegateTest extends TestWithGitPlus {
         project.logger >> logger
         extensions.getByName("kaytee") >> config
         extensions.extraProperties >> ext
-        config.baseVersion >> "1.2.3.4"
+        config.version >> versionConfig
+        versionConfig.number= "1.2.3.4"
     }
 
     def "Check throws no exception when base version not in use already"() {
@@ -81,7 +83,8 @@ class VersionCheckTaskDelegateTest extends TestWithGitPlus {
     def "Check throws no exception when base version is in use, but on current HEAD commit, RERUN set"() {
 
         given:
-        List<Tag> tags = ImmutableList.of(newTag("1.2.3.4.aaaa", headCommit))
+        ext.get(KayTeePlugin.KAYTEE_COMMIT_ID) >> sha0
+        List<Tag> tags = ImmutableList.of(newTag("1.2.3.4+aaaa", headCommit))
         gitLocal.tags() >> tags
 
         when:
@@ -94,7 +97,7 @@ class VersionCheckTaskDelegateTest extends TestWithGitPlus {
 
     def "Check throws exception when base version found on a commit other than current HEAD"() {
         given:
-        List<Tag> tags = ImmutableList.of(newTag("1.2.3.4.abaaaaa", commit1))
+        List<Tag> tags = ImmutableList.of(newTag("1.2.3.4+abaaaaa", commit1))
         gitLocal.tags() >> tags
 
         when:

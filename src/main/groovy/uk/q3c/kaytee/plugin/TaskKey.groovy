@@ -1,7 +1,7 @@
 package uk.q3c.kaytee.plugin
 
 import com.google.common.collect.ImmutableList
-import uk.q3c.krail.i18n.I18NKey
+import uk.q3c.krail.i18n.api.I18NKey
 
 import static uk.q3c.kaytee.plugin.TaskNames.*
 
