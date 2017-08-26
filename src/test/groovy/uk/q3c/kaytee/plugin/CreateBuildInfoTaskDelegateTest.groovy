@@ -10,6 +10,8 @@ import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 import uk.q3c.build.gitplus.GitSHA
 import uk.q3c.build.gitplus.local.GitLocalConfiguration
+import uk.q3c.util.version.VersionNumber
+import uk.q3c.util.version.VersionNumberKt
 
 import java.time.OffsetDateTime
 /**
@@ -22,18 +24,17 @@ class CreateBuildInfoTaskDelegateTest extends Specification {
     File temp
     CreateBuildInfoTaskDelegate delegate
     GitSHA gitSHA
-    KayTeeVersion versionObject = Mock(KayTeeVersion)
+    VersionNumber versionObject
     Project project = Mock(Project)
     Logger logger = Mock(Logger)
     File projectDir
     File buildDir
     File propertiesFile
-    String version = '9.9.9.1000'
-    String baseVersion = '9.9.9'
+    String version = "0.9.9.9"
     KayTeeExtension ktConfig
     ExtensionContainer projectExtensions = Mock(ExtensionContainer)
     GitLocalConfiguration wikiConfiguration
-    VersionCheckTaskDelegate versionCheck = Mock(VersionCheckTaskDelegate)
+    SetVersionTaskDelegate versionCheck = Mock(SetVersionTaskDelegate)
     ExtraPropertiesExtension ext = Mock(ExtraPropertiesExtension)
 
     def setup() {
@@ -44,13 +45,13 @@ class CreateBuildInfoTaskDelegateTest extends Specification {
         projectDir = new File(temp, "projectDir")
         buildDir = new File(projectDir, "build")
 
-        project.property("baseVersion") >> baseVersion
+        project.property("version") >> version
         project.name >> "testProject"
         project.projectDir >> projectDir
         project.buildDir >> buildDir
         propertiesFile = new File(buildDir, "resources/main/buildInfo.properties")
 
-        versionObject.toString() >> version
+        versionObject = VersionNumberKt.parseFullVersionNumber(version)
         project.version >> versionObject
         project.getLogger() >> logger
         project.extensions >> projectExtensions
@@ -61,7 +62,7 @@ class CreateBuildInfoTaskDelegateTest extends Specification {
 
     def "Write build info"() {
         given:
-        ktConfig.baseVersion = baseVersion
+        ktConfig.version.number = version
         ext.get(KayTeePlugin.KAYTEE_COMMIT_ID) >> testSha().sha
 
         when:
@@ -75,7 +76,6 @@ class CreateBuildInfoTaskDelegateTest extends Specification {
         Properties properties = new Properties()
         properties.load(new FileInputStream(propertiesFile))
         properties.get("version") == version
-        properties.get("baseVersion") == baseVersion
         properties.get(CreateBuildInfoTaskDelegate.PROPERTY_NAME_COMMIT_ID) == gitSHA.sha
         properties.get("date") != null
         String dateAsString = properties.get("date")

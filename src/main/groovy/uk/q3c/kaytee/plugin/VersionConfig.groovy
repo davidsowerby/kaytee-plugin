@@ -1,41 +1,47 @@
 package uk.q3c.kaytee.plugin
 
+import uk.q3c.util.version.Scheme
+
 /**
  * Created by David Sowerby on 20 May 2017
  */
-class ReleaseConfig {
+class VersionConfig {
 
-    boolean toBintray = true
-    boolean mergeToMaster = true
-    boolean versionTag = true
+    String number = '0.0.0.0'
+    String qualifier = ""
+    String buildMetaData = ""
+    Scheme scheme = new Scheme()
 
-    ReleaseConfig(ReleaseConfig other) {
-        this.toBintray = other.toBintray
-        this.mergeToMaster = other.mergeToMaster
-        this.versionTag = other.versionTag
+    VersionConfig(VersionConfig other) {
+        this.number = other.number
+        this.qualifier = other.qualifier
+        this.buildMetaData = other.buildMetaData
+        this.scheme = other.scheme
     }
 
-    ReleaseConfig() {
+    VersionConfig() {
     }
 
     boolean equals(o) {
         if (this.is(o)) return true
         if (getClass() != o.class) return false
 
-        ReleaseConfig that = (ReleaseConfig) o
+        VersionConfig that = (VersionConfig) o
 
-        if (mergeToMaster != that.mergeToMaster) return false
-        if (toBintray != that.toBintray) return false
-        if (versionTag != that.versionTag) return false
+        if (buildMetaData != that.buildMetaData) return false
+        if (number != that.number) return false
+        if (qualifier != that.qualifier) return false
+        if (scheme != that.scheme) return false
 
         return true
     }
 
     int hashCode() {
         int result
-        result = (toBintray ? 1 : 0)
-        result = 31 * result + (mergeToMaster ? 1 : 0)
-        result = 31 * result + (versionTag ? 1 : 0)
+        result = number.hashCode()
+        result = 31 * result + qualifier.hashCode()
+        result = 31 * result + buildMetaData.hashCode()
+        result = 31 * result + scheme.hashCode()
         return result
     }
 }

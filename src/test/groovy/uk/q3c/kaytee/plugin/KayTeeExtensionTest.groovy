@@ -3,7 +3,7 @@ package uk.q3c.kaytee.plugin
 import com.fasterxml.jackson.databind.ObjectMapper
 import spock.lang.Specification
 
-import static uk.q3c.kaytee.plugin.TaskKey.Integration_Test
+import static uk.q3c.kaytee.plugin.TaskKey.*
 
 /**
  * Created by David Sowerby on 15 May 2017
@@ -24,7 +24,7 @@ class KayTeeExtensionTest extends Specification {
         configuration.wikiLocalConfiguration.projectName = "who?"
         configuration.gitLocalConfiguration.projectName = "what?"
         configuration.gitRemoteConfiguration.repoUser = "bananarama"
-        configuration.baseVersion = "2.3.4.5"
+        configuration.version.number = "2.3.4.5"
         configuration.generateBuildInfo = false
         configuration.generateChangeLog = false
         configuration.release.toBintray = false
@@ -41,7 +41,7 @@ class KayTeeExtensionTest extends Specification {
         configuration2.wikiLocalConfiguration.projectName == "who?"
         configuration2.gitLocalConfiguration.projectName == "what?"
         configuration2.gitRemoteConfiguration.repoUser == "bananarama"
-        configuration2.baseVersion == "2.3.4.5"
+        configuration2.version.number == "2.3.4.5"
         !configuration2.publishToMavenLocal
         !configuration2.release.versionTag
 
@@ -55,7 +55,7 @@ class KayTeeExtensionTest extends Specification {
         configuration.wikiLocalConfiguration.projectName = "who?"
         configuration.gitLocalConfiguration.projectName = "what?"
         configuration.gitRemoteConfiguration.repoUser = "bananarama"
-        configuration.baseVersion = "2.3.4.5"
+        configuration.version.number = "2.3.4.5"
         configuration.generateBuildInfo = false
         configuration.generateChangeLog = false
         configuration.release.mergeToMaster = false
@@ -72,7 +72,7 @@ class KayTeeExtensionTest extends Specification {
         configuration2.wikiLocalConfiguration.projectName == "who?"
         configuration2.gitLocalConfiguration.projectName == "what?"
         configuration2.gitRemoteConfiguration.repoUser == "bananarama"
-        configuration2.baseVersion == "2.3.4.5"
+        configuration2.version.number == "2.3.4.5"
         !configuration2.release.mergeToMaster
         !configuration2.raiseIssueOnFail
 

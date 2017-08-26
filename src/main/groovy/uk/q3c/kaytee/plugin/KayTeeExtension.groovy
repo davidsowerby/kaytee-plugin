@@ -28,7 +28,6 @@ class KayTeeExtension {
     KayTeeExtension(KayTeeExtension other) {
 
         this.remoteRepoUserName = other.remoteRepoUserName
-        this.baseVersion = other.baseVersion
         this.generateChangeLog = other.generateChangeLog
         this.generateBuildInfo = other.generateBuildInfo
         this.raiseIssueOnFail = other.raiseIssueOnFail
@@ -53,9 +52,9 @@ class KayTeeExtension {
         projectName = other.wikiLocalConfiguration.projectName
         wikiLocalConfiguration = other.wikiLocalConfiguration.copy(projectName)
         release = new ReleaseConfig(other.release)
+        version = new VersionConfig(other.version)
     }
     String remoteRepoUserName = "davidsowerby"
-    String baseVersion = '0.0.0.0'
 
     boolean generateBuildInfo = true
     boolean generateChangeLog = true
@@ -70,6 +69,7 @@ class KayTeeExtension {
     GroupConfig acceptanceTest = new GroupConfig()
     GroupConfig productionTest = new GroupConfig()
     ReleaseConfig release = new ReleaseConfig()
+    VersionConfig version = new VersionConfig()
 
     // Cannot use interface - Jackson does not know how to reconstruct it
     DefaultChangeLogConfiguration changeLog
@@ -90,6 +90,10 @@ class KayTeeExtension {
         if (!errors.isEmpty()) {
             throw new KayTeeConfigurationException("Errors in KayTee configuration:\n$errors")
         }
+    }
+
+    def version(Closure closure) {
+        ConfigureUtil.configure(closure, version)
     }
 
     def release(Closure closure) {

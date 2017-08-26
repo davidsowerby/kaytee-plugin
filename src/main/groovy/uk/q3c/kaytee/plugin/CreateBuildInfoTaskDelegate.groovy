@@ -3,6 +3,7 @@ package uk.q3c.kaytee.plugin
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
 import org.gradle.api.plugins.ExtraPropertiesExtension
+import uk.q3c.util.version.VersionNumber
 
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
@@ -14,12 +15,12 @@ import java.time.format.DateTimeFormatter
  */
 class CreateBuildInfoTaskDelegate extends DelegateWithConfig {
 
-    VersionCheckTaskDelegate versionCheck
+    SetVersionTaskDelegate versionCheck
     static String PATH_TO_BUILD_INFO_PROPS = 'resources/main/buildInfo.properties'
     static String PROPERTY_NAME_COMMIT_ID = "commitId"
 
 
-    CreateBuildInfoTaskDelegate(Project project, VersionCheckTaskDelegate versionCheck) {
+    CreateBuildInfoTaskDelegate(Project project, SetVersionTaskDelegate versionCheck) {
         super(project)
         this.versionCheck = versionCheck
     }
@@ -34,8 +35,8 @@ class CreateBuildInfoTaskDelegate extends DelegateWithConfig {
         logLifecycle("creating build info file")
         prepare()
         final Properties properties = new Properties()
-        final String baseVersion = config.baseVersion
-        properties.setProperty("baseVersion", baseVersion)
+        VersionNumber version = project.version as VersionNumber
+        properties.setProperty("version", version.toString())
         properties.setProperty("date", OffsetDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME))
         String commitId = getCommitId()
         properties.setProperty(PROPERTY_NAME_COMMIT_ID, commitId)

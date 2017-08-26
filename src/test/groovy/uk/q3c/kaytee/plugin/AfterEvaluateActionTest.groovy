@@ -9,6 +9,7 @@ import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSetContainer
 import spock.lang.Specification
+import uk.q3c.util.version.VersionNumber
 
 /**
  * Created by David Sowerby on 27 May 2017
@@ -24,13 +25,13 @@ class AfterEvaluateActionTest extends Specification {
     ExtensionContainer extensions = Mock(ExtensionContainer)
     KayTeeExtension config = new KayTeeExtension()
     BintrayExtension bintrayExtension
-    KayTeeVersion version = Mock(KayTeeVersion)
+    VersionNumber version
     DefaultTestSetContainer testSets = Mock(DefaultTestSetContainer)
     ExtraPropertiesExtension ext = Mock(ExtraPropertiesExtension)
 
     def setup() {
         temp = temporaryFolder.getRoot()
-        version.toString() >> "1.2.3.4.aaaaa"
+        version = new VersionNumber(1, 2, 3, 4, "aaaaa")
         action = new AfterEvaluateAction(project)
         project.logger >> logger
         project.extensions >> extensions
@@ -80,7 +81,7 @@ class AfterEvaluateActionTest extends Specification {
         bintrayExtension.pkg.issueTrackerUrl == "https://github.com/davidsowerby/wiggly/issues/"
         bintrayExtension.pkg.vcsUrl == "https://github.com/davidsowerby/wiggly.git"
         bintrayExtension.pkg.version.released != null
-        bintrayExtension.pkg.version.name == "1.2.3.4.aaaaa"
+        bintrayExtension.pkg.version.name == "1.2.3.4-aaaaa"
         1 * ext.set(KayTeePlugin.KAYTEE_CONFIG_FLAG, true)
 
     }

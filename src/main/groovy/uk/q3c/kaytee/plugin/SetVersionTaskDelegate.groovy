@@ -11,14 +11,14 @@ import uk.q3c.util.version.VersionNumberKt
 /**
  * Created by David Sowerby on 13 Jun 2017
  */
-class VersionCheckTaskDelegate extends DelegateWithGitPlus {
+class SetVersionTaskDelegate extends DelegateWithGitPlus {
 
 
-    VersionCheckTaskDelegate(Project project) {
+    SetVersionTaskDelegate(Project project) {
         super(project)
     }
 
-    VersionCheckTaskDelegate(Project project, GitPlus gitPlus) {
+    SetVersionTaskDelegate(Project project, GitPlus gitPlus) {
         super(project, gitPlus)
     }
 

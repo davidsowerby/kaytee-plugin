@@ -4,13 +4,13 @@ import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 import spock.lang.Specification
 import uk.q3c.build.changelog.ChangeLog
+import uk.q3c.util.version.VersionNumberKt
 
 /**
  * Created by David Sowerby on 30 Dec 2016
  */
 class GenerateChangeLogTaskTest extends Specification {
 
-    KayTeeVersion versionObject = Mock(KayTeeVersion)
 
     GenerateChangeLogTask task
 
@@ -18,8 +18,7 @@ class GenerateChangeLogTaskTest extends Specification {
 
     def setup() {
         project = ProjectBuilder.builder().build()
-        versionObject.toString() >> '9.9.9.1000'
-        project.version = versionObject
+        project.version = VersionNumberKt.parseFullVersionNumber('9.9.9.1000')
         task = project.getTasks().create("generateChangeLog", GenerateChangeLogTask.class)
     }
 

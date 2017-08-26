@@ -14,6 +14,7 @@ import uk.q3c.build.gitplus.GitPlusFactory
 import uk.q3c.build.gitplus.GitSHA
 import uk.q3c.build.gitplus.gitplus.GitPlus
 import uk.q3c.build.gitplus.local.GitBranch
+import uk.q3c.util.version.VersionNumber
 
 import javax.inject.Inject
 
@@ -44,7 +45,7 @@ class KayTeePlugin implements Plugin<Project> {
         ExtraPropertiesExtension ext = project.getExtensions().getExtraProperties()
         ext.set(KAYTEE_CONFIG_FLAG, false)
         // We will want the commit id for a number of things, so get it here once.  The only other thing we need Git for
-        // is tags, in VersionCheckTask
+        // is tags, in SetVersionTask
         GitPlus gitPlus = GitPlusFactory.instance
         gitPlus.remote.active = false
         gitPlus.local.projectDirParent = project.projectDir.parentFile
@@ -83,15 +84,15 @@ class KayTeePlugin implements Plugin<Project> {
         project.logger.debug("added task " + t.getName())
         t = project.tasks.create(MERGE_TO_MASTER, MergeToMasterTask)
         project.logger.debug("added task " + t.getName())
-        Task versionCheckTask = project.tasks.create(VERSION_CHECK, VersionCheckTask)
-        project.logger.debug("added task " + versionCheckTask.getName())
+        Task setVersionTask = project.tasks.create(SET_VERSION, SetVersionTask)
+        project.logger.debug("added task " + setVersionTask.getName())
         t = project.tasks.create(TAG, TagTask)
-        t.dependsOn(versionCheckTask)
+        t.dependsOn(setVersionTask)
         project.logger.debug("added task " + t.getName())
         Task bintrayConfigToJson = project.tasks.create(BINTRAY_CONFIG_TO_JSON, BintrayConfigToJsonTask)
         project.logger.debug("added task " + bintrayConfigToJson.getName())
 
-        project.version = new KayTeeVersion(project)
+        project.version = new VersionNumber()
         bintray(project)
         project.afterEvaluate(new AfterEvaluateAction(project))
     }

@@ -10,7 +10,7 @@ import static uk.q3c.kaytee.plugin.TaskNames.*
  */
 enum TaskKey implements I18NKey {
     Custom(CUSTOM),
-    Version_Check(VERSION_CHECK),
+    Version_Check(SET_VERSION),
     Extract_Gradle_Configuration(EXTRACT_CONFIG_TASK_NAME),
     Unit_Test(UNIT_TEST),
     Integration_Test(INTEGRATION_TEST),
