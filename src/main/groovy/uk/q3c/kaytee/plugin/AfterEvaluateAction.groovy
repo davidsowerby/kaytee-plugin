@@ -9,6 +9,10 @@ import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSet
 import org.unbrokendome.gradle.plugins.testsets.internal.DefaultTestSetContainer
 import uk.q3c.build.gitplus.remote.DefaultGitRemoteUrlMapper
+import uk.q3c.util.version.Scheme
+import uk.q3c.util.version.VersionNumber
+import uk.q3c.util.version.VersionNumberKt
+
 /**
  * Created by David Sowerby on 24 Dec 2016
  */
@@ -60,8 +64,21 @@ class AfterEvaluateAction implements Action<Project> {
         config.gitLocalConfiguration.validate(config.gitRemoteConfiguration)
         config.wikiLocalConfiguration.validate(config.gitRemoteConfiguration)
         config.changeLog.validate()
+
+        project.version = versionFromConfig()
+
         return config
     }
+
+    private VersionNumber versionFromConfig() {
+        KayTeeExtension config = project.extensions.getByName("kaytee") as KayTeeExtension
+        String version = config.version.number
+        String qualifier = config.version.qualifier
+        String buildMetaData = config.version.buildMetaData
+        Scheme scheme = config.version.scheme
+        return VersionNumberKt.parseVersion(version, qualifier, buildMetaData, scheme)
+    }
+
 
     private void createTestSets(KayTeeExtension config) {
         // create the other test sets

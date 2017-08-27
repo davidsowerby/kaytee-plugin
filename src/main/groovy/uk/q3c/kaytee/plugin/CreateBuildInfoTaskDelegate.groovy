@@ -15,12 +15,12 @@ import java.time.format.DateTimeFormatter
  */
 class CreateBuildInfoTaskDelegate extends DelegateWithConfig {
 
-    SetVersionTaskDelegate versionCheck
+    VersionCheckTaskDelegate versionCheck
     static String PATH_TO_BUILD_INFO_PROPS = 'resources/main/buildInfo.properties'
     static String PROPERTY_NAME_COMMIT_ID = "commitId"
 
 
-    CreateBuildInfoTaskDelegate(Project project, SetVersionTaskDelegate versionCheck) {
+    CreateBuildInfoTaskDelegate(Project project, VersionCheckTaskDelegate versionCheck) {
         super(project)
         this.versionCheck = versionCheck
     }

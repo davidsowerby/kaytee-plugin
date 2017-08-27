@@ -34,7 +34,7 @@ class CreateBuildInfoTaskDelegateTest extends Specification {
     KayTeeExtension ktConfig
     ExtensionContainer projectExtensions = Mock(ExtensionContainer)
     GitLocalConfiguration wikiConfiguration
-    SetVersionTaskDelegate versionCheck = Mock(SetVersionTaskDelegate)
+    VersionCheckTaskDelegate versionCheck = Mock(VersionCheckTaskDelegate)
     ExtraPropertiesExtension ext = Mock(ExtraPropertiesExtension)
 
     def setup() {

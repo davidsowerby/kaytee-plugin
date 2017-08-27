@@ -13,9 +13,9 @@ import java.time.ZonedDateTime
 /**
  * Created by David Sowerby on 13 Jun 2017
  */
-class SetVersionTaskDelegateTest extends TestWithGitPlus {
+class VersionCheckTaskDelegateTest extends TestWithGitPlus {
 
-    SetVersionTaskDelegate delegate
+    VersionCheckTaskDelegate delegate
 
 
     Logger logger = Mock(Logger)
@@ -39,7 +39,7 @@ class SetVersionTaskDelegateTest extends TestWithGitPlus {
         commit1 = new GitCommit("full message", sha1, personIdent, personIdent)
         commit2 = new GitCommit("full message", sha2, personIdent, personIdent)
         commit3 = new GitCommit("full message", sha3, personIdent, personIdent)
-        delegate = new SetVersionTaskDelegate(project, gitPlus)
+        delegate = new VersionCheckTaskDelegate(project, gitPlus)
 
         gitLocal.headCommitSHA(new GitBranch("kaytee")) >> new GitSHA(sha0)
 

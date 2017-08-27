@@ -7,12 +7,12 @@ import org.gradle.api.tasks.TaskAction
 /**
  * Created by David Sowerby on 13 Jun 2017
  */
-class SetVersionTask extends DefaultTask {
+class VersionCheckTask extends DefaultTask {
 
-    SetVersionTaskDelegate delegate
+    VersionCheckTaskDelegate delegate
 
-    SetVersionTask() {
-        this.delegate = new SetVersionTaskDelegate(project)
+    VersionCheckTask() {
+        this.delegate = new VersionCheckTaskDelegate(project)
     }
 
     @TaskAction

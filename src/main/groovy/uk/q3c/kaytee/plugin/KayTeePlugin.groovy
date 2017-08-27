@@ -14,12 +14,10 @@ import uk.q3c.build.gitplus.GitPlusFactory
 import uk.q3c.build.gitplus.GitSHA
 import uk.q3c.build.gitplus.gitplus.GitPlus
 import uk.q3c.build.gitplus.local.GitBranch
-import uk.q3c.util.version.VersionNumber
 
 import javax.inject.Inject
 
 import static uk.q3c.kaytee.plugin.TaskNames.*
-
 /**
  * Created by David Sowerby on 19 Dec 2016
  */
@@ -45,7 +43,7 @@ class KayTeePlugin implements Plugin<Project> {
         ExtraPropertiesExtension ext = project.getExtensions().getExtraProperties()
         ext.set(KAYTEE_CONFIG_FLAG, false)
         // We will want the commit id for a number of things, so get it here once.  The only other thing we need Git for
-        // is tags, in SetVersionTask
+        // is tags, in VersionCheckTask
         GitPlus gitPlus = GitPlusFactory.instance
         gitPlus.remote.active = false
         gitPlus.local.projectDirParent = project.projectDir.parentFile
@@ -84,7 +82,7 @@ class KayTeePlugin implements Plugin<Project> {
         project.logger.debug("added task " + t.getName())
         t = project.tasks.create(MERGE_TO_MASTER, MergeToMasterTask)
         project.logger.debug("added task " + t.getName())
-        Task setVersionTask = project.tasks.create(SET_VERSION, SetVersionTask)
+        Task setVersionTask = project.tasks.create(SET_VERSION, VersionCheckTask)
         project.logger.debug("added task " + setVersionTask.getName())
         t = project.tasks.create(TAG, TagTask)
         t.dependsOn(setVersionTask)
@@ -92,10 +90,11 @@ class KayTeePlugin implements Plugin<Project> {
         Task bintrayConfigToJson = project.tasks.create(BINTRAY_CONFIG_TO_JSON, BintrayConfigToJsonTask)
         project.logger.debug("added task " + bintrayConfigToJson.getName())
 
-        project.version = new VersionNumber()
+
         bintray(project)
         project.afterEvaluate(new AfterEvaluateAction(project))
     }
+
 
     KayTeeExtension extensionWithBasicSettings(Project project) {
         KayTeeExtension extension = project.extensions.create('kaytee', KayTeeExtension)

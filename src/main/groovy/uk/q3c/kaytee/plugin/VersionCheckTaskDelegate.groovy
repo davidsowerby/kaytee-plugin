@@ -11,20 +11,21 @@ import uk.q3c.util.version.VersionNumberKt
 /**
  * Created by David Sowerby on 13 Jun 2017
  */
-class SetVersionTaskDelegate extends DelegateWithGitPlus {
+class VersionCheckTaskDelegate extends DelegateWithGitPlus {
 
 
-    SetVersionTaskDelegate(Project project) {
+    VersionCheckTaskDelegate(Project project) {
         super(project)
     }
 
-    SetVersionTaskDelegate(Project project, GitPlus gitPlus) {
+    VersionCheckTaskDelegate(Project project, GitPlus gitPlus) {
         super(project, gitPlus)
     }
 
     /**
      *
-     * Constructs the {@link VersionNumber} object from configuration data, and sets project.version with it
+     * Takes project.version (which is expect to be an instance of {@link VersionNumber}) as the proposed version.  If it is not a {@link VersionNumber} object
+     * a {@link KayTeeConfigurationException} is thrown
      *
      * Throws GitLocalException if the proposed version is found in another tag (unless that tag is attached to the
      * current HEAD, in which case it is ignored, and true is returned)
@@ -36,16 +37,13 @@ class SetVersionTaskDelegate extends DelegateWithGitPlus {
      */
     boolean check() {
         prepare()
+        // We want to check for existing version without build meta, but we can use the VersionNumber compare methods to do that
+        VersionNumber newVersion = project.version as VersionNumber
         ExtraPropertiesExtension ext = project.getExtensions().getExtraProperties()
         String currentCommitId = ext.get(KayTeePlugin.KAYTEE_COMMIT_ID)
-        String version = config.version.number
-        String qualifier = config.version.qualifier
-        String buildMetaData = config.version.buildMetaData
         Scheme scheme = config.version.scheme
 
-        // We want to check for existing version without build meta, but we can use the VersionNumber compare methods to do that
-        VersionNumber newVersion = VersionNumberKt.parseVersion(version,qualifier,buildMetaData,scheme)
-        project.version=newVersion
+
         logLifecycle("checking version of '$newVersion' to ensure it has not been used before")
 
         // look for existing tag with this version
@@ -67,7 +65,7 @@ class SetVersionTaskDelegate extends DelegateWithGitPlus {
             }
         }
         ext.set(KayTeePlugin.KAYTEE_RERUN, false)
-        logLifecycle("Version check complete, using new version '$newVersionStr'")
+        logLifecycle("Version check complete, project.version set to: '$newVersionStr'")
         return false
     }
 
