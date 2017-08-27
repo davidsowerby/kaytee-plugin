@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayVersion"
-        classpath 'uk.q3c.kaytee:kaytee-plugin:0.16.0.0'
+        classpath 'uk.q3c.kaytee:kaytee-plugin:0.18.0.0'
     }
 }
 

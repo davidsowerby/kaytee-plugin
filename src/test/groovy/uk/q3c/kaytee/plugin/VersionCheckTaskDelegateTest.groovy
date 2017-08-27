@@ -8,6 +8,7 @@ import uk.q3c.build.gitplus.local.GitBranch
 import uk.q3c.build.gitplus.local.GitCommit
 import uk.q3c.build.gitplus.local.GitLocalException
 import uk.q3c.build.gitplus.local.Tag
+import uk.q3c.util.version.VersionNumberKt
 
 import java.time.ZonedDateTime
 /**
@@ -50,6 +51,7 @@ class VersionCheckTaskDelegateTest extends TestWithGitPlus {
         extensions.extraProperties >> ext
         config.version >> versionConfig
         versionConfig.number= "1.2.3.4"
+        project.version >> VersionNumberKt.parseVersion(versionConfig.number)
     }
 
     def "Check throws no exception when base version not in use already"() {
