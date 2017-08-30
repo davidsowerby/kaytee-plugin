@@ -1,22 +1,22 @@
 //noinspection GrPackage
 buildscript {
     ext.bintrayVersion = '1.7.3'
+    ext.kaytee_plugin_version = "0.18.2.0"
     repositories {
         mavenLocal()
         jcenter()
     }
     dependencies {
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayVersion"
-        classpath 'uk.q3c.kaytee:kaytee-plugin:0.18.1.0'
+        classpath "uk.q3c.kaytee:kaytee-plugin:$kaytee_plugin_version"
     }
 }
 
-
 apply plugin: 'uk.q3c.kaytee'
 
-kaytee{
-    version{
-        number = '0.18.1.0'
+kaytee {
+    version {
+        number = '0.18.2.0'
     }
 }
 
@@ -30,21 +30,19 @@ group 'uk.q3c.kaytee'
 ext.jacksonVersion = '2.8.6'
 
 repositories {
-    mavenLocal()
     jcenter()
     mavenCentral()
-
 }
 
 dependencies {
-    compile 'uk.q3c.krail:krail-i18n:0.0.2.0'
+    compile 'uk.q3c.krail:krail-i18n-api:0.15.0.0.dd44441'
 
     // Gradle
     compile gradleApi()
 
     //Changelog (also brings in GitPlus)
     compile 'uk.q3c.build:changelog:0.5.2.0.1ec1c87'
-    compile 'uk.q3c.util:q3c-util:0.13.0.0'
+    compile 'uk.q3c.util:q3c-util:0.13.1.2'
 
     compile "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayVersion"
 
@@ -52,16 +50,13 @@ dependencies {
     compile 'com.google.guava:guava:22.0'
     compile 'org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0'
 
-
-
-
     // Jackson for JSON output of config
     compile 'com.fasterxml.jackson.core:jackson-annotations:' + jacksonVersion
     compile 'com.fasterxml.jackson.core:jackson-databind:' + jacksonVersion
 
     // Testing
     //project builder
-    testCompile 'uk.q3c.build:projectadmin:0.7.0.4'
+    testCompile 'uk.q3c.build:projectadmin:0.7.4.1.74653a2'
 
     testCompile('org.spockframework:spock-core:1.0-groovy-2.4') {
         exclude module: "groovy-all"
@@ -69,7 +64,7 @@ dependencies {
     testCompile 'cglib:cglib-nodep:3.2.0' // needed for Spock mocking
     testCompile 'org.objenesis:objenesis:2.2' // needed for Spock mocking
 
-    testCompile('uk.q3c:q3c-testUtil:0.8.2') {
+    testCompile('uk.q3c.util:q3c-testutils:0.11.0.1') {
         exclude module: "logback-classic"
         exclude module: "groovy-all"
     }
