@@ -19,19 +19,20 @@ class MergeToMasterDelegateTask {
     MergeToMasterDelegateTask(Project project) {
         this.project = project
         gitPlus = GitPlusFactory.instance
+        gitPlus.propertiesFromGradle()
     }
 
     void merge() {
         logLifecycle("creating build info file")
         logDebug("Setting up gitPlus from KayTee configuration")
         KayTeeExtension config = project.extensions.getByName("kaytee") as KayTeeExtension
-        gitPlus.local.localConfiguration.copyFrom(config.gitLocalConfiguration)
-        gitPlus.wikiLocal.localConfiguration.copyFrom(config.wikiLocalConfiguration)
+        gitPlus.local.configuration.copyFrom(config.gitLocalConfiguration)
+        gitPlus.wikiLocal.configuration.copyFrom(config.wikiLocalConfiguration)
         gitPlus.remote.configuration.copyFrom(config.gitRemoteConfiguration)
 
         logDebug("Disabling wikiLocal, enabling gitRemote")
-        gitPlus.remote.getConfiguration().active(true)
-        gitPlus.wikiLocal.localConfiguration.active(false)
+        gitPlus.remote.configuration.active(true)
+        gitPlus.wikiLocal.configuration.active(false)
         gitPlus.execute()
 
         GitLocal gitLocal = gitPlus.local

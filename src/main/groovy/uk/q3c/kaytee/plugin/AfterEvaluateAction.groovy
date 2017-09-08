@@ -55,18 +55,24 @@ class AfterEvaluateAction implements Action<Project> {
 
         config.changeLog.projectName = project.name
         config.changeLog.projectDirParent = project.projectDir.parentFile
-        config.changeLog.autoTagLatestCommit = false
-        config.changeLog.remoteRepoUser = config.remoteRepoUserName
 
-        logConfig(project)
+        config.changeLog.remoteRepoUser = config.remoteRepoUserName
+        config.changeLog.maxVersions = 10
+
+
 
         config.gitRemoteConfiguration.validate(config.gitLocalConfiguration)
         config.gitLocalConfiguration.validate(config.gitRemoteConfiguration)
         config.wikiLocalConfiguration.validate(config.gitRemoteConfiguration)
         config.changeLog.validate()
 
-        project.version = versionFromConfig()
 
+        VersionNumber versionNumber = versionFromConfig()
+        project.version = versionNumber
+        config.changeLog.autoTagLatestCommit = true
+        config.changeLog.currentBuildTagName = versionNumber.toString()
+
+        logConfig(project)
         return config
     }
 
@@ -115,7 +121,7 @@ class AfterEvaluateAction implements Action<Project> {
     void bintrayConfig(KayTeeExtension config) {
         project.logger.debug("Checking existing bintray config values, and replacing nulls where possible")
         DefaultGitRemoteUrlMapper mapper = new DefaultGitRemoteUrlMapper()
-        mapper.parent = config.gitRemoteConfiguration
+        mapper.owner = config.gitRemoteConfiguration
         BintrayExtension bintray = project.extensions.getByName("bintray") as BintrayExtension
 
         if (StringUtils.isEmpty(bintray.pkg.name)) {

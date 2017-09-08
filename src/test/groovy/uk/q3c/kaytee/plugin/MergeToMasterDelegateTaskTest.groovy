@@ -37,8 +37,8 @@ class MergeToMasterDelegateTaskTest extends Specification {
         gitPlus.local >> gitLocal
         gitPlus.wikiLocal >> wikiLocal
         gitPlus.remote >> gitRemote
-        gitLocal.localConfiguration >> localConfiguration
-        wikiLocal.localConfiguration >> wikiConfiguration
+        gitLocal.configuration >> localConfiguration
+        wikiLocal.configuration >> wikiConfiguration
         gitRemote.configuration >> remoteConfiguration
         ktExtension = new KayTeeExtension()
         delegate = new MergeToMasterDelegateTask(project)

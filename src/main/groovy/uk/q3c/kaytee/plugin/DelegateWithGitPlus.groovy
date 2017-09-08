@@ -17,21 +17,22 @@ class DelegateWithGitPlus extends DelegateWithConfig {
     DelegateWithGitPlus(Project project) {
         super(project)
         gitPlus = GitPlusFactory.instance
+        gitPlus.propertiesFromGradle()
 
     }
 
     DelegateWithGitPlus(Project project, GitPlus gitPlus) {
         super(project)
         this.gitPlus = gitPlus
-
+        gitPlus.propertiesFromGradle()
     }
 
     @Override
     protected void prepare() {
         super.prepare()
         project.logger.debug("configuring GitPlus for ${this.getClass().getName()}")
-        gitPlus.local.localConfiguration.copyFrom(config.gitLocalConfiguration)
-        gitPlus.wikiLocal.localConfiguration.copyFrom(config.wikiLocalConfiguration)
+        gitPlus.local.configuration.copyFrom(config.gitLocalConfiguration)
+        gitPlus.wikiLocal.configuration.copyFrom(config.wikiLocalConfiguration)
         gitPlus.remote.configuration.copyFrom(config.gitRemoteConfiguration)
         ObjectMapper mapper = getObjectMapper()
         StringWriter sw = new StringWriter()

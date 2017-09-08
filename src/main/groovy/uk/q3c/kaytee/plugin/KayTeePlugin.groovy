@@ -45,6 +45,7 @@ class KayTeePlugin implements Plugin<Project> {
         // We will want the commit id for a number of things, so get it here once.  The only other thing we need Git for
         // is tags, in VersionCheckTask
         GitPlus gitPlus = GitPlusFactory.instance
+        gitPlus.propertiesFromGradle()
         gitPlus.remote.active = false
         gitPlus.local.projectDirParent = project.projectDir.parentFile
         gitPlus.local.projectName = project.name

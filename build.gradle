@@ -1,7 +1,7 @@
 //noinspection GrPackage
 buildscript {
     ext.bintrayVersion = '1.7.3'
-    ext.kaytee_plugin_version = "0.18.2.0"
+    ext.kaytee_plugin_version = "0.18.3.0"
     repositories {
         mavenLocal()
         jcenter()
@@ -16,7 +16,7 @@ apply plugin: 'uk.q3c.kaytee'
 
 kaytee {
     version {
-        number = '0.18.2.0'
+        number = '0.18.3.0'
     }
 }
 
@@ -41,13 +41,13 @@ dependencies {
     compile gradleApi()
 
     //Changelog (also brings in GitPlus)
-    compile 'uk.q3c.build:changelog:0.5.2.0.1ec1c87'
+    compile 'uk.q3c.build:changelog:0.5.3.0'
     compile 'uk.q3c.util:q3c-util:0.13.1.2'
 
     compile "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayVersion"
 
     compile 'com.google.code.findbugs:annotations:3.0.0'
-    compile 'com.google.guava:guava:22.0'
+    compile 'com.google.guava:guava:23.0'
     compile 'org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0'
 
     // Jackson for JSON output of config

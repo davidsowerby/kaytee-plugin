@@ -34,10 +34,10 @@ class TestWithGitPlus extends Specification {
 
     def setup() {
         gitPlus.local >> gitLocal
-        gitLocal.localConfiguration >> localConfiguration
+        gitLocal.configuration >> localConfiguration
         gitLocal.currentBranch() >> new GitBranch("kaytee")
         gitPlus.wikiLocal >> wikiLocal
-        gitPlus.wikiLocal.localConfiguration >> wikiConfiguration
+        gitPlus.wikiLocal.configuration >> wikiConfiguration
         gitPlus.remote >> gitRemote
         gitRemote.configuration >> remoteConfiguration
         project.getExtensions() >> extensions
