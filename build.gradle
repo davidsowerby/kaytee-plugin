@@ -1,7 +1,6 @@
-//noinspection GrPackage
 buildscript {
     ext.bintrayVersion = '1.7.3'
-    ext.kaytee_plugin_version = "0.18.3.0"
+    ext.kaytee_plugin_version = "0.18.4.1"
     repositories {
         mavenLocal()
         jcenter()
@@ -16,7 +15,7 @@ apply plugin: 'uk.q3c.kaytee'
 
 kaytee {
     version {
-        number = '0.18.4.1'
+        number = '0.18.5.0'
     }
 }
 
@@ -51,8 +50,9 @@ dependencies {
     compile 'org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0'
 
     // Jackson for JSON output of config
-    compile 'com.fasterxml.jackson.core:jackson-annotations:' + jacksonVersion
-    compile 'com.fasterxml.jackson.core:jackson-databind:' + jacksonVersion
+    compile "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
+    compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion"
 
     // Testing
     //project builder
