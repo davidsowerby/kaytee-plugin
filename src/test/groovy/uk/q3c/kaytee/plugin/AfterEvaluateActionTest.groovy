@@ -69,10 +69,11 @@ class AfterEvaluateActionTest extends Specification {
 
         config.gitLocalConfiguration.cloneFromRemote == false
 
-        config.changeLog.projectName == project.name
-        config.changeLog.projectDirParent == project.projectDir.parentFile
-        config.changeLog.autoTagLatestCommit == false
-        config.changeLog.remoteRepoUser == config.remoteRepoUserName
+        config.changelog.projectName == project.name
+        config.changelog.projectDirParent == project.projectDir.parentFile
+        config.changelog.autoTagLatestCommit == true
+        config.changelog.maxVersions == 10
+        config.changelog.remoteRepoUser == config.remoteRepoUserName
 
         bintrayExtension.pkg.name == project.name
         bintrayExtension.pkg.repo == 'maven'

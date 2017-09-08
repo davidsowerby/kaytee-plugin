@@ -41,7 +41,7 @@ class ConfigWriter {
         }
 
         File configFile = new File(project.buildDir, "changeLogOnly.json")
-        objectMapper.writeValue(configFile, jsonConfig.changeLog)
+        objectMapper.writeValue(configFile, jsonConfig.changelog)
         logger.debug("ChangeLog configuration written to " + configFile)
     }
 

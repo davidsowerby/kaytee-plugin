@@ -17,7 +17,7 @@ import uk.q3c.build.gitplus.remote.DefaultGitRemoteConfiguration
 class KayTeeExtension {
 
     KayTeeExtension() {
-        changeLog = new DefaultChangeLogConfiguration()
+        changelog = new DefaultChangeLogConfiguration()
         gitLocalConfiguration = new DefaultGitLocalConfiguration()
         wikiLocalConfiguration = new DefaultGitLocalConfiguration()
         gitRemoteConfiguration = new DefaultGitRemoteConfiguration()
@@ -39,8 +39,8 @@ class KayTeeExtension {
         acceptanceTest = new GroupConfig(other.acceptanceTest)
         productionTest = new GroupConfig(other.productionTest)
 
-        String projectName = other.changeLog.projectName // for change log copy
-        changeLog = ((other.changeLog) as DefaultChangeLogConfiguration).copy(projectName)
+        String projectName = other.changelog.projectName // for change log copy
+        changelog = ((other.changelog) as DefaultChangeLogConfiguration).copy(projectName)
 
         projectName = other.gitLocalConfiguration.projectName
         gitLocalConfiguration = other.gitLocalConfiguration.copy(projectName)
@@ -72,7 +72,7 @@ class KayTeeExtension {
     VersionConfig version = new VersionConfig()
 
     // Cannot use interface - Jackson does not know how to reconstruct it
-    DefaultChangeLogConfiguration changeLog
+    DefaultChangeLogConfiguration changelog
     DefaultGitLocalConfiguration gitLocalConfiguration
     DefaultGitLocalConfiguration wikiLocalConfiguration
     DefaultGitRemoteConfiguration gitRemoteConfiguration
@@ -121,7 +121,7 @@ class KayTeeExtension {
     }
 
     def changelog(Closure closure) {
-        ConfigureUtil.configure(closure, changeLog)
+        ConfigureUtil.configure(closure, changelog)
     }
 
     def gitLocal(Closure closure) {

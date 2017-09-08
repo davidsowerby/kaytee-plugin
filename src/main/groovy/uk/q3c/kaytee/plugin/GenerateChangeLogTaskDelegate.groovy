@@ -12,7 +12,7 @@ class GenerateChangeLogTaskDelegate {
     @SuppressWarnings("GrMethodMayBeStatic")
     void generate(Project project, ChangeLog changelog) {
         KayTeeExtension config = project.extensions.getByName("kaytee") as KayTeeExtension
-        changelog.configuration.copyFrom(config.changeLog)
+        changelog.configuration.copyFrom(config.changelog)
         writeOutConfig(project)
         changelog.generate()
     }

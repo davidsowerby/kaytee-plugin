@@ -38,7 +38,7 @@ class GenerateChangeLogTaskDelegateTest extends Specification {
         delegate.generate(project, changeLog)
 
         then:
-        1 * changeLog.configuration.copyFrom(ktConfig.changeLog)
+        1 * changeLog.configuration.copyFrom(ktConfig.changelog)
 
         then:
         1 * changeLog.generate()

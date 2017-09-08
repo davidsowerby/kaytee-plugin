@@ -53,24 +53,24 @@ class AfterEvaluateAction implements Action<Project> {
 
         config.gitLocalConfiguration.cloneFromRemote = false
 
-        config.changeLog.projectName = project.name
-        config.changeLog.projectDirParent = project.projectDir.parentFile
+        config.changelog.projectName = project.name
+        config.changelog.projectDirParent = project.projectDir.parentFile
 
-        config.changeLog.remoteRepoUser = config.remoteRepoUserName
-        config.changeLog.maxVersions = 10
+        config.changelog.remoteRepoUser = config.remoteRepoUserName
+        config.changelog.maxVersions = 10
 
 
 
         config.gitRemoteConfiguration.validate(config.gitLocalConfiguration)
         config.gitLocalConfiguration.validate(config.gitRemoteConfiguration)
         config.wikiLocalConfiguration.validate(config.gitRemoteConfiguration)
-        config.changeLog.validate()
+        config.changelog.validate()
 
 
         VersionNumber versionNumber = versionFromConfig()
         project.version = versionNumber
-        config.changeLog.autoTagLatestCommit = true
-        config.changeLog.currentBuildTagName = versionNumber.toString()
+        config.changelog.autoTagLatestCommit = true
+        config.changelog.currentBuildTagName = versionNumber.toString()
 
         logConfig(project)
         return config

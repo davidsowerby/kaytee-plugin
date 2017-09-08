@@ -6,8 +6,6 @@ import org.gradle.api.logging.Logger
 import org.gradle.api.plugins.ExtensionContainer
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
-import spock.lang.Ignore
-
 /**
  * Created by David Sowerby on 19 Jan 2017
  */
@@ -32,7 +30,7 @@ class ConfigToJsonTaskDelegateTest extends JsonTest {
         delegate = new ConfigToJsonTaskDelegate(project)
     }
 
-    @Ignore
+//    @Ignore
     def "write default info"() {
         given:
         File actualSimplyFile = new File(temp, 'build/kaytee.json')

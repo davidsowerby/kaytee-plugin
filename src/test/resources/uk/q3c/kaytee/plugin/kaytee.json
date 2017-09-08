@@ -124,7 +124,7 @@
       "buildMetaDataSeparator": "+"
     }
   },
-  "changeLog": {
+  "changelog": {
     "remoteRepoUser": "not specified",
     "templateName": "markdown.vm",
     "labelGroups": {
@@ -187,26 +187,25 @@
     "projectName": "not specified"
   },
   "gitLocalConfiguration": {
+    "version": 1,
     "active": true,
     "cloneExistsResponse": "EXCEPTION",
     "projectDirParent": "/home/david/git/kaytee-plugin/.",
-    "taggerName": "not specified",
-    "taggerEmail": "not specified",
     "create": false,
     "cloneFromRemote": false,
     "projectName": "not specified"
   },
   "wikiLocalConfiguration": {
+    "version": 1,
     "active": true,
     "cloneExistsResponse": "EXCEPTION",
     "projectDirParent": "/home/david/git/kaytee-plugin/.",
-    "taggerName": "not specified",
-    "taggerEmail": "not specified",
     "create": false,
     "cloneFromRemote": false,
     "projectName": "not specified"
   },
   "gitRemoteConfiguration": {
+    "version": 1,
     "active": true,
     "confirmDelete": "",
     "projectDescription": "",
