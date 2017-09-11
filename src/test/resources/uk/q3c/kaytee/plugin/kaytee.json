@@ -169,7 +169,6 @@
     "outputFilename": "changelog.md",
     "pullRequestTitle": "Pull Requests",
     "outputTarget": "WIKI_ROOT",
-    "outputFileSpec": "/home/david/git/kaytee-plugin/./changelog.md",
     "fromCommitId": "not specified",
     "toCommitId": "not specified",
     "fromVersionId": "not specified",
@@ -182,7 +181,6 @@
     "maxVersions": 50,
     "processingAsVersions": true,
     "showDetail": true,
-    "projectDirParent": "/home/david/git/kaytee-plugin/.",
     "currentBuildTagName": "current build",
     "projectName": "not specified"
   },
@@ -190,7 +188,6 @@
     "version": 1,
     "active": true,
     "cloneExistsResponse": "EXCEPTION",
-    "projectDirParent": "/home/david/git/kaytee-plugin/.",
     "create": false,
     "cloneFromRemote": false,
     "projectName": "not specified"
@@ -199,7 +196,6 @@
     "version": 1,
     "active": true,
     "cloneExistsResponse": "EXCEPTION",
-    "projectDirParent": "/home/david/git/kaytee-plugin/.",
     "create": false,
     "cloneFromRemote": false,
     "projectName": "not specified"
