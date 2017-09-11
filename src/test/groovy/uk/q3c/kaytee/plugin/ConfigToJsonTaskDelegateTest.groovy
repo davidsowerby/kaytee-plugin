@@ -6,8 +6,6 @@ import org.gradle.api.logging.Logger
 import org.gradle.api.plugins.ExtensionContainer
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
-import spock.lang.Ignore
-
 /**
  * Created by David Sowerby on 19 Jan 2017
  */
@@ -32,22 +30,22 @@ class ConfigToJsonTaskDelegateTest extends JsonTest {
         delegate = new ConfigToJsonTaskDelegate(project)
     }
 
-    @Ignore("see https://github.com/davidsowerby/kaytee-plugin/issues/60")
+//    @Ignore("see https://github.com/davidsowerby/kaytee-plugin/issues/60")
     def "write default info"() {
         given:
-        File actualSimplyFile = new File(temp, 'build/kaytee.json')
+        File actualKayTeeFile = new File(temp, 'build/kaytee.json')
 
         when:
         delegate.writeInfo()
 
         then:
-        actualSimplyFile.exists()
+        actualKayTeeFile.exists()
 
         when: "run a second time, so that build dir already there"
         delegate.writeInfo()
 
         then:
-        actualSimplyFile.exists()
+        actualKayTeeFile.exists()
 
         when:
         resource = ktConfig
