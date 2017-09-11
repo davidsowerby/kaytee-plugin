@@ -27,7 +27,7 @@ class ConfigWriter {
 
         File ktFile = new File(project.buildDir, configFileName)
         Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new JacksonAnnotationExclusionStrategy()).create()
-        String output = gson.toJson(new KayTeeExtension())
+        String output = gson.toJson(jsonConfig)
         FileUtils.writeStringToFile(ktFile, output)
         logger.debug("Configuration written to " + ktFile)
         return ktFile

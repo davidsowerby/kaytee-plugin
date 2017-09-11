@@ -178,6 +178,12 @@ class KayTeeExtension {
         if (generateBuildInfo != that.generateBuildInfo) return false
         if (raiseIssueOnFail != that.raiseIssueOnFail) return false
         if (publishToMavenLocal != that.publishToMavenLocal) return false
+        if (changelog != that.changelog) return false
+        if (gitLocalConfiguration != that.gitLocalConfiguration) return false
+        if (wikiLocalConfiguration != that.wikiLocalConfiguration) return false
+        if (gitRemoteConfiguration != that.gitRemoteConfiguration) return false
+
+
 
         return true
     }

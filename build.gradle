@@ -15,7 +15,7 @@ apply plugin: 'uk.q3c.kaytee'
 
 kaytee {
     version {
-        number = '0.18.7.0'
+        number = '0.18.8.0'
     }
 }
 
