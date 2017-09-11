@@ -2,6 +2,8 @@ package uk.q3c.kaytee.plugin
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
 import org.gradle.api.logging.Logger
@@ -13,19 +15,22 @@ import org.gradle.api.logging.Logger
 class ConfigWriter {
 
 
-    void writeOutConfig(Project project, String configFileName) {
+    File writeOutConfig(Project project, String configFileName) {
         Logger logger = project.getLogger()
         KayTeeExtension jsonConfig = getExtension(project)
-        ObjectMapper objectMapper = getObjectMapper()
         // build dir could have been removed by 'clean'
         if (!project.buildDir.exists()) {
             logger.debug("Creating build directory, probably preceded by 'clean' task")
             FileUtils.forceMkdir(project.buildDir)
         }
 
+
         File ktFile = new File(project.buildDir, configFileName)
-        objectMapper.writeValue(ktFile, jsonConfig)
+        Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new JacksonAnnotationExclusionStrategy()).create()
+        String output = gson.toJson(new KayTeeExtension())
+        FileUtils.writeStringToFile(ktFile, output)
         logger.debug("Configuration written to " + ktFile)
+        return ktFile
     }
 
     @SuppressWarnings("GrMethodMayBeStatic")
