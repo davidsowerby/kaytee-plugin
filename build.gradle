@@ -1,6 +1,6 @@
 buildscript {
     ext.bintrayVersion = '1.7.3'
-    ext.kaytee_plugin_version = "0.18.8.0"
+    ext.kaytee_plugin_version = "0.18.9.0"
     repositories {
         mavenLocal()
         jcenter()
