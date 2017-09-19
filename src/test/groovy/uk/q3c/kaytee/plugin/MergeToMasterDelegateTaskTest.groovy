@@ -61,7 +61,7 @@ class MergeToMasterDelegateTaskTest extends Specification {
         1 * wikiConfiguration.copyFrom(ktExtension.wikiLocalConfiguration)
 
         then:
-        1 * delegate.gitPlus.local.checkoutBranch(new GitBranch("master"))
+        1 * delegate.gitPlus.local.checkoutRemoteBranch(new GitBranch("master"))
 
         then:
         1 * delegate.gitPlus.local.mergeBranch(new GitBranch("kaytee"), MergeStrategy.THEIRS, MergeCommand.FastForwardMode.FF)

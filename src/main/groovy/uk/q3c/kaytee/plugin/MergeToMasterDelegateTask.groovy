@@ -37,7 +37,7 @@ class MergeToMasterDelegateTask {
 
         GitLocal gitLocal = gitPlus.local
         logDebug("gitPlus set up complete")
-        gitLocal.checkoutBranch(gitLocal.masterBranch())
+        gitLocal.checkoutRemoteBranch(gitLocal.masterBranch())
         gitLocal.mergeBranch(new GitBranch("kaytee"), MergeStrategy.THEIRS, MergeCommand.FastForwardMode.FF)
         gitLocal.push(true, false)
     }
