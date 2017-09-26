@@ -1,17 +1,14 @@
 package uk.q3c.kaytee.plugin
 
-import net.sf.json.test.JSONAssert
-import org.apache.commons.io.FileUtils
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.gradle.api.Project
 import org.gradle.api.logging.Logger
 import org.gradle.api.plugins.ExtensionContainer
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
-import uk.q3c.util.testutil.TestResource
 
 import static org.mockito.Mockito.*
-
 /**
  * Created by David Sowerby on 08 Sep 2017
  */
@@ -40,28 +37,17 @@ class ConfigWriterTest extends Specification {
         when(extensions.getByName('kaytee')).thenReturn(kayteeExtension)
     }
 
-    def "write out"() {
+    def "round trip"() {
         given:
-        File expectedFile = TestResource.resource(this, "kaytee.json")
-        String expected = FileUtils.readFileToString(expectedFile)
+        kayteeExtension.changelog.useStoredIssues = false // random change to defaults
+        ObjectMapper mapper = new ObjectMapper()
 
         when:
-
         File actualFile = writer.writeOutConfig(project, "kaytee.json")
-        String actual = FileUtils.readFileToString(actualFile)
+        KayTeeExtension actual = mapper.readValue(actualFile, KayTeeExtension.class)
 
         then:
-        JSONAssert.assertEquals(expected, actual)
+        kayteeExtension == actual
     }
 
-//    def "other inputs"() {
-//        given:
-//        Gson gson = new GsonBuilder().setExclusionStrategies(new JacksonAnnotationExclusionStrategy()).create();
-//
-//        when:
-//        String output = gson.toJson(jsonConfig)
-//        FileUtils.writeStringToFile(ktFile,output)
-//
-//        then:
-//    }
 }

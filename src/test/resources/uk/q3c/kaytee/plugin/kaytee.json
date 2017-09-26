@@ -125,6 +125,10 @@
     }
   },
   "changelog": {
+    "version": 1,
+    "useStoredIssues": true,
+    "storeIssuesLocally": true,
+    "issuesFilename": "issueRecords.md",
     "remoteRepoUser": "not specified",
     "templateName": "markdown.vm",
     "labelGroups": {
@@ -173,9 +177,7 @@
     "toCommitId": "not specified",
     "fromVersionId": "not specified",
     "toVersionId": "not specified",
-    "branch": {
-      "name": "develop"
-    },
+    "branch": "",
     "autoTagLatestCommit": true,
     "maxCommits": 1000,
     "maxVersions": 50,
