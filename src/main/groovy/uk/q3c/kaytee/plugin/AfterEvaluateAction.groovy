@@ -145,13 +145,12 @@ class AfterEvaluateAction implements Action<Project> {
             bintray.pkg.vcsUrl = mapper.cloneUrl()
         }
         if (StringUtils.isEmpty(bintray.key)) {
-            if (!project.hasProperty("bintrayKey")) {
+            try {
+                bintray.key = project.bintrayKey
+            } catch (Exception exception) {
                 bintray.key = "not a real key"
                 project.logger.warn("No 'bintrayKey property' is available.  The Bintray plugin has been applied and a mock (and therefore invalid) key provided to allow the build to continue, but the bintrayUpload task would fail if called. This will not affect the build unless you wanted to push the artifacts to Bintray ")
-            } else {
-                bintray.key = project.bintrayKey
             }
-
         }
         bintray.pkg.version.name = project.version.toString()
 
