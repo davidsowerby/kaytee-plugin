@@ -1,6 +1,6 @@
 buildscript {
     ext.bintrayVersion = '1.7.3'
-    ext.kaytee_plugin_version = "0.19.1.0"
+    ext.kaytee_plugin_version = "0.20.0.0"
     repositories {
         mavenLocal()
         jcenter()
@@ -15,7 +15,7 @@ apply plugin: 'uk.q3c.kaytee'
 
 kaytee {
     version {
-        number = '0.19.1.0'
+        number = '0.20.0.0'
     }
 }
 
@@ -48,7 +48,7 @@ dependencies {
 
     compile 'com.google.code.findbugs:annotations:3.0.0'
     compile 'com.google.guava:guava:23.0'
-    compile 'org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.2.0'
+    compile 'org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.4.4'
 
     // Jackson for JSON output of config
     compile "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
