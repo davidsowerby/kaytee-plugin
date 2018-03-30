@@ -26,7 +26,7 @@ class AfterEvaluateAction implements Action<Project> {
 
     @Override
     void execute(Project project) {
-        project.getLogger().debug('after evaluate')
+        project.getLogger().debug('Kaytee after evaluate')
         KayTeeExtension config = confirmConfiguration()
         createTestSets(config)
         config.validate() // will throw exception if invalid
@@ -120,6 +120,7 @@ class AfterEvaluateAction implements Action<Project> {
      */
     void bintrayConfig(KayTeeExtension config) {
         project.logger.debug("Checking existing bintray config values, and replacing nulls where possible")
+
         DefaultGitRemoteUrlMapper mapper = new DefaultGitRemoteUrlMapper()
         mapper.owner = config.gitRemoteConfiguration
         BintrayExtension bintray = project.extensions.getByName("bintray") as BintrayExtension
@@ -144,7 +145,13 @@ class AfterEvaluateAction implements Action<Project> {
             bintray.pkg.vcsUrl = mapper.cloneUrl()
         }
         if (StringUtils.isEmpty(bintray.key)) {
-            bintray.key = project.bintrayKey
+            if (!project.hasProperty("bintrayKey")) {
+                bintray.key = "not a real key"
+                project.logger.warn("No 'bintrayKey property' is available.  The Bintray plugin has been applied and a mock (and therefore invalid) key provided to allow the build to continue, but the bintrayUpload task would fail if called. This will not affect the build unless you wanted to push the artifacts to Bintray ")
+            } else {
+                bintray.key = project.bintrayKey
+            }
+
         }
         bintray.pkg.version.name = project.version.toString()
 
