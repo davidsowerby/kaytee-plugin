@@ -1,6 +1,6 @@
 buildscript {
     ext.bintrayVersion = '1.7.3'
-    ext.kaytee_plugin_version = "0.19.0.0"
+    ext.kaytee_plugin_version = "0.19.1.0"
     repositories {
         mavenLocal()
         jcenter()
@@ -15,7 +15,7 @@ apply plugin: 'uk.q3c.kaytee'
 
 kaytee {
     version {
-        number = '0.19.0.0'
+        number = '0.19.1.0'
     }
 }
 
@@ -41,7 +41,7 @@ dependencies {
     compile gradleApi()
 
     //Changelog (also brings in GitPlus)
-    compile 'uk.q3c.build:changelog:0.7.0.0'
+    compile 'uk.q3c.build:changelog:0.7.1.0'
     compile 'uk.q3c.util:q3c-util:0.13.1.2'
 
     compile "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayVersion"
